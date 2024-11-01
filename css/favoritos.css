@@ -1,0 +1,55 @@
+.favoritos {
+    padding: 8rem 9% 4rem;
+    min-height: 80vh;
+}
+
+.favoritos-header {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.favoritos-container {
+    max-width: 120rem;
+    margin: 0 auto;
+}
+
+.favoritos .box-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
+    gap: 2rem;
+}
+
+.no-favoritos {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.no-favoritos i {
+    font-size: 8rem;
+    color: #ddd;
+    margin-bottom: 2rem;
+}
+
+.no-favoritos h3 {
+    font-size: 2.4rem;
+    color: var(--black);
+    margin-bottom: 1rem;
+}
+
+.no-favoritos p {
+    font-size: 1.6rem;
+    color: var(--light-color);
+    margin-bottom: 2rem;
+}
+
+/* Animación para agregar/quitar de favoritos */
+@keyframes heartBeat {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+.fa-heart.active {
+    color: var(--red) !important;
+    animation: heartBeat 0.3s ease-in-out;
+} 

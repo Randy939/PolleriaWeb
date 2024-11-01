@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú - Gran Apettit</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/menu.css">
+</head>
+<body>
+
+    <div id="header-placeholder"></div>
+
+    <section class="menu" id="menu">
+        <div class="menu-header">
+            <h3 class="sub-titulo"></h3>
+            <h1 class="titulo">Explora Nuestras Categorías</h1>
+            <button class="btn-volver" style="display: none;">
+                <i class="fas fa-arrow-left"></i> Volver a Categorías
+            </button>
+        </div>
+
+        <div class="categorias-container">
+            <div class="categoria-card" data-categoria="pollos">
+                <div class="categoria-imagen">
+                    <img src="/images/pollo entero.png" alt="Pollos a la Brasa">
+                    <div class="overlay"></div>
+                </div>
+                <div class="categoria-content">
+                    <h3>Pollos a la Brasa</h3>
+                    <p>Nuestro delicioso pollo a la brasa con las mejores guarniciones</p>
+                    <a href="#" class="btn-categoria">Ver Menú <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div class="categoria-card" data-categoria="criollos">
+                <div class="categoria-imagen">
+                    <img src="/images/pollo entero.png" alt="Platos Criollos">
+                    <div class="overlay"></div>
+                </div>
+                <div class="categoria-content">
+                    <h3>Platos Criollos</h3>
+                    <p>La mejor selección de platos de la gastronomía peruana</p>
+                    <a href="#" class="btn-categoria">Ver Menú <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div class="categoria-card" data-categoria="bebidas">
+                <div class="categoria-imagen">
+                    <img src="/images/POLLO A LA BRASA.png" alt="Bebidas">
+                    <div class="overlay"></div>
+                </div>
+                <div class="categoria-content">
+                    <h3>Bebidas</h3>
+                    <p>Refrescantes bebidas para acompañar tu comida</p>
+                    <a href="#" class="btn-categoria">Ver Menú <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div class="categoria-card" data-categoria="promociones">
+                <div class="categoria-imagen">
+                    <img src="/images/pollo entero.png" alt="Promociones">
+                    <div class="overlay"></div>
+                </div>
+                <div class="categoria-content">
+                    <h3>Promociones</h3>
+                    <p>Las mejores ofertas y combos especiales</p>
+                    <a href="#" class="btn-categoria">Ver Menú <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+
+            <div class="categoria-card" data-categoria="menu-dia">
+                <div class="categoria-imagen">
+                    <img src="/images/pollo entero.png" alt="Menú del Día">
+                    <div class="overlay"></div>
+                </div>
+                <div class="categoria-content">
+                    <h3>Menú del Día</h3>
+                    <p>Descubre nuestras especiales del día</p>
+                    <a href="#" class="btn-categoria">Ver Menú <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+
+        <!-- El contenedor de productos se ocultará inicialmente -->
+        <div class="productos-container" style="display: none;">
+            <div class="box-container">
+                <!-- Productos de Pollos -->
+                <div class="box" data-categoria="pollos" data-id="producto1">
+                    <div class="image">
+                        <img src="/images/1-4pollo.png" alt="1/4 Pollo">
+                        <a href="#" class="fas fa-heart"></a>
+                    </div>
+                    <div class="content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                        <h3>1/4 Pollo a la Brasa</h3>
+                        <p>1/4 pollo + papas fritas + ensalada + cremas</p>
+                        <div class="precio-cantidad">
+                            <span class="precio">S/. 22.90</span>
+                            <div class="cantidad-control">
+                                <button class="cantidad-btn menos">-</button>
+                                <input type="number" class="cantidad-input" value="1" min="1" max="99">
+                                <button class="cantidad-btn mas">+</button>
+                            </div>
+                        </div>
+                        <button class="btn agregar-carrito">
+                            <i class="fas fa-shopping-cart"></i> Agregar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="box" data-categoria="pollos">
+                    <div class="image">
+                        <img src="/images/1-2pollo.png" alt="1/2 Pollo">
+                        <a href="#" class="fas fa-heart"></a>
+                    </div>
+                    <div class="content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3>1/2 Pollo a la Brasa</h3>
+                        <p>1/2 pollo + papas fritas + ensalada + cremas</p>
+                        <span class="precio">S/. 39.90</span>
+                        <button class="btn agregar-carrito">
+                            <i class="fas fa-shopping-cart"></i> Agregar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="box" data-categoria="pollos">
+                    <div class="image">
+                        <img src="/images/pollo entero.png" alt="1 Pollo">
+                        <a href="#" class="fas fa-heart"></a>
+                    </div>
+                    <div class="content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3>1 Pollo a la Brasa</h3>
+                        <p>1 pollo + papas fritas + ensalada familiar + cremas</p>
+                        <span class="precio">S/. 69.90</span>
+                        <button class="btn agregar-carrito">
+                            <i class="fas fa-shopping-cart"></i> Agregar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Productos de Platos Criollos -->
+                <div class="box" data-categoria="criollos">
+                    <div class="image">
+                        <img src="/images/lomo-saltado.png" alt="Lomo Saltado">
+                        <a href="#" class="fas fa-heart"></a>
+                    </div>
+                    <div class="content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3>Lomo Saltado</h3>
+                        <p>Delicioso lomo saltado con papas fritas y arroz</p>
+                        <span class="precio">S/. 25.90</span>
+                        <button class="btn agregar-carrito">
+                            <i class="fas fa-shopping-cart"></i> Agregar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="box" data-categoria="criollos">
+                    <div class="image">
+                        <img src="/images/aji-gallina.png" alt="Ají de Gallina">
+                        <a href="#" class="fas fa-heart"></a>
+                    </div>
+                    <div class="content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3>Ají de Gallina</h3>
+                        <p>Cremoso ají de gallina con arroz y papas</p>
+                        <span class="precio">S/. 22.90</span>
+                        <button class="btn agregar-carrito">
+                            <i class="fas fa-shopping-cart"></i> Agregar
+                        </button>
+                    </div>
+                </div>
+
+                <div class="box" data-categoria="criollos">
+                    <div class="image">
+                        <img src="/images/ceviche.png" alt="Ceviche">
+                        <a href="#" class="fas fa-heart"></a>
+                    </div>
+                    <div class="content">
+                        <div class="stars">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <h3>Ceviche Mixto</h3>
+                        <p>Ceviche de pescado y mariscos con camote y choclo</p>
+                        <span class="precio">S/. 35.90</span>
+                        <button class="btn agregar-carrito">
+                            <i class="fas fa-shopping-cart"></i> Agregar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="/js/layouts.js"></script>
+    <script src="/Js/script.js"></script>
+    <script src="/js/menu.js"></script>
+    
+</body>
+</html> 

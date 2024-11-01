@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Gran Appetit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/perfil.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <section class="perfil-container">
+        <div class="perfil-sidebar">
+            <div class="perfil-usuario">
+                <div class="avatar">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <div class="info-usuario">
+                    <h3 id="nombre-usuario">Cargando...</h3>
+                    <p id="email-usuario">Cargando...</p>
+                </div>
+            </div>
+            
+            <nav class="menu-perfil">
+                <a href="#" class="menu-item active" data-section="datos">
+                    <i class="fas fa-user"></i> Mis Datos
+                </a>
+                <a href="#" class="menu-item" data-section="pedidos">
+                    <i class="fas fa-shopping-bag"></i> Mis Pedidos
+                </a>
+                <a href="#" class="menu-item" data-section="direcciones">
+                    <i class="fas fa-map-marker-alt"></i> Mis Direcciones
+                </a>
+                <a href="#" class="menu-item" data-section="seguridad">
+                    <i class="fas fa-lock"></i> Seguridad
+                </a>
+                <a href="#" id="btn-cerrar-sesion" class="menu-item">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </a>
+            </nav>
+        </div>
+
+        <div class="perfil-content">
+            <!-- Sección Mis Datos -->
+            <div class="perfil-section active" id="datos">
+                <h2>Mis Datos Personales</h2>
+                <form id="form-datos-personales">
+                    <div class="form-group">
+                        <label>Nombre</label>
+                        <input type="text" id="nombre" name="nombre" readonly>
+                        <button type="button" class="btn-editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label>Apellido</label>
+                        <input type="text" id="apellido" name="apellido" readonly>
+                        <button type="button" class="btn-editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email" name="email" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Teléfono</label>
+                        <input type="tel" id="telefono" name="telefono" readonly>
+                        <button type="button" class="btn-editar">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                    <button type="submit" class="btn-guardar" style="display: none;">
+                        Guardar Cambios
+                    </button>
+                </form>
+            </div>
+
+            <!-- Sección Mis Pedidos -->
+            <div class="perfil-section" id="pedidos">
+                <h2>Historial de Pedidos</h2>
+                <div class="pedidos-lista">
+                    <!-- Los pedidos se cargarán dinámicamente -->
+                </div>
+            </div>
+
+            <!-- Sección Mis Direcciones -->
+            <div class="perfil-section" id="direcciones">
+                <h2>Mis Direcciones</h2>
+                <div class="direcciones-lista">
+                    <!-- Las direcciones se cargarán dinámicamente -->
+                </div>
+                <button class="btn-agregar">
+                    <i class="fas fa-plus"></i> Agregar Nueva Dirección
+                </button>
+            </div>
+
+            <!-- Sección Seguridad -->
+            <div class="perfil-section" id="seguridad">
+                <h2>Seguridad de la Cuenta</h2>
+                <form id="form-cambiar-password">
+                    <div class="form-group">
+                        <label>Contraseña Actual</label>
+                        <input type="password" name="password_actual">
+                    </div>
+                    <div class="form-group">
+                        <label>Nueva Contraseña</label>
+                        <input type="password" name="password_nueva">
+                    </div>
+                    <div class="form-group">
+                        <label>Confirmar Nueva Contraseña</label>
+                        <input type="password" name="password_confirmar">
+                    </div>
+                    <button type="submit" class="btn-guardar">
+                        Cambiar Contraseña
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="/js/layouts.js"></script>
+    <script src="/js/perfil.js"></script>
+</body>
+</html> 

@@ -1,0 +1,209 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700&display=swap');
+
+:root {
+    --green: #27ae60;
+    --yellow: #ffd700;
+    --black: #192a56;
+    --light-color: #666;
+    --box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.1);
+}
+
+* {
+    font-family: 'Nunito', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    outline: none;
+    border: none;
+    transition: all .2s linear;
+}
+
+html {
+    font-size: 62.5%;
+    overflow-x: hidden;
+    scroll-padding-top: 5.5rem;
+    scroll-behavior: smooth;
+}
+
+body {
+    background: linear-gradient(45deg, rgba(39, 174, 96, 0.1), rgba(255, 215, 0, 0.1));
+    min-height: 100vh;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #fff;
+    padding: 1rem 7%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    box-shadow: var(--box-shadow);
+}
+
+header .logo {
+    color: var(--black);
+    font-size: 2.5rem;
+    font-weight: bolder;
+}
+
+header .logo i {
+    color: var(--green);
+}
+
+.registro-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+    padding-top: 8rem;
+}
+
+.registro-form {
+    background: #fff;
+    padding: 3rem;
+    border-radius: 1rem;
+    box-shadow: var(--box-shadow);
+    width: 100%;
+    max-width: 50rem;
+    border: .2rem solid rgba(39, 174, 96, 0.1);
+}
+
+.registro-form h2 {
+    text-align: center;
+    color: var(--black);
+    font-size: 3rem;
+    margin-bottom: 2rem;
+}
+
+.registro-form h2 i {
+    color: var(--green);
+    margin-right: 1rem;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 2rem;
+}
+
+.input-group span {
+    position: absolute;
+    left: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: var(--green);
+}
+
+.input-group input {
+    width: 100%;
+    padding: 1.5rem 4.5rem;
+    font-size: 1.6rem;
+    background: #f7f7f7;
+    border-radius: .5rem;
+    border: .2rem solid transparent;
+    transition: all 0.3s ease;
+}
+
+.input-group input:focus {
+    border-color: var(--yellow);
+    background: #fff;
+    box-shadow: 0 0 10px rgba(39, 174, 96, 0.2);
+}
+
+.btn-registro {
+    width: 100%;
+    padding: 1.5rem;
+    background: var(--green);
+    color: #fff;
+    font-size: 1.8rem;
+    border-radius: .5rem;
+    cursor: pointer;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-registro:hover {
+    background: var(--yellow);
+    letter-spacing: .1rem;
+}
+
+.btn-registro:active {
+    transform: scale(0.95);
+}
+
+.login-link {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1.6rem;
+    color: var(--light-color);
+}
+
+.login-link a {
+    color: var(--green);
+    font-weight: bold;
+}
+
+.login-link a:hover {
+    color: var(--yellow);
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    html {
+        font-size: 55%;
+    }
+    
+    .registro-form {
+        padding: 2rem;
+    }
+}
+
+@media (max-width: 450px) {
+    html {
+        font-size: 50%;
+    }
+    
+    .registro-form {
+        padding: 1.5rem;
+    }
+}
+
+/* Estilos para mensajes de error y éxito */
+.mensaje-error,
+.mensaje-exito {
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: .5rem;
+    text-align: center;
+    font-size: 1.6rem;
+    animation: slideIn 0.3s ease;
+}
+
+.mensaje-error {
+    background-color: #ffe6e6;
+    color: #ff3333;
+    border: 1px solid #ff9999;
+}
+
+.mensaje-exito {
+    background-color: #e6ffe6;
+    color: #009933;
+    border: 1px solid #99ff99;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+} 

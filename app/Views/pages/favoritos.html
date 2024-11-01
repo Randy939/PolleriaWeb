@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Favoritos - Gran Appetit</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/menu.css">
+    <link rel="stylesheet" href="/css/favoritos.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <section class="favoritos" id="favoritos">
+        <div class="favoritos-header">
+            <h3 class="sub-titulo">Mis Favoritos</h3>
+            <h1 class="titulo">Productos que te encantan</h1>
+        </div>
+
+        <div class="favoritos-container">
+            <div class="box-container">
+                <!-- Los productos favoritos se cargarán dinámicamente aquí -->
+            </div>
+            
+            <!-- Mensaje cuando no hay favoritos -->
+            <div class="no-favoritos" style="display: none;">
+                <i class="fas fa-heart-broken"></i>
+                <h3>No tienes favoritos guardados</h3>
+                <p>Explora nuestro menú y agrega tus platos favoritos</p>
+                <a href="/app/Views/pages/menu.html" class="btn">Ir al Menú</a>
+            </div>
+        </div>
+    </section>
+
+    <div id="footer-placeholder"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="/js/layouts.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/favoritos.js"></script>
+</body>
+</html> 

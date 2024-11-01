@@ -1,0 +1,217 @@
+/* Estilos principales para la sección de reserva */
+.Reserva {
+    padding: 8rem 9% 2rem;
+    min-height: auto;
+    background: linear-gradient(45deg, rgba(39, 174, 96, 0.05), rgba(255, 215, 0, 0.05));
+}
+
+.Reserva .sub-titulo {
+    text-align: center;
+    color: var(--green);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.Reserva .titulo {
+    text-align: center;
+    color: var(--black);
+    font-size: 4rem;
+    margin-bottom: 2rem;
+    position: relative;
+    padding-bottom: 1.5rem;
+}
+
+.Reserva .titulo::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 25rem;
+    height: 0.3rem;
+    background: linear-gradient(90deg, var(--green), var(--yellow));
+    border-radius: 1rem;
+}
+
+/* Estilos del formulario */
+.reserva-form {
+    max-width: 90rem;
+    margin: 0 auto 2rem;
+    padding: 3rem;
+    background: #fff;
+    border-radius: 2rem;
+    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.1);
+    animation: formSlideUp 0.8s ease;
+}
+
+.form-step {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+/* Campos de entrada */
+.input-field {
+    position: relative;
+    margin-bottom: 0;
+}
+
+.input-field i {
+    position: absolute;
+    top: 50%;
+    left: 2rem;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: var(--green);
+    transition: all 0.3s ease;
+}
+
+.input-field textarea + i {
+    top: 2.5rem;
+}
+
+.input-field input,
+.input-field select,
+.input-field textarea {
+    width: 100%;
+    padding: 1.2rem 4.5rem;
+    font-size: 1.6rem;
+    background: #f8f9fa;
+    border: 0.2rem solid transparent;
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+}
+
+.input-field textarea {
+    height: 12rem;
+    resize: none;
+    padding-top: 2rem;
+}
+
+.input-field input:focus,
+.input-field select:focus,
+.input-field textarea:focus {
+    border-color: var(--green);
+    background: #fff;
+    box-shadow: 0 0 1rem rgba(39, 174, 96, 0.1);
+}
+
+.input-field input:focus + i,
+.input-field select:focus + i,
+.input-field textarea:focus + i {
+    color: var(--yellow);
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Botón de reserva */
+.btn-reserva {
+    grid-column: 1 / -1;
+    margin-top: 0;
+    width: 100%;
+    padding: 1.5rem 3rem;
+    background: var(--green);
+    color: #fff;
+    font-size: 1.8rem;
+    border-radius: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    border: none;
+    overflow: hidden;
+    position: relative;
+}
+
+.btn-reserva span {
+    position: relative;
+    z-index: 1;
+}
+
+.btn-reserva i {
+    font-size: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.btn-reserva::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: var(--yellow);
+    transition: all 0.5s ease;
+}
+
+.btn-reserva:hover::before {
+    left: 0;
+}
+
+.btn-reserva:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 1rem 2rem rgba(39, 174, 96, 0.2);
+}
+
+.btn-reserva:active {
+    transform: translateY(-1px);
+}
+
+/* Animaciones */
+@keyframes formSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(5rem);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .Reserva {
+        padding: 6rem 5% 2rem;
+    }
+
+    .Reserva .titulo {
+        font-size: 3rem;
+    }
+
+    .reserva-form {
+        padding: 2rem;
+    }
+
+    .form-step {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+
+    .input-field.comentario {
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    .input-field.comentario textarea {
+        height: 12rem;
+    }
+
+    .btn-reserva {
+        grid-column: 1;
+    }
+}
+
+@media (max-width: 450px) {
+    .Reserva .titulo {
+        font-size: 2.5rem;
+    }
+
+    .input-field input,
+    .input-field select,
+    .input-field textarea {
+        padding: 1.2rem 4.5rem;
+    }
+}

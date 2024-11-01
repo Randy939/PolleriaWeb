@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="x-UA-Compatible" content="IE-edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro - Gran Appetit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/registro.css">
+</head>
+<body>
+
+<header>
+    <a href="/app/Views/pages/index.html" class="logo"><i class="fas fa-utensils"></i> GRAN APPETIT</a>
+</header>
+
+<div class="registro-container">
+    <form class="registro-form" id="registroForm">
+        <h2><i class="fas fa-user-plus"></i> Registro de Usuario</h2>
+        
+        <div class="input-group">
+            <span><i class="fas fa-user"></i></span>
+            <input type="text" id="nombre" placeholder="Nombre" required>
+        </div>
+
+        <div class="input-group">
+            <span><i class="fas fa-user"></i></span>
+            <input type="text" id="apellido" placeholder="Apellido" required>
+        </div>
+
+        <div class="input-group">
+            <span><i class="fas fa-envelope"></i></span>
+            <input type="email" 
+                   id="email" 
+                   placeholder="Correo electrónico" 
+                   autocapitalize="off"
+                   style="text-transform: none;"
+                   required>
+        </div>
+
+        <div class="input-group">
+            <span><i class="fas fa-lock"></i></span>
+            <input type="password" id="password" placeholder="Contraseña" required>
+        </div>
+
+        <div class="input-group">
+            <span><i class="fas fa-map-marker-alt"></i></span>
+            <input type="text" id="direccion" placeholder="Dirección">
+        </div>
+
+        <div class="input-group">
+            <span><i class="fas fa-phone"></i></span>
+            <input type="tel" id="telefono" placeholder="Teléfono">
+        </div>
+
+        <button type="submit" class="btn-registro">Registrarse</button>
+
+        <div class="login-link">
+            ¿Ya tienes una cuenta? <a href="login.html">Iniciar sesión</a>
+        </div>
+    </form>
+</div>
+
+<script src="/js/registro.js"></script>
+
+</body>
+</html> 
