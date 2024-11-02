@@ -1,9 +1,9 @@
 <?php
 class Database {
-    private $host = "localhost";
-    private $database_name = "bdpolleria";
-    private $username = "root";
-    private $password = "";
+    private $host = "sql313.infinityfree.com";
+    private $database_name = "if0_37640185_bdpolleria";
+    private $username = "if0_37640185";
+    private $password = "43rwcc2pVksS";
     public $conn;
 
     public function getConnection() {
