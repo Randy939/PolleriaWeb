@@ -5,7 +5,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const password = document.getElementById('password').value;
     
     try {
-        const response = await fetch('http://localhost/gran_appetit/app/Controllers/login.php', {
+        const response = await fetch('https://tudominio.infinityfree.com/gran_appetit/app/Controllers/login.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
