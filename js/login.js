@@ -5,7 +5,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const password = document.getElementById('password').value;
     
     try {
-        const response = await fetch('https://gran-appetit.000.pe/gran_appetit/app/Controllers/login.php', {
+        const response = await fetch('https://gentle-arithmetic-98eb61.netlify.app/app/views/auth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
