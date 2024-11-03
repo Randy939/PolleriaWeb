@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Verificar si el usuario está logueado
     const usuario = JSON.parse(localStorage.getItem('usuario'));
+    
     if (!usuario) {
         window.location.href = '/app/Views/auth/login.html';
         return;

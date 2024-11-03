@@ -1497,3 +1497,29 @@ header .icons .fa-user:hover {
         padding: 1rem 0.5rem;
     }
 }
+
+.icon-circle {
+    cursor: pointer;
+    height: 4.5rem;
+    width: 4.5rem;
+    line-height: 4.5rem;
+    text-align: center;
+    font-size: 1.7rem;
+    color: var(--black);
+    border-radius: 50%;
+    background: #eee;
+    margin-left: .5rem;
+    display: inline-block;
+    transition: all 0.3s ease;
+}
+
+.icon-circle:hover {
+    color: #fff;
+    background: var(--green);
+    transform: rotate(360deg);
+}
+
+.icon-circle i {
+    display: inline-block;
+    line-height: 4.5rem;
+}

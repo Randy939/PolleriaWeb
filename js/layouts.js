@@ -202,3 +202,35 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+document.addEventListener('DOMContentLoaded', async function() {
+    // ... código existente ...
+    
+    // Agregar verificación de autenticación para links protegidos
+    const favoritosBtn = document.querySelector('a[href*="favoritos.html"]');
+    const perfilBtn = document.querySelector('a[href*="perfil.html"]');
+    
+    if (favoritosBtn) {
+        favoritosBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const usuario = JSON.parse(localStorage.getItem('usuario'));
+            if (usuario) {
+                window.location.href = this.href;
+            } else {
+                window.location.href = '/app/Views/auth/login.html';
+            }
+        });
+    }
+    
+    if (perfilBtn) {
+        perfilBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const usuario = JSON.parse(localStorage.getItem('usuario'));
+            if (usuario) {
+                window.location.href = this.href;
+            } else {
+                window.location.href = '/app/Views/auth/login.html';
+            }
+        });
+    }
+});
