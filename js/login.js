@@ -5,13 +5,12 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const password = document.getElementById('password').value;
     
     try {
-        const response = await fetch('https://gran-appetit.000.pe/app/Controllers/login.php', {
+        const response = await fetch('https://gran-appetit.000.pe/cors.php/app/Controllers/login.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
-            credentials: 'include',
             body: JSON.stringify({
                 email: email,
                 password: password
@@ -19,11 +18,11 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         });
         
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Error en el servidor');
+            throw new Error('Error en la respuesta del servidor');
         }
         
         const data = await response.json();
+        console.log('Respuesta:', data);
         
         if (data.status === 'success') {
             localStorage.setItem('usuario', JSON.stringify(data.data));
