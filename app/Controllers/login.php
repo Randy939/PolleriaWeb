@@ -1,4 +1,15 @@
 <?php
+// Configuración de sesión y headers CORS (mantener esta parte)
+ini_set('session.cookie_samesite', 'None');
+ini_set('session.cookie_secure', 'true');
+session_set_cookie_params([
+    'lifetime' => 0,
+    'path' => '/',
+    'domain' => '.qtempurl.com',
+    'secure' => true,
+    'httponly' => true,
+    'samesite' => 'None'
+]);
 session_start();
 
 header('Access-Control-Allow-Origin: https://gentle-arithmetic-98eb61.netlify.app');
@@ -13,39 +24,56 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 try {
-    // Verificar si hay datos POST
+    // Verificar datos POST
     $data = json_decode(file_get_contents("php://input"), true);
     if (!$data || !isset($data['email']) || !isset($data['password'])) {
         throw new Exception("Datos de login incompletos");
     }
 
-    // Crear conexión a la base de datos
     require_once '../config/database.php';
-    require_once '../Models/usuario.php';
-
     $database = new Database();
-    $db = $database->getConnection();
-
-    // Crear objeto usuario
-    $usuario = new Usuario($db);
-    $usuario->email = $data['email'];
-    $usuario->password = $data['password'];
+    
+    // Obtener IP del cliente
+    $ip_address = $_SERVER['REMOTE_ADDR'];
+    
+    // Verificar intentos previos
+    $attempts = $database->getLoginAttempts($data['email'], $ip_address, 30); // 30 minutos
+    
+    // Verificar si está bloqueado
+    if ($attempts['is_blocked'] == 1) {
+        throw new Exception("Tu cuenta está temporalmente bloqueada. Por favor, intenta más tarde.");
+    }
+    
+    // Verificar número de intentos
+    if ($attempts['attempts'] >= 5) { // 5 intentos máximos
+        // Registrar bloqueo
+        $database->registerLoginAttempt($data['email'], $ip_address, 1);
+        throw new Exception("Demasiados intentos fallidos. Tu cuenta ha sido bloqueada por 30 minutos.");
+    }
 
     // Intentar login
-    $resultado = $usuario->login();
-    
-    if ($resultado) {
+    $db = $database->getConnection();
+    $stmt = $db->prepare("SELECT * FROM usuarios WHERE email = :email");
+    $stmt->bindParam(":email", $data['email']);
+    $stmt->execute();
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($user && password_verify($data['password'], $user['password'])) {
+        // Login exitoso
         echo json_encode([
             "status" => "success",
             "message" => "Login exitoso",
-            "data" => $resultado
+            "data" => $user
         ]);
     } else {
+        // Registrar intento fallido
+        $database->registerLoginAttempt($data['email'], $ip_address);
+        
+        $remainingAttempts = 5 - ($attempts['attempts'] + 1);
         http_response_code(401);
         echo json_encode([
             "status" => "error",
-            "message" => "Email o contraseña incorrectos. Intentos restantes: " . 
-                        $usuario->getRemainingAttempts($data['email'])
+            "message" => "Credenciales inválidas. Te quedan {$remainingAttempts} intentos."
         ]);
     }
 

@@ -13,29 +13,26 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         
         const response = await fetch('https://randy939-001-site1.qtempurl.com//app/Controllers/login.php', {
             method: 'POST',
-            credentials: 'include',
             headers: {
-                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ email, password })
         });
-
+        
         const data = await response.json();
         
-        if (data.status === 'success') {
-            localStorage.setItem('usuario', JSON.stringify(data.data));
-            // Usar una redirección más suave
-            document.body.style.opacity = '0';
-            setTimeout(() => {
-                window.location.href = '/app/Views/pages/index.html';
-            }, 300);
+        if (data.success) {
+            // Login exitoso
+            localStorage.setItem('user', JSON.stringify(data.user));
+            window.location.href = '/dashboard';
         } else {
-            throw new Error(data.message);
+            // Mostrar error
+            const errorDiv = document.getElementById('error-message');
+            errorDiv.textContent = data.message;
+            errorDiv.style.display = 'block';
         }
     } catch (error) {
         console.error('Error:', error);
-        alert(error.message || 'Error al intentar iniciar sesión');
     } finally {
         // Re-habilitar el botón de submit
         const submitButton = this.querySelector('button[type="submit"]');
