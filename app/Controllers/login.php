@@ -5,39 +5,46 @@ header('Content-Type: application/json; charset=UTF-8');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Accept, Content-Type, Authorization');
 
-// Manejar preflight CORS
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit;
 }
 
 try {
-    // Obtener y decodificar el JSON recibido
+    // Verificar si hay datos POST
     $data = json_decode(file_get_contents("php://input"), true);
-    
-    if (!$data) {
-        throw new Exception("Datos inválidos");
+    if (!$data || !isset($data['email']) || !isset($data['password'])) {
+        throw new Exception("Datos de login incompletos");
     }
+
+    // Crear conexión a la base de datos
+    require_once '../config/database.php';
+    require_once '../Models/usuario.php';
 
     $database = new Database();
-    $conn = $database->getConnection();
+    $db = $database->getConnection();
+
+    // Crear objeto usuario
+    $usuario = new Usuario($db);
+    $usuario->email = $data['email'];
+    $usuario->password = $data['password'];
+
+    // Intentar login
+    $resultado = $usuario->login();
     
-    if (!$conn) {
-        throw new Exception("Error de conexión a la base de datos");
+    if ($resultado) {
+        echo json_encode([
+            "status" => "success",
+            "message" => "Login exitoso",
+            "data" => $resultado
+        ]);
+    } else {
+        http_response_code(401);
+        echo json_encode([
+            "status" => "error",
+            "message" => "Email o contraseña incorrectos"
+        ]);
     }
-
-    // Tu lógica de login aquí
-    // ...
-
-    // Respuesta exitosa
-    echo json_encode([
-        "status" => "success",
-        "message" => "Login exitoso",
-        "data" => [
-            "email" => $data['email']
-            // Otros datos del usuario...
-        ]
-    ]);
 
 } catch (Exception $e) {
     http_response_code(500);

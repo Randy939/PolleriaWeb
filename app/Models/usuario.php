@@ -62,6 +62,10 @@ class Usuario {
     }
 
     public function login() {
+        if (!$this->conn) {
+            throw new Exception("No hay conexión a la base de datos");
+        }
+
         try {
             $query = "SELECT id, nombre, password FROM " . $this->table_name . " 
                      WHERE email = ? LIMIT 0,1";
@@ -81,7 +85,7 @@ class Usuario {
             }
             return false;
         } catch(PDOException $e) {
-            throw new Exception("Error en el login: " . $e->getMessage());
+            throw new Exception("Error en la consulta de login: " . $e->getMessage());
         }
     }
 }
