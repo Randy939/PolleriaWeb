@@ -72,8 +72,7 @@ class Usuario {
 
             // Verificar si existe un bloqueo activo
             $query = "SELECT attempts, locked_until FROM login_attempts 
-                     WHERE email = ? AND ip_address = ? AND 
-                     (locked_until IS NULL OR locked_until > NOW())";
+                     WHERE email = ? AND ip_address = ?";
             
             $stmt = $this->conn->prepare($query);
             $stmt->execute([$email, $ip]);
@@ -81,13 +80,26 @@ class Usuario {
 
             if ($result) {
                 if ($result['locked_until'] !== null) {
-                    throw new Exception("Cuenta bloqueada temporalmente. Intente más tarde.");
+                    // Calcular tiempo restante de bloqueo
+                    $now = new DateTime();
+                    $lockUntil = new DateTime($result['locked_until']);
+                    if ($lockUntil > $now) {
+                        $timeLeft = $now->diff($lockUntil);
+                        throw new Exception("Cuenta bloqueada. Intente nuevamente en " . 
+                            $timeLeft->format('%i minutos %s segundos'));
+                    } else {
+                        // Si el bloqueo expiró, eliminar el registro
+                        $query = "DELETE FROM login_attempts WHERE email = ? AND ip_address = ?";
+                        $stmt = $this->conn->prepare($query);
+                        $stmt->execute([$email, $ip]);
+                    }
                 }
                 
                 if ($result['attempts'] >= $this->max_attempts) {
                     // Bloquear la cuenta
                     $query = "UPDATE login_attempts SET 
-                             locked_until = DATE_ADD(NOW(), INTERVAL ? SECOND)
+                             locked_until = DATE_ADD(NOW(), INTERVAL ? SECOND),
+                             last_attempt = NOW()
                              WHERE email = ? AND ip_address = ?";
                     $stmt = $this->conn->prepare($query);
                     $stmt->execute([$this->lockout_time, $email, $ip]);
@@ -95,7 +107,6 @@ class Usuario {
                     throw new Exception("Demasiados intentos fallidos. Cuenta bloqueada por 15 minutos.");
                 }
             }
-            return true;
         } catch (PDOException $e) {
             throw new Exception("Error al verificar intentos de login: " . $e->getMessage());
         }
@@ -165,12 +176,24 @@ class Usuario {
     public function getRemainingAttempts($email) {
         try {
             $ip = $_SERVER['REMOTE_ADDR'];
-            $query = "SELECT attempts FROM login_attempts 
+            
+            // Verificar si la cuenta está bloqueada
+            $query = "SELECT attempts, locked_until FROM login_attempts 
                      WHERE email = ? AND ip_address = ?";
             
             $stmt = $this->conn->prepare($query);
             $stmt->execute([$email, $ip]);
             $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if ($result && $result['locked_until'] !== null) {
+                $now = new DateTime();
+                $lockUntil = new DateTime($result['locked_until']);
+                if ($lockUntil > $now) {
+                    $timeLeft = $now->diff($lockUntil);
+                    throw new Exception("Cuenta bloqueada. Intente nuevamente en " . 
+                        $timeLeft->format('%i minutos %s segundos'));
+                }
+            }
             
             return $this->max_attempts - ($result ? $result['attempts'] : 0);
         } catch (PDOException $e) {
