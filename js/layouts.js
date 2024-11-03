@@ -89,6 +89,53 @@ function initializeHeaderEvents() {
             }
         }
     }
+
+    // Ocultar menu-bars en desktop
+    if (menuBars) {
+        menuBars.style.display = window.innerWidth <= 768 ? 'block' : 'none';
+        
+        window.addEventListener('resize', () => {
+            menuBars.style.display = window.innerWidth <= 768 ? 'block' : 'none';
+        });
+    }
+
+    // Manejar autenticación para favoritos y perfil
+    const favoritesBtn = document.getElementById('favorites-btn');
+    const profileBtn = document.getElementById('profile-btn');
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
+
+    if (favoritesBtn) {
+        favoritesBtn.addEventListener('click', (e) => {
+            if (!usuario) {
+                e.preventDefault();
+                mostrarMensajeLogin();
+                setTimeout(() => {
+                    window.location.href = '/app/Views/auth/login.html';
+                }, 1500);
+            }
+        });
+    }
+
+    if (profileBtn) {
+        profileBtn.addEventListener('click', (e) => {
+            if (!usuario) {
+                e.preventDefault();
+                mostrarMensajeLogin();
+                setTimeout(() => {
+                    window.location.href = '/app/Views/auth/login.html';
+                }, 1500);
+            }
+        });
+
+        // Actualizar ícono si está logueado
+        if (usuario) {
+            const userIcon = profileBtn.querySelector('i');
+            if (userIcon) {
+                userIcon.classList.remove('fa-user');
+                userIcon.classList.add('fa-user-check');
+            }
+        }
+    }
 }
 
 function actualizarHeader() {
@@ -123,60 +170,35 @@ function mostrarMensajeLogin() {
         padding: 1rem 2rem;
         border-radius: 5px;
         z-index: 1000;
+        animation: fadeIn 0.3s ease;
     `;
     document.body.appendChild(mensaje);
-    setTimeout(() => mensaje.remove(), 3000);
+    setTimeout(() => {
+        mensaje.style.animation = 'fadeOut 0.3s ease';
+        setTimeout(() => mensaje.remove(), 300);
+    }, 2000);
 }
 
-perfilLink.addEventListener('click', function(e) {
-    if (!usuario) {
-        e.preventDefault();
-        mostrarMensajeLogin();
-        setTimeout(() => {
-            window.location.href = '/app/Views/auth/login.html';
-        }, 1500);
+// Agregar estilos para las animaciones
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(-20px); }
+        to { opacity: 1; transform: translateY(0); }
     }
-});
-
-function cargarHeader() {
-    const headerPlaceholder = document.getElementById('header-placeholder');
-    if (headerPlaceholder) {
-        fetch('/app/Views/layouts/header.html')
-            .then(response => response.text())
-            .then(html => {
-                headerPlaceholder.innerHTML = html;
-                
-                // Agregar eventos después de cargar el header
-                const usuario = JSON.parse(localStorage.getItem('usuario'));
-                const perfilLink = document.querySelector('.header .icons a[href="/app/Views/pages/perfil.html"]');
-                const favoritosLink = document.querySelector('.header .icons a[href="/app/Views/pages/favoritos.html"]');
-                
-                if (perfilLink) {
-                    perfilLink.addEventListener('click', function(e) {
-                        if (!usuario) {
-                            e.preventDefault();
-                            window.location.href = '/app/Views/auth/login.html';
-                        }
-                    });
-                }
-                
-                if (favoritosLink) {
-                    favoritosLink.addEventListener('click', function(e) {
-                        if (!usuario) {
-                            e.preventDefault();
-                            window.location.href = '/app/Views/auth/login.html';
-                        }
-                    });
-                }
-                
-                // Actualizar el ícono de usuario si está logueado
-                if (usuario) {
-                    const userIcon = perfilLink.querySelector('i');
-                    if (userIcon) {
-                        userIcon.classList.remove('fa-user');
-                        userIcon.classList.add('fa-user-check');
-                    }
-                }
-            });
+    @keyframes fadeOut {
+        from { opacity: 1; transform: translateY(0); }
+        to { opacity: 0; transform: translateY(-20px); }
     }
-}
+    @media (max-width: 768px) {
+        #menu-bars {
+            display: block !important;
+        }
+    }
+    @media (min-width: 769px) {
+        #menu-bars {
+            display: none !important;
+        }
+    }
+`;
+document.head.appendChild(style);
