@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+@import url('Inicio.css');
 
 :root{
     --green:#27ae60;
@@ -192,53 +193,6 @@ header .icons .icon-circle:hover i {
     cursor: pointer;
     top: 2rem; right: 3rem;
     font-size: 5rem;
-}
-
-.Inicio {
-    padding-top: 9rem;
-}
-
-.Inicio .Inicio-slider .slide {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 2rem;
-    padding: 2rem 0;
-}
-
-.Inicio .Inicio-slider .slide .content{
-    flex:1 1 45rem;
-}
-
-.Inicio .Inicio-slider .slide .image{
-    flex:1 1 45rem;
-}
-
-.Inicio .Inicio-slider .slide .image img{
-    max-width: 100%;
-    height: auto;
-}
-
-.Inicio .Inicio-slider .slide .content span{
-    color:#228049;
-    font-size: 2.5rem;
-}
-
-.Inicio .Inicio-slider .slide .content h3{
-    color:var(--black);
-    font-size: 7rem;
-}
-
-.Inicio .Inicio-slider .slide .content p{
-    color:var(--light-color);
-    font-size: 2.2rem;
-    padding:.5rem 0;
-    line-height: 1.5;
-}
-
-
-.swiper-pagination-bullet-active{
-    background:var(--green);
 }
 
 .Ofertas .box-container{
