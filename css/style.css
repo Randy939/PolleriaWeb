@@ -128,15 +128,15 @@ header .icons a i,
 header .icons #search-icon i,
 header .icons .icon-circle i,
 header .icons #menu-bars {
-    font-size: 2.5rem;
+    font-size: 2rem;
 }
 
 header .icons #search-icon i.fa-search {
-    font-size: 2.5rem;
+    font-size: 2rem;
 }
 
 header .icons #menu-bars {
-    font-size: 2.5rem;
+    font-size: 2rem;
     padding: 0;
     margin: 0;
     line-height: 1;
