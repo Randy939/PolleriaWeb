@@ -11,31 +11,24 @@ document.getElementById('registroForm').addEventListener('submit', async functio
     };
     
     try {
-        console.log('Enviando datos:', formData);
-        
-        const response = await fetch('http://localhost/gran_appetit/app/Controllers/registro.php', {
+        const response = await fetch('https://randy939-001-site1.qtempurl.com/app/Controllers/registro.php', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Content-Type': 'application/json'
             },
-            credentials: 'include',
             body: JSON.stringify(formData)
         });
         
-        console.log('Respuesta del servidor:', response);
-        
         const data = await response.json();
-        console.log('Datos de respuesta:', data);
         
-        if (response.ok && data.status === 'success') {
+        if (data.status === 'success') {
             alert('Registro exitoso');
             window.location.href = 'login.html';
         } else {
-            throw new Error(data.message || 'Error en el registro');
+            alert(data.message || 'Error en el registro');
         }
     } catch (error) {
         console.error('Error:', error);
-        alert(error.message || 'Error al intentar registrar el usuario');
+        alert('Error al intentar registrar el usuario');
     }
 }); 

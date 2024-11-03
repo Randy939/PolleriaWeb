@@ -1,14 +1,8 @@
 <?php
-header("Access-Control-Allow-Origin: http://127.0.0.1:5500");
-header("Access-Control-Allow-Credentials: true");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Authorization");
+header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit();
-}
+header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 include_once '../config/database.php';
 include_once '../Models/Usuario.php';
@@ -17,22 +11,36 @@ $database = new Database();
 $db = $database->getConnection();
 $usuario = new Usuario($db);
 
+// Obtener los datos enviados
 $data = json_decode(file_get_contents("php://input"));
 
-if(!empty($data->email) && !empty($data->password) && !empty($data->nombre) && !empty($data->apellido)) {
-    $usuario->nombre = $data->nombre;
-    $usuario->apellido = $data->apellido;
-    $usuario->email = $data->email;
+// Validar datos requeridos
+if(
+    !empty($data->nombre) &&
+    !empty($data->apellido) &&
+    !empty($data->email) &&
+    !empty($data->password)
+) {
+    // Asignar valores
+    $usuario->nombre = htmlspecialchars(strip_tags($data->nombre));
+    $usuario->apellido = htmlspecialchars(strip_tags($data->apellido));
+    $usuario->email = htmlspecialchars(strip_tags($data->email));
     $usuario->password = password_hash($data->password, PASSWORD_DEFAULT);
-    $usuario->direccion = $data->direccion ?? '';
-    $usuario->telefono = $data->telefono ?? '';
-    
+    $usuario->direccion = !empty($data->direccion) ? htmlspecialchars(strip_tags($data->direccion)) : "";
+    $usuario->telefono = !empty($data->telefono) ? htmlspecialchars(strip_tags($data->telefono)) : "";
+
     try {
         if($usuario->crear()) {
             http_response_code(201);
             echo json_encode(array(
                 "status" => "success",
                 "message" => "Usuario creado exitosamente"
+            ));
+        } else {
+            http_response_code(503);
+            echo json_encode(array(
+                "status" => "error",
+                "message" => "No se pudo crear el usuario"
             ));
         }
     } catch(Exception $e) {
@@ -41,7 +49,6 @@ if(!empty($data->email) && !empty($data->password) && !empty($data->nombre) && !
             "status" => "error",
             "message" => $e->getMessage()
         ));
-        error_log("Error en registro: " . $e->getMessage());
     }
 } else {
     http_response_code(400);
