@@ -5,7 +5,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const password = document.getElementById('password').value;
     
     try {
-        const response = await fetch('https://gran-appetit.000.pe.infinityfree.com/app/Controllers/login.php', {
+        const response = await fetch('https://gran-appetit.000.pe/app/Controllers/login.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -37,7 +37,11 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             alert(data.message);
         }
     } catch (error) {
-        console.error('Error detallado:', error);
-        alert('Error al intentar iniciar sesión. Por favor, intenta nuevamente.');
+        console.error('Error completo:', {
+            message: error.message,
+            error: error,
+            stack: error.stack
+        });
+        alert('Error al intentar iniciar sesión. Por favor, verifica la consola para más detalles.');
     }
 }); 
