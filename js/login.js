@@ -5,8 +5,10 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const password = document.getElementById('password').value;
     
     try {
-        // Primero, hacer una petición OPTIONS para verificar CORS
-        const checkCORS = await fetch('https://gran-appetit.000.pe/app/Controllers/login.php', {
+        // Actualiza la URL base con tu nuevo dominio de SmarterASP.NET
+        const baseUrl = 'http://randy939-001-site1.qtempurl.com//app/Controllers/login.php';
+        
+        const checkCORS = await fetch(baseUrl, {
             method: 'OPTIONS',
             headers: {
                 'Accept': 'application/json',
@@ -14,8 +16,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             }
         });
         
-        // Si el OPTIONS es exitoso, hacer el POST
-        const response = await fetch('https://gran-appetit.000.pe/app/Controllers/login.php', {
+        const response = await fetch(baseUrl, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

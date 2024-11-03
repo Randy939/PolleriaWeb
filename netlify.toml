@@ -1,6 +1,6 @@
 [[redirects]]
   from = "/api/*"
-  to = "https://gran-appetit.000.pe/:splat"
+  to = "http://randy939-001-site1.qtempurl.com//:splat"
   status = 200
   force = true
   [redirects.headers]

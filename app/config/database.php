@@ -1,9 +1,9 @@
 <?php
 class Database {
-    private $host = "sql313.infinityfree.com";
-    private $database_name = "if0_37640185_bdpolleria";
-    private $username = "if0_37640185";
-    private $password = "43rwcc2pVksS";
+    private $host = "MYSQL9001.site4now.net";
+    private $database_name = "db_aaeed7_polleri";
+    private $username = "aaeed7_polleri";
+    private $password = "TEadoros123k";
     public $conn;
 
     public function getConnection() {
