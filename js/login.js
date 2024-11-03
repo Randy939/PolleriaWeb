@@ -1,10 +1,8 @@
-const API_BASE = '/api';
-
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
     try {
-        const response = await fetch(`${API_BASE}/app/Controllers/login.php`, {
+        const response = await fetch('https://gran-appetit.000.pe/app/Controllers/login.php', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -21,14 +19,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         
         if (data.status === 'success') {
             localStorage.setItem('usuario', JSON.stringify(data.data));
-            
-            // Verificar si venía de la página de favoritos
-            const referrer = document.referrer;
-            if (referrer.includes('favoritos.html')) {
-                window.location.href = referrer;
-            } else {
-                window.location.href = '/app/Views/pages/index.html';
-            }
+            window.location.href = '/app/Views/pages/index.html';
         } else {
             alert(data.message);
         }
