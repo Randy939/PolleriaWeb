@@ -178,12 +178,16 @@ header .icons #menu-bars{
     font-size: 5rem;
 }
 
-.Inicio .Inicio-slider .slide{
+.Inicio {
+    padding-top: 9rem;
+}
+
+.Inicio .Inicio-slider .slide {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: 2rem;
-    padding-top: 9rem;
+    padding: 2rem 0;
 }
 
 .Inicio .Inicio-slider .slide .content{
@@ -195,7 +199,8 @@ header .icons #menu-bars{
 }
 
 .Inicio .Inicio-slider .slide .image img{
-    width: 100%;
+    max-width: 100%;
+    height: auto;
 }
 
 .Inicio .Inicio-slider .slide .content span{
@@ -1391,6 +1396,7 @@ header .icons .fa-user:hover {
     background: #fff;
     border-radius: 50%;
     box-shadow: var(--box-shadow);
+    z-index: 10;
 }
 
 .Inicio .swiper-button-next::after,
@@ -1402,4 +1408,92 @@ header .icons .fa-user:hover {
 .Inicio .swiper-button-prev:hover {
     background: var(--green);
     color: #fff;
+}
+
+/* Correcciones para el header responsive */
+@media (max-width: 768px) {
+    header {
+        padding: 1rem;
+    }
+
+    header .logo {
+        font-size: 2rem;
+    }
+
+    header .icons {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    header .icons i,
+    header .icons a {
+        height: 4rem;
+        width: 4rem;
+        line-height: 4rem;
+        font-size: 1.5rem;
+    }
+
+    header .navbar {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #fff;
+        border-top: .1rem solid rgba(0,0,0,.2);
+        padding: 0;
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+        transition: .3s ease;
+    }
+
+    header .navbar.active {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    }
+
+    header .navbar a {
+        display: block;
+        padding: 1.5rem;
+        margin: 1rem;
+        font-size: 1.8rem;
+        background: #eee;
+        text-align: center;
+    }
+}
+
+/* Correcciones para el footer responsive */
+@media (max-width: 991px) {
+    .footer .box-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+
+    .footer .box {
+        text-align: center;
+    }
+}
+
+@media (max-width: 450px) {
+    .footer .box-container {
+        grid-template-columns: 1fr;
+    }
+
+    .footer .box {
+        text-align: center;
+    }
+
+    .footer .box h3 {
+        font-size: 2rem;
+        padding: 1rem 0;
+    }
+
+    .footer .box a {
+        font-size: 1.5rem;
+        padding: 0.5rem 0;
+        display: block;
+    }
+
+    .footer .creditos {
+        font-size: 1.5rem;
+        padding: 1rem 0.5rem;
+    }
 }

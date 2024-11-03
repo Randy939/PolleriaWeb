@@ -43,9 +43,19 @@ document.addEventListener('DOMContentLoaded', async function() {
 
 function initializeHeaderEvents() {
     const menuBars = document.getElementById('menu-bars');
+    const navbar = document.querySelector('.navbar');
     const searchIcon = document.getElementById('search-icon');
     const searchForm = document.getElementById('search-form');
     const closeSearch = document.getElementById('close');
+
+    // Cerrar menú al hacer clic en un enlace
+    const navLinks = document.querySelectorAll('.navbar a');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            menuBars?.classList.remove('fa-times');
+            navbar?.classList.remove('active');
+        });
+    });
 
     if (menuBars) {
         menuBars.onclick = () => {
