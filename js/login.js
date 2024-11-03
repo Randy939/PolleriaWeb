@@ -11,7 +11,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             submitButton.disabled = true;
         }
         
-        const response = await fetch('https://randy939-001-site1.qtempurl.com//app/Controllers/login.php', {
+        const response = await fetch('https://randy939-001-site1.qtempurl.com/app/Controllers/login.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
