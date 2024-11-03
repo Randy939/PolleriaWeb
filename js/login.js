@@ -5,15 +5,11 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const password = document.getElementById('password').value;
     
     try {
-        const response = await fetch('https://gran-appetit.000.pe/app/views/auth/login', {
+        const response = await fetch('/.netlify/functions/auth-proxy', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
+                'Content-Type': 'application/json'
             },
-            credentials: 'include',
-            mode: 'cors',
             body: JSON.stringify({
                 email: email,
                 password: password
