@@ -19,12 +19,15 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             })
         });
 
-        // Verificar si la respuesta es JSON válido
+        // Guardamos el texto de la respuesta para debugging
+        const responseText = await response.text();
+        
+        // Intentamos parsear el texto como JSON
         let data;
         try {
-            data = await response.json();
+            data = JSON.parse(responseText);
         } catch (jsonError) {
-            console.error('Error al parsear JSON:', await response.text());
+            console.error('Respuesta del servidor:', responseText);
             throw new Error('Error en el formato de respuesta del servidor');
         }
 

@@ -1,8 +1,9 @@
 <?php
 header('Access-Control-Allow-Origin: https://gentle-arithmetic-98eb61.netlify.app');
+header('Access-Control-Allow-Credentials: true');
 header('Content-Type: application/json; charset=UTF-8');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
-header('Access-Control-Allow-Headers: Accept, Content-Type');
+header('Access-Control-Allow-Headers: Accept, Content-Type, Authorization');
 
 // Manejar preflight CORS
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
