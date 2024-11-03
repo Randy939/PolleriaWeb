@@ -1,4 +1,30 @@
 <?php
+// Reportar todos los errores como JSON en lugar de HTML
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+
+function handleError($errno, $errstr, $errfile, $errline) {
+    http_response_code(500);
+    echo json_encode([
+        "status" => "error",
+        "message" => "Error del servidor: " . $errstr
+    ]);
+    exit;
+}
+set_error_handler("handleError");
+
+// Manejar errores fatales
+register_shutdown_function(function() {
+    $error = error_get_last();
+    if ($error !== NULL && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
+        http_response_code(500);
+        echo json_encode([
+            "status" => "error",
+            "message" => "Error fatal del servidor: " . $error['message']
+        ]);
+    }
+});
+
 // Configuración de sesión y headers CORS (mantener esta parte)
 ini_set('session.cookie_samesite', 'None');
 ini_set('session.cookie_secure', 'true');
@@ -53,6 +79,9 @@ try {
 
     // Intentar login
     $db = $database->getConnection();
+    if (!$db) {
+        throw new Exception("No se pudo establecer la conexión con la base de datos");
+    }
     $stmt = $db->prepare("SELECT * FROM usuarios WHERE email = :email");
     $stmt->bindParam(":email", $data['email']);
     $stmt->execute();

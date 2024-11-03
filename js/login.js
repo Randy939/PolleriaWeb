@@ -14,16 +14,18 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const response = await fetch('https://randy939-001-site1.qtempurl.com/app/Controllers/login.php', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify({ email, password })
         });
         
         const data = await response.json();
         
-        if (data.success) {
+        if (data.status === "success") {
             // Login exitoso
-            localStorage.setItem('user', JSON.stringify(data.user));
+            localStorage.setItem('user', JSON.stringify(data.data));
             window.location.href = '/dashboard';
         } else {
             // Mostrar error
@@ -32,7 +34,11 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             errorDiv.style.display = 'block';
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error completo:', error);
+        // Mostrar error genérico al usuario
+        const errorDiv = document.getElementById('error-message');
+        errorDiv.textContent = "Error al intentar iniciar sesión. Por favor, intente nuevamente.";
+        errorDiv.style.display = 'block';
     } finally {
         // Re-habilitar el botón de submit
         const submitButton = this.querySelector('button[type="submit"]');
