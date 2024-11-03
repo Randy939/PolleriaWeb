@@ -114,6 +114,9 @@ header .icons #search-icon {
     background: #eee;
     margin-left: .5rem;
     transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 header .icons i:hover,
@@ -1505,15 +1508,15 @@ header .icons .fa-user:hover {
     cursor: pointer;
     height: 4.5rem;
     width: 4.5rem;
-    line-height: 4.5rem;
-    text-align: center;
     font-size: 1.7rem;
     color: var(--black);
     border-radius: 50%;
     background: #eee;
     margin-left: .5rem;
-    display: inline-block;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .icon-circle:hover {
@@ -1524,5 +1527,4 @@ header .icons .fa-user:hover {
 
 .icon-circle i {
     display: inline-block;
-    line-height: 4.5rem;
 }
