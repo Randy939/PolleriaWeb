@@ -1,4 +1,16 @@
 <?php
+header('Access-Control-Allow-Origin: https://gentle-arithmetic-98eb61.netlify.app');
+header('Access-Control-Allow-Methods: POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Max-Age: 86400'); // cache por 24 horas
+
+// Manejar preflight requests
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    header('HTTP/1.1 200 OK');
+    exit();
+}
+
 // Reportar todos los errores como JSON en lugar de HTML
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
@@ -36,18 +48,6 @@ session_set_cookie_params([
     'httponly' => true,
     'samesite' => 'None'
 ]);
-session_start();
-
-header('Access-Control-Allow-Origin: https://gentle-arithmetic-98eb61.netlify.app');
-header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Allow-Methods: POST, OPTIONS');
-header('Access-Control-Allow-Headers: Accept, Content-Type, Authorization');
-header('Content-Type: application/json; charset=UTF-8');
-
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
-    exit;
-}
 
 // Al inicio del archivo, después de las configuraciones de error
 error_log("Iniciando proceso de login");

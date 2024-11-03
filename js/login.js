@@ -22,9 +22,11 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest'
             },
             credentials: 'include',
+            mode: 'cors',
             body: JSON.stringify({ email, password })
         });
         
