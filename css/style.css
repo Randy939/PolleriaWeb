@@ -103,58 +103,46 @@ header .navbar a:hover{
 header .icons {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 1rem;
 }
 
-header .icons i,
-header .icons a,
-header .icons #search-icon,
-header .icons .icon-circle,
-header .icons #menu-bars {
+header .icons .icon-circle {
     cursor: pointer;
     height: 4.5rem;
     width: 4.5rem;
-    color: var(--black);
     border-radius: 50%;
     background: #eee;
-    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s ease;
+    text-decoration: none;
 }
 
-header .icons i,
-header .icons a i,
-header .icons #search-icon i,
-header .icons .icon-circle i,
-header .icons #menu-bars {
+header .icons .icon-circle i {
     font-size: 2rem;
+    color: var(--black);
+    transition: all 0.3s ease;
 }
 
-header .icons #search-icon i.fa-search {
-    font-size: 2rem;
-}
-
-header .icons #menu-bars {
-    font-size: 2rem;
-    padding: 0;
-    margin: 0;
-    line-height: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-header .icons i:hover,
-header .icons a:hover,
-header .icons #search-icon:hover,
-header .icons .icon-circle:hover,
-header .icons #menu-bars:hover {
-    color: #fff;
+header .icons .icon-circle:hover {
     background: var(--green);
     transform: rotate(360deg);
 }
 
+header .icons .icon-circle:hover i {
+    color: #fff;
+}
+
+/* Eliminar estilos redundantes */
+header .icons i,
+header .icons a,
+header .icons #search-icon,
+header .icons #menu-bars {
+    display: none;
+}
+
+/* Mantener el menú hamburguesa visible en móvil */
 @media (max-width: 768px) {
     header .icons #menu-bars {
         display: flex;
