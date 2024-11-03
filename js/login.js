@@ -1,25 +1,21 @@
+const API_BASE = '/api';
+
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    
     try {
-        const response = await fetch('/api/app/Controllers/login.php', {
+        const response = await fetch(`${API_BASE}/app/Controllers/login.php`, {
             method: 'POST',
             headers: {
+                'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                email: email,
-                password: password
+                email: document.getElementById('email').value,
+                password: document.getElementById('password').value
             })
         });
-        
-        if (!response.ok) {
-            throw new Error('Error en la respuesta del servidor');
-        }
-        
+
         const data = await response.json();
         console.log('Respuesta:', data);
         
@@ -37,7 +33,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             alert(data.message);
         }
     } catch (error) {
-        console.error('Error completo:', error);
+        console.error('Error:', error);
         alert('Error al intentar iniciar sesión');
     }
 }); 

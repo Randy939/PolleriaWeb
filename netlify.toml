@@ -3,7 +3,25 @@
   to = "https://gran-appetit.000.pe/:splat"
   status = 200
   force = true
-  headers = {Access-Control-Allow-Origin = "*"}
+  headers = {
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers = "*"
+    Content-Type = "application/json"
+  }
+
+# Asegurarse que las rutas 404 sean manejadas correctamente
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
 
 [build]
-  functions = "netlify/functions"
+  publish = "/"
+
+[[headers]]
+  for = "/*"
+    [headers.values]
+    Access-Control-Allow-Origin = "*"
+    Access-Control-Allow-Methods = "GET, POST, OPTIONS"
+    Access-Control-Allow-Headers = "Content-Type"
