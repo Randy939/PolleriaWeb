@@ -13,6 +13,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         
         const response = await fetch('https://randy939-001-site1.qtempurl.com//app/Controllers/login.php', {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'

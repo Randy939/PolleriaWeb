@@ -65,72 +65,53 @@ class Usuario {
     }
 
     private function checkLoginAttempts($email, $ip) {
-        try {
-            // Limpiar intentos antiguos (más de 24 horas)
-            $query = "DELETE FROM login_attempts WHERE last_attempt < DATE_SUB(NOW(), INTERVAL 24 HOUR)";
-            $this->conn->exec($query);
+        if (!isset($_SESSION['login_attempts'])) {
+            $_SESSION['login_attempts'] = [
+                'count' => 0,
+                'locked_until' => null
+            ];
+        }
 
-            // Verificar si existe un bloqueo activo
-            $query = "SELECT attempts, locked_until FROM login_attempts 
-                     WHERE email = ? AND ip_address = ?";
-            
-            $stmt = $this->conn->prepare($query);
-            $stmt->execute([$email, $ip]);
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($result) {
-                if ($result['locked_until'] !== null) {
-                    // Calcular tiempo restante de bloqueo
-                    $now = new DateTime();
-                    $lockUntil = new DateTime($result['locked_until']);
-                    if ($lockUntil > $now) {
-                        $timeLeft = $now->diff($lockUntil);
-                        throw new Exception("Cuenta bloqueada. Intente nuevamente en " . 
-                            $timeLeft->format('%i minutos %s segundos'));
-                    } else {
-                        // Si el bloqueo expiró, eliminar el registro
-                        $query = "DELETE FROM login_attempts WHERE email = ? AND ip_address = ?";
-                        $stmt = $this->conn->prepare($query);
-                        $stmt->execute([$email, $ip]);
-                    }
-                }
-                
-                if ($result['attempts'] >= $this->max_attempts) {
-                    // Bloquear la cuenta
-                    $query = "UPDATE login_attempts SET 
-                             locked_until = DATE_ADD(NOW(), INTERVAL ? SECOND),
-                             last_attempt = NOW()
-                             WHERE email = ? AND ip_address = ?";
-                    $stmt = $this->conn->prepare($query);
-                    $stmt->execute([$this->lockout_time, $email, $ip]);
-                    
-                    throw new Exception("Demasiados intentos fallidos. Cuenta bloqueada por 15 minutos.");
-                }
+        // Verificar si está bloqueado
+        if ($_SESSION['login_attempts']['locked_until'] !== null) {
+            $now = time();
+            if ($now < $_SESSION['login_attempts']['locked_until']) {
+                $timeLeft = $_SESSION['login_attempts']['locked_until'] - $now;
+                $minutes = floor($timeLeft / 60);
+                $seconds = $timeLeft % 60;
+                throw new Exception("Cuenta bloqueada. Intente nuevamente en {$minutes}m {$seconds}s");
+            } else {
+                // Si el bloqueo expiró, reiniciar intentos
+                $_SESSION['login_attempts'] = [
+                    'count' => 0,
+                    'locked_until' => null
+                ];
             }
-        } catch (PDOException $e) {
-            throw new Exception("Error al verificar intentos de login: " . $e->getMessage());
+        }
+
+        // Verificar número de intentos
+        if ($_SESSION['login_attempts']['count'] >= $this->max_attempts) {
+            $_SESSION['login_attempts']['locked_until'] = time() + $this->lockout_time;
+            throw new Exception("Demasiados intentos fallidos. Cuenta bloqueada por 15 minutos.");
         }
     }
 
     private function updateLoginAttempts($email, $ip, $success = false) {
-        try {
-            if ($success) {
-                // Si el login fue exitoso, eliminar los intentos
-                $query = "DELETE FROM login_attempts WHERE email = ? AND ip_address = ?";
-                $stmt = $this->conn->prepare($query);
-                $stmt->execute([$email, $ip]);
-            } else {
-                // Incrementar contador de intentos
-                $query = "INSERT INTO login_attempts (email, ip_address) 
-                         VALUES (?, ?) 
-                         ON DUPLICATE KEY UPDATE 
-                         attempts = attempts + 1,
-                         last_attempt = CURRENT_TIMESTAMP";
-                $stmt = $this->conn->prepare($query);
-                $stmt->execute([$email, $ip]);
+        if ($success) {
+            // Reiniciar intentos si el login fue exitoso
+            $_SESSION['login_attempts'] = [
+                'count' => 0,
+                'locked_until' => null
+            ];
+        } else {
+            // Incrementar contador de intentos
+            if (!isset($_SESSION['login_attempts'])) {
+                $_SESSION['login_attempts'] = [
+                    'count' => 0,
+                    'locked_until' => null
+                ];
             }
-        } catch (PDOException $e) {
-            throw new Exception("Error al actualizar intentos de login: " . $e->getMessage());
+            $_SESSION['login_attempts']['count']++;
         }
     }
 
@@ -174,31 +155,21 @@ class Usuario {
     }
 
     public function getRemainingAttempts($email) {
-        try {
-            $ip = $_SERVER['REMOTE_ADDR'];
-            
-            // Verificar si la cuenta está bloqueada
-            $query = "SELECT attempts, locked_until FROM login_attempts 
-                     WHERE email = ? AND ip_address = ?";
-            
-            $stmt = $this->conn->prepare($query);
-            $stmt->execute([$email, $ip]);
-            $result = $stmt->fetch(PDO::FETCH_ASSOC);
-            
-            if ($result && $result['locked_until'] !== null) {
-                $now = new DateTime();
-                $lockUntil = new DateTime($result['locked_until']);
-                if ($lockUntil > $now) {
-                    $timeLeft = $now->diff($lockUntil);
-                    throw new Exception("Cuenta bloqueada. Intente nuevamente en " . 
-                        $timeLeft->format('%i minutos %s segundos'));
-                }
-            }
-            
-            return $this->max_attempts - ($result ? $result['attempts'] : 0);
-        } catch (PDOException $e) {
-            throw new Exception("Error al obtener intentos restantes: " . $e->getMessage());
+        if (!isset($_SESSION['login_attempts'])) {
+            return $this->max_attempts;
         }
+
+        if ($_SESSION['login_attempts']['locked_until'] !== null) {
+            $now = time();
+            if ($now < $_SESSION['login_attempts']['locked_until']) {
+                $timeLeft = $_SESSION['login_attempts']['locked_until'] - $now;
+                $minutes = floor($timeLeft / 60);
+                $seconds = $timeLeft % 60;
+                throw new Exception("Cuenta bloqueada. Intente nuevamente en {$minutes}m {$seconds}s");
+            }
+        }
+
+        return $this->max_attempts - $_SESSION['login_attempts']['count'];
     }
 }
 ?> 
