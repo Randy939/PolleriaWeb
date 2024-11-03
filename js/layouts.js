@@ -108,4 +108,75 @@ function actualizarHeader() {
 
 document.addEventListener('DOMContentLoaded', function() {
     actualizarHeader();
-}); 
+});
+
+function mostrarMensajeLogin() {
+    const mensaje = document.createElement('div');
+    mensaje.className = 'mensaje-login';
+    mensaje.textContent = 'Por favor, inicia sesión para acceder a esta función';
+    mensaje.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #ff4444;
+        color: white;
+        padding: 1rem 2rem;
+        border-radius: 5px;
+        z-index: 1000;
+    `;
+    document.body.appendChild(mensaje);
+    setTimeout(() => mensaje.remove(), 3000);
+}
+
+perfilLink.addEventListener('click', function(e) {
+    if (!usuario) {
+        e.preventDefault();
+        mostrarMensajeLogin();
+        setTimeout(() => {
+            window.location.href = '/app/Views/auth/login.html';
+        }, 1500);
+    }
+});
+
+function cargarHeader() {
+    const headerPlaceholder = document.getElementById('header-placeholder');
+    if (headerPlaceholder) {
+        fetch('/app/Views/layouts/header.html')
+            .then(response => response.text())
+            .then(html => {
+                headerPlaceholder.innerHTML = html;
+                
+                // Agregar eventos después de cargar el header
+                const usuario = JSON.parse(localStorage.getItem('usuario'));
+                const perfilLink = document.querySelector('.header .icons a[href="/app/Views/pages/perfil.html"]');
+                const favoritosLink = document.querySelector('.header .icons a[href="/app/Views/pages/favoritos.html"]');
+                
+                if (perfilLink) {
+                    perfilLink.addEventListener('click', function(e) {
+                        if (!usuario) {
+                            e.preventDefault();
+                            window.location.href = '/app/Views/auth/login.html';
+                        }
+                    });
+                }
+                
+                if (favoritosLink) {
+                    favoritosLink.addEventListener('click', function(e) {
+                        if (!usuario) {
+                            e.preventDefault();
+                            window.location.href = '/app/Views/auth/login.html';
+                        }
+                    });
+                }
+                
+                // Actualizar el ícono de usuario si está logueado
+                if (usuario) {
+                    const userIcon = perfilLink.querySelector('i');
+                    if (userIcon) {
+                        userIcon.classList.remove('fa-user');
+                        userIcon.classList.add('fa-user-check');
+                    }
+                }
+            });
+    }
+}
