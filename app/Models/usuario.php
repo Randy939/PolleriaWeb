@@ -16,45 +16,49 @@ class Usuario {
     }
 
     public function crear() {
-        try {
-            // Verificar si el email ya existe
-            $query = "SELECT id FROM " . $this->table_name . " WHERE email = ?";
-            $stmt = $this->conn->prepare($query);
-            $stmt->execute([$this->email]);
-            
-            if ($stmt->rowCount() > 0) {
-                throw new Exception("El email ya está registrado");
-            }
-
-            $query = "INSERT INTO " . $this->table_name . " 
-                    (nombre, apellido, email, password, direccion, telefono) 
-                    VALUES 
-                    (:nombre, :apellido, :email, :password, :direccion, :telefono)";
-
-            $stmt = $this->conn->prepare($query);
-
-            // Sanitizar datos
-            $this->nombre = htmlspecialchars(strip_tags($this->nombre));
-            $this->apellido = htmlspecialchars(strip_tags($this->apellido));
-            $this->email = htmlspecialchars(strip_tags($this->email));
-            $this->direccion = htmlspecialchars(strip_tags($this->direccion));
-            $this->telefono = htmlspecialchars(strip_tags($this->telefono));
-
-            // Vincular valores
-            $stmt->bindParam(":nombre", $this->nombre);
-            $stmt->bindParam(":apellido", $this->apellido);
-            $stmt->bindParam(":email", $this->email);
-            $stmt->bindParam(":password", $this->password);
-            $stmt->bindParam(":direccion", $this->direccion);
-            $stmt->bindParam(":telefono", $this->telefono);
-
-            if($stmt->execute()) {
-                return true;
-            }
-            throw new Exception("Error al crear el usuario");
-        } catch(PDOException $e) {
-            throw new Exception("Error en la base de datos: " . $e->getMessage());
+        // Verificar si el email ya existe
+        if($this->emailExiste()) {
+            throw new Exception("Este correo electrónico ya está registrado");
         }
+
+        $query = "INSERT INTO " . $this->table_name . "
+                (nombre, apellido, email, password, direccion, telefono)
+                VALUES
+                (:nombre, :apellido, :email, :password, :direccion, :telefono)";
+
+        $stmt = $this->conn->prepare($query);
+
+        // Sanitizar
+        $this->nombre = htmlspecialchars(strip_tags($this->nombre));
+        $this->apellido = htmlspecialchars(strip_tags($this->apellido));
+        $this->email = htmlspecialchars(strip_tags($this->email));
+        $this->direccion = htmlspecialchars(strip_tags($this->direccion));
+        $this->telefono = htmlspecialchars(strip_tags($this->telefono));
+
+        // Vincular valores
+        $stmt->bindParam(":nombre", $this->nombre);
+        $stmt->bindParam(":apellido", $this->apellido);
+        $stmt->bindParam(":email", $this->email);
+        $stmt->bindParam(":password", $this->password);
+        $stmt->bindParam(":direccion", $this->direccion);
+        $stmt->bindParam(":telefono", $this->telefono);
+
+        if($stmt->execute()) {
+            return true;
+        }
+        return false;
+    }
+
+    private function emailExiste() {
+        $query = "SELECT id FROM " . $this->table_name . " WHERE email = :email LIMIT 1";
+        $stmt = $this->conn->prepare($query);
+        
+        $this->email = htmlspecialchars(strip_tags($this->email));
+        $stmt->bindParam(":email", $this->email);
+        
+        $stmt->execute();
+        
+        return $stmt->rowCount() > 0;
     }
 
     public function login() {
