@@ -100,19 +100,22 @@ header .navbar a:hover{
     background: var(--green);
 }
 
+header .icons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 header .icons i,
 header .icons a,
-header .icons #search-icon {
+header .icons #search-icon,
+header .icons .icon-circle {
     cursor: pointer;
     height: 4.5rem;
     width: 4.5rem;
-    line-height: 4.5rem;
-    text-align: center;
-    font-size: 1.7rem;
     color: var(--black);
     border-radius: 50%;
     background: #eee;
-    margin-left: .5rem;
     transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     align-items: center;
@@ -121,7 +124,8 @@ header .icons #search-icon {
 
 header .icons i:hover,
 header .icons a:hover,
-header .icons #search-icon:hover {
+header .icons #search-icon:hover,
+header .icons .icon-circle:hover {
     color: #fff;
     background: var(--green);
     transform: rotate(360deg);
