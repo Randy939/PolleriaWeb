@@ -42,7 +42,8 @@ try {
         http_response_code(401);
         echo json_encode([
             "status" => "error",
-            "message" => "Email o contraseña incorrectos"
+            "message" => "Email o contraseña incorrectos. Intentos restantes: " . 
+                        ($usuario->max_attempts - $usuario->getCurrentAttempts($data['email']))
         ]);
     }
 
