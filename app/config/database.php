@@ -46,46 +46,5 @@ class Database {
             throw new Exception("Error de conexión a la base de datos: " . $exception->getMessage());
         }
     }
-
-    public function registerLoginAttempt($email, $ip_address, $is_blocked = 0) {
-        if (!$this->conn) {
-            $this->getConnection();
-        }
-        try {
-            $query = "INSERT INTO login_attempts (email, ip_address, attempt_time, is_blocked) 
-                      VALUES (:email, :ip_address, NOW(), :is_blocked)";
-            
-            $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(":email", $email);
-            $stmt->bindParam(":ip_address", $ip_address);
-            $stmt->bindParam(":is_blocked", $is_blocked);
-            
-            return $stmt->execute();
-        } catch(PDOException $e) {
-            throw new Exception("Error al registrar intento: " . $e->getMessage());
-        }
-    }
-
-    public function getLoginAttempts($email, $ip_address, $minutes = 30) {
-        if (!$this->conn) {
-            $this->getConnection();
-        }
-        try {
-            $query = "SELECT COUNT(*) as attempts, MAX(is_blocked) as is_blocked 
-                      FROM login_attempts 
-                      WHERE (email = :email OR ip_address = :ip_address) 
-                      AND attempt_time > DATE_SUB(NOW(), INTERVAL :minutes MINUTE)";
-            
-            $stmt = $this->conn->prepare($query);
-            $stmt->bindParam(":email", $email);
-            $stmt->bindParam(":ip_address", $ip_address);
-            $stmt->bindParam(":minutes", $minutes, PDO::PARAM_INT);
-            $stmt->execute();
-            
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch(PDOException $e) {
-            throw new Exception("Error al obtener intentos: " . $e->getMessage());
-        }
-    }
 }
 ?> 
