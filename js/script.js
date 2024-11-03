@@ -36,7 +36,7 @@ document.querySelector('#close').onclick = () =>{
     document.querySelector('#search-form').classList.remove('active');
 }
 
-var swiper = new Swiper(".Inicio-slider", {
+var swiperInicio = new Swiper(".Inicio-slider", {
     spaceBetween: 30,
     centeredSlides: true,
     autoplay: {
@@ -47,7 +47,13 @@ var swiper = new Swiper(".Inicio-slider", {
         el: ".swiper-pagination",
         clickable: true,
     },
-    loop:true,
+    navigation: {
+        nextEl: ".swiper-button-next",
+        slidesPerView: 1,
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+    },
+    loop: true,
 });
 
 var swiper = new Swiper(".Opiniones-slider", {

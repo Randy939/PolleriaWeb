@@ -1381,3 +1381,25 @@ header .icons .fa-user:hover {
 .footer .box a {
     display: block !important;
 }
+
+/* Agregar estilos para los botones de navegación */
+.Inicio .swiper-button-next,
+.Inicio .swiper-button-prev {
+    color: var(--green);
+    width: 4rem;
+    height: 4rem;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: var(--box-shadow);
+}
+
+.Inicio .swiper-button-next::after,
+.Inicio .swiper-button-prev::after {
+    font-size: 2rem;
+}
+
+.Inicio .swiper-button-next:hover,
+.Inicio .swiper-button-prev:hover {
+    background: var(--green);
+    color: #fff;
+}
