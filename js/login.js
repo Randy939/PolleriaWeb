@@ -12,6 +12,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
                 'Accept': 'application/json'
             },
             credentials: 'include',
+            mode: 'cors',
             body: JSON.stringify({
                 email: email,
                 password: password
