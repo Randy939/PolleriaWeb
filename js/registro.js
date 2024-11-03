@@ -1,22 +1,19 @@
 document.getElementById('registroForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
-    const formData = {
-        nombre: document.getElementById('nombre').value,
-        apellido: document.getElementById('apellido').value,
-        email: document.getElementById('email').value,
-        password: document.getElementById('password').value,
-        direccion: document.getElementById('direccion').value,
-        telefono: document.getElementById('telefono').value
-    };
+    const formData = new FormData();
+    formData.append('nombre', document.getElementById('nombre').value);
+    formData.append('apellido', document.getElementById('apellido').value);
+    formData.append('email', document.getElementById('email').value);
+    formData.append('password', document.getElementById('password').value);
+    formData.append('direccion', document.getElementById('direccion').value);
+    formData.append('telefono', document.getElementById('telefono').value);
     
     try {
         const response = await fetch('https://randy939-001-site1.qtempurl.com/app/Controllers/registro.php', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
+            body: formData,
+            credentials: 'include'
         });
         
         const data = await response.json();
