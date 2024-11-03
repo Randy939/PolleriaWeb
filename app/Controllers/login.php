@@ -1,13 +1,17 @@
 <?php
-header("Access-Control-Allow-Origin: https://gentle-arithmetic-98eb61.netlify.app");
-header("Access-Control-Allow-Credentials: true");
-header("Access-Control-Allow-Methods: POST, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Accept, Authorization");
-header("Content-Type: application/json; charset=UTF-8");
+header('Access-Control-Allow-Origin: https://gentle-arithmetic-98eb61.netlify.app');
+header('Access-Control-Allow-Credentials: true');
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With, Accept');
+header('Access-Control-Max-Age: 86400');    // cache for 1 day
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(200);
+    header('HTTP/1.1 200 OK');
     exit();
+}
+
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
 include_once '../config/database.php';
