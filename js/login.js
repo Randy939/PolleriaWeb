@@ -8,8 +8,10 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const response = await fetch('https://gran-appetit.000.pe/app/Controllers/login.php', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify({
                 email: email,
                 password: password
