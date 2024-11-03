@@ -76,17 +76,40 @@ function initializeHeaderEvents() {
         }
     }
 
-    // Manejar clic en icono de usuario
-    const userIcon = document.getElementById('user-icon');
-    if (userIcon) {
-        userIcon.onclick = (e) => {
-            e.preventDefault();
-            const usuario = localStorage.getItem('usuario');
-            if (usuario) {
-                window.location.href = '/app/Views/pages/perfil.html';
-            } else {
-                window.location.href = '/app/Views/auth/login.html';
-            }
+    // Manejar clic en iconos protegidos
+    const iconosProtegidos = {
+        'user-icon': '/app/Views/pages/perfil.html',
+        'favorites-icon': '/app/Views/pages/favoritos.html'
+    };
+
+    Object.entries(iconosProtegidos).forEach(([iconId, ruta]) => {
+        const icono = document.querySelector(`#${iconId}, a[href*="${ruta}"]`);
+        if (icono) {
+            icono.addEventListener('click', (e) => {
+                e.preventDefault();
+                const usuario = JSON.parse(localStorage.getItem('usuario'));
+                
+                if (usuario) {
+                    window.location.href = ruta;
+                } else {
+                    mostrarMensajeLogin();
+                    setTimeout(() => {
+                        window.location.href = '/app/Views/auth/login.html';
+                    }, 1500);
+                }
+            });
+        }
+    });
+
+    // Obtener usuario una sola vez
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
+
+    // Actualizar ícono si el usuario está logueado
+    if (usuario) {
+        const userIcon = document.querySelector('.fa-user');
+        if (userIcon) {
+            userIcon.classList.remove('fa-user');
+            userIcon.classList.add('fa-user-check');
         }
     }
 
@@ -102,7 +125,6 @@ function initializeHeaderEvents() {
     // Manejar autenticación para favoritos y perfil
     const favoritesBtn = document.getElementById('favorites-btn');
     const profileBtn = document.getElementById('profile-btn');
-    const usuario = JSON.parse(localStorage.getItem('usuario'));
 
     if (favoritesBtn) {
         favoritesBtn.addEventListener('click', (e) => {
