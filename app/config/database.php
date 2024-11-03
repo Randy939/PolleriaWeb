@@ -37,6 +37,9 @@ class Database {
     }
 
     public function registerLoginAttempt($email, $ip_address, $is_blocked = 0) {
+        if (!$this->conn) {
+            $this->getConnection();
+        }
         try {
             $query = "INSERT INTO login_attempts (email, ip_address, attempt_time, is_blocked) 
                       VALUES (:email, :ip_address, NOW(), :is_blocked)";
@@ -53,6 +56,9 @@ class Database {
     }
 
     public function getLoginAttempts($email, $ip_address, $minutes = 30) {
+        if (!$this->conn) {
+            $this->getConnection();
+        }
         try {
             $query = "SELECT COUNT(*) as attempts, MAX(is_blocked) as is_blocked 
                       FROM login_attempts 

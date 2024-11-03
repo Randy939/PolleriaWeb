@@ -1,6 +1,13 @@
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
     e.preventDefault();
     
+    // Obtener el elemento de error una sola vez
+    const errorDiv = document.getElementById('error-message');
+    if (!errorDiv) {
+        console.error('Elemento error-message no encontrado');
+        return;
+    }
+    
     try {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
@@ -21,6 +28,11 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             body: JSON.stringify({ email, password })
         });
         
+        // Verificar si la respuesta es exitosa
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const data = await response.json();
         
         if (data.status === "success") {
@@ -29,14 +41,12 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             window.location.href = '/dashboard';
         } else {
             // Mostrar error
-            const errorDiv = document.getElementById('error-message');
-            errorDiv.textContent = data.message;
+            errorDiv.textContent = data.message || "Error desconocido";
             errorDiv.style.display = 'block';
         }
     } catch (error) {
         console.error('Error completo:', error);
         // Mostrar error genérico al usuario
-        const errorDiv = document.getElementById('error-message');
         errorDiv.textContent = "Error al intentar iniciar sesión. Por favor, intente nuevamente.";
         errorDiv.style.display = 'block';
     } finally {

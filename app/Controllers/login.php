@@ -49,9 +49,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
+// Al inicio del archivo, después de las configuraciones de error
+error_log("Iniciando proceso de login");
+
 try {
     // Verificar datos POST
-    $data = json_decode(file_get_contents("php://input"), true);
+    $rawInput = file_get_contents("php://input");
+    error_log("Datos recibidos: " . $rawInput);
+    
+    $data = json_decode($rawInput, true);
     if (!$data || !isset($data['email']) || !isset($data['password'])) {
         throw new Exception("Datos de login incompletos");
     }
@@ -61,9 +67,17 @@ try {
     
     // Obtener IP del cliente
     $ip_address = $_SERVER['REMOTE_ADDR'];
+    error_log("IP del cliente: " . $ip_address);
+    
+    // Establecer conexión
+    $db = $database->getConnection();
+    if (!$db) {
+        throw new Exception("No se pudo establecer la conexión con la base de datos");
+    }
     
     // Verificar intentos previos
-    $attempts = $database->getLoginAttempts($data['email'], $ip_address, 30); // 30 minutos
+    $attempts = $database->getLoginAttempts($data['email'], $ip_address, 30);
+    error_log("Intentos previos: " . print_r($attempts, true));
     
     // Verificar si está bloqueado
     if ($attempts['is_blocked'] == 1) {
@@ -78,10 +92,6 @@ try {
     }
 
     // Intentar login
-    $db = $database->getConnection();
-    if (!$db) {
-        throw new Exception("No se pudo establecer la conexión con la base de datos");
-    }
     $stmt = $db->prepare("SELECT * FROM usuarios WHERE email = :email");
     $stmt->bindParam(":email", $data['email']);
     $stmt->execute();
@@ -107,6 +117,7 @@ try {
     }
 
 } catch (Exception $e) {
+    error_log("Error en login.php: " . $e->getMessage());
     http_response_code(500);
     echo json_encode([
         "status" => "error",
