@@ -11,7 +11,7 @@ class Usuario {
     public $direccion;
     public $telefono;
 
-    private $max_attempts = 3; // Máximo número de intentos
+    public $max_attempts = 3; // Máximo número de intentos
     private $lockout_time = 900; // Tiempo de bloqueo en segundos (15 minutos)
 
     public function __construct($db) {
@@ -159,6 +159,22 @@ class Usuario {
             
         } catch(PDOException $e) {
             throw new Exception("Error en la consulta de login: " . $e->getMessage());
+        }
+    }
+
+    public function getRemainingAttempts($email) {
+        try {
+            $ip = $_SERVER['REMOTE_ADDR'];
+            $query = "SELECT attempts FROM login_attempts 
+                     WHERE email = ? AND ip_address = ?";
+            
+            $stmt = $this->conn->prepare($query);
+            $stmt->execute([$email, $ip]);
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            return $this->max_attempts - ($result ? $result['attempts'] : 0);
+        } catch (PDOException $e) {
+            throw new Exception("Error al obtener intentos restantes: " . $e->getMessage());
         }
     }
 }

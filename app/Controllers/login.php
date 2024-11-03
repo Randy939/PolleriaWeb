@@ -43,7 +43,7 @@ try {
         echo json_encode([
             "status" => "error",
             "message" => "Email o contraseña incorrectos. Intentos restantes: " . 
-                        ($usuario->max_attempts - $usuario->getCurrentAttempts($data['email']))
+                        $usuario->getRemainingAttempts($data['email'])
         ]);
     }
 
