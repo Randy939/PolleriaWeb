@@ -109,7 +109,8 @@ header .icons {
 header .icons i,
 header .icons a,
 header .icons #search-icon,
-header .icons .icon-circle {
+header .icons .icon-circle,
+header .icons #menu-bars {
     cursor: pointer;
     height: 4.5rem;
     width: 4.5rem;
@@ -122,16 +123,25 @@ header .icons .icon-circle {
     justify-content: center;
 }
 
+header .icons i,
+header .icons a i,
+header .icons #search-icon i,
+header .icons .icon-circle i,
+header .icons #menu-bars {
+    font-size: 2rem;
+}
+
 header .icons i:hover,
 header .icons a:hover,
 header .icons #search-icon:hover,
-header .icons .icon-circle:hover {
+header .icons .icon-circle:hover,
+header .icons #menu-bars:hover {
     color: #fff;
     background: var(--green);
     transform: rotate(360deg);
 }
 
-header .icons #menu-bars{
+header .icons #menu-bars {
     display: none;
 }
 
@@ -517,8 +527,10 @@ header .icons #menu-bars{
 
 @media (max-width:768px){
 
-    header .icons #menu-bars{
-        display: inline-block;
+    header .icons #menu-bars {
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     header .navbar{
