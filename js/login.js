@@ -6,7 +6,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     
     try {
         // Actualiza la URL base con tu nuevo dominio de SmarterASP.NET
-        const baseUrl = 'http://randy939-001-site1.qtempurl.com//app/Controllers/login.php';
+        const baseUrl = 'https://randy939-001-site1.qtempurl.com//app/Controllers/login.php';
         
         const checkCORS = await fetch(baseUrl, {
             method: 'OPTIONS',
