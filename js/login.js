@@ -5,7 +5,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const password = document.getElementById('password').value;
     
     try {
-        const response = await fetch('/.netlify/functions/auth-proxy', {
+        const response = await fetch('https://gran-appetit.000.pe.infinityfree.com/app/Controllers/login.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
