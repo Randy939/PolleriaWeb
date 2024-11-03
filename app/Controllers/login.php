@@ -1,127 +1,95 @@
 <?php
+// Habilitar el logging de errores
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/../../logs/error.log');
+error_log("=== Inicio de solicitud de login ===");
+
+// Headers CORS
 header('Access-Control-Allow-Origin: https://gentle-arithmetic-98eb61.netlify.app');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 header('Access-Control-Allow-Credentials: true');
-header('Access-Control-Max-Age: 86400'); // cache por 24 horas
+header('Content-Type: application/json; charset=UTF-8');
 
-// Manejar preflight requests
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    header('HTTP/1.1 200 OK');
+    http_response_code(200);
     exit();
 }
 
-// Reportar todos los errores como JSON en lugar de HTML
-error_reporting(E_ALL);
-ini_set('display_errors', 0);
-
-function handleError($errno, $errstr, $errfile, $errline) {
-    http_response_code(500);
-    echo json_encode([
-        "status" => "error",
-        "message" => "Error del servidor: " . $errstr
-    ]);
-    exit;
-}
-set_error_handler("handleError");
-
-// Manejar errores fatales
-register_shutdown_function(function() {
-    $error = error_get_last();
-    if ($error !== NULL && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
-        http_response_code(500);
-        echo json_encode([
-            "status" => "error",
-            "message" => "Error fatal del servidor: " . $error['message']
-        ]);
-    }
-});
-
-// Configuración de sesión y headers CORS (mantener esta parte)
-ini_set('session.cookie_samesite', 'None');
-ini_set('session.cookie_secure', 'true');
-session_set_cookie_params([
-    'lifetime' => 0,
-    'path' => '/',
-    'domain' => '.qtempurl.com',
-    'secure' => true,
-    'httponly' => true,
-    'samesite' => 'None'
-]);
-
-// Al inicio del archivo, después de las configuraciones de error
-error_log("Iniciando proceso de login");
-
 try {
-    // Verificar datos POST
+    // Log de datos recibidos
     $rawInput = file_get_contents("php://input");
     error_log("Datos recibidos: " . $rawInput);
     
     $data = json_decode($rawInput, true);
-    if (!$data || !isset($data['email']) || !isset($data['password'])) {
+    if (!$data) {
+        throw new Exception("Error decodificando JSON: " . json_last_error_msg());
+    }
+    
+    if (!isset($data['email']) || !isset($data['password'])) {
         throw new Exception("Datos de login incompletos");
     }
 
-    require_once '../config/database.php';
+    // Verificar la ruta del archivo database.php
+    $databasePath = __DIR__ . '/../config/database.php';
+    error_log("Ruta a database.php: " . $databasePath);
+    
+    if (!file_exists($databasePath)) {
+        throw new Exception("No se encuentra el archivo database.php en: " . $databasePath);
+    }
+
+    require_once $databasePath;
     $database = new Database();
-    
-    // Obtener IP del cliente
-    $ip_address = $_SERVER['REMOTE_ADDR'];
-    error_log("IP del cliente: " . $ip_address);
-    
-    // Establecer conexión
+    error_log("Clase Database cargada");
+
+    // Obtener conexión
     $db = $database->getConnection();
     if (!$db) {
         throw new Exception("No se pudo establecer la conexión con la base de datos");
     }
-    
+    error_log("Conexión a base de datos establecida");
+
+    // Verificar tabla login_attempts
+    try {
+        $checkTable = $db->query("SHOW TABLES LIKE 'login_attempts'");
+        if ($checkTable->rowCount() == 0) {
+            $sql = "CREATE TABLE IF NOT EXISTS login_attempts (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                email VARCHAR(255) NOT NULL,
+                ip_address VARCHAR(45) NOT NULL,
+                attempt_time DATETIME NOT NULL,
+                is_blocked TINYINT(1) DEFAULT 0
+            )";
+            $db->exec($sql);
+            error_log("Tabla login_attempts creada");
+        }
+    } catch (PDOException $e) {
+        error_log("Error verificando tabla login_attempts: " . $e->getMessage());
+    }
+
+    // Obtener IP del cliente
+    $ip_address = $_SERVER['REMOTE_ADDR'];
+    error_log("IP del cliente: " . $ip_address);
+
     // Verificar intentos previos
     $attempts = $database->getLoginAttempts($data['email'], $ip_address, 30);
     error_log("Intentos previos: " . print_r($attempts, true));
-    
-    // Verificar si está bloqueado
-    if ($attempts['is_blocked'] == 1) {
-        throw new Exception("Tu cuenta está temporalmente bloqueada. Por favor, intenta más tarde.");
-    }
-    
-    // Verificar número de intentos
-    if ($attempts['attempts'] >= 5) { // 5 intentos máximos
-        // Registrar bloqueo
-        $database->registerLoginAttempt($data['email'], $ip_address, 1);
-        throw new Exception("Demasiados intentos fallidos. Tu cuenta ha sido bloqueada por 30 minutos.");
-    }
 
-    // Intentar login
-    $stmt = $db->prepare("SELECT * FROM usuarios WHERE email = :email");
-    $stmt->bindParam(":email", $data['email']);
-    $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($user && password_verify($data['password'], $user['password'])) {
-        // Login exitoso
-        echo json_encode([
-            "status" => "success",
-            "message" => "Login exitoso",
-            "data" => $user
-        ]);
-    } else {
-        // Registrar intento fallido
-        $database->registerLoginAttempt($data['email'], $ip_address);
-        
-        $remainingAttempts = 5 - ($attempts['attempts'] + 1);
-        http_response_code(401);
-        echo json_encode([
-            "status" => "error",
-            "message" => "Credenciales inválidas. Te quedan {$remainingAttempts} intentos."
-        ]);
-    }
+    // Resto del código de login...
 
 } catch (Exception $e) {
     error_log("Error en login.php: " . $e->getMessage());
+    error_log("Stack trace: " . $e->getTraceAsString());
+    
     http_response_code(500);
     echo json_encode([
         "status" => "error",
-        "message" => $e->getMessage()
+        "message" => "Error del servidor: " . $e->getMessage(),
+        "debug" => [
+            "file" => $e->getFile(),
+            "line" => $e->getLine()
+        ]
     ]);
+    exit;
 }
 ?> 

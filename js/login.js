@@ -22,20 +22,29 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'X-Requested-With': 'XMLHttpRequest'
+                'Accept': 'application/json'
             },
             credentials: 'include',
-            mode: 'cors',
             body: JSON.stringify({ email, password })
         });
         
-        // Verificar si la respuesta es exitosa
+        // Intentar obtener el mensaje de error del servidor
+        const responseText = await response.text();
+        console.log('Respuesta del servidor:', responseText);
+        
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            let errorMessage = 'Error del servidor';
+            try {
+                const errorData = JSON.parse(responseText);
+                errorMessage = errorData.message || errorMessage;
+                console.error('Detalles del error:', errorData);
+            } catch (e) {
+                console.error('Error parseando respuesta:', responseText);
+            }
+            throw new Error(errorMessage);
         }
         
-        const data = await response.json();
+        const data = JSON.parse(responseText);
         
         if (data.status === "success") {
             // Login exitoso
@@ -48,8 +57,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         }
     } catch (error) {
         console.error('Error completo:', error);
-        // Mostrar error genérico al usuario
-        errorDiv.textContent = "Error al intentar iniciar sesión. Por favor, intente nuevamente.";
+        console.error('Stack:', error.stack);
+        errorDiv.textContent = error.message || "Error al intentar iniciar sesión";
         errorDiv.style.display = 'block';
     } finally {
         // Re-habilitar el botón de submit

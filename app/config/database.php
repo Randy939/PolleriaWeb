@@ -17,11 +17,19 @@ class Database {
 
     public function getConnection() {
         try {
-            $this->conn = new PDO(
-                "mysql:host=" . $this->host . 
-                ";dbname=" . $this->database_name . 
-                ";port=" . $this->port,
-                $this->username,
+            error_log("Intentando conectar a la base de datos...");
+            error_log("Host: " . $this->host);
+            error_log("Database: " . $this->database_name);
+            error_log("Port: " . $this->port);
+            
+            $dsn = "mysql:host=" . $this->host . 
+                   ";dbname=" . $this->database_name . 
+                   ";port=" . $this->port;
+                   
+            error_log("DSN: " . $dsn);
+            
+            $this->conn = new PDO($dsn, 
+                $this->username, 
                 $this->password,
                 array(
                     PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -29,10 +37,13 @@ class Database {
                     PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8"
                 )
             );
+            
+            error_log("Conexión establecida exitosamente");
             return $this->conn;
 
         } catch(PDOException $exception) {
-            throw new Exception("Error de conexión: " . $exception->getMessage());
+            error_log("Error de conexión PDO: " . $exception->getMessage());
+            throw new Exception("Error de conexión a la base de datos: " . $exception->getMessage());
         }
     }
 
