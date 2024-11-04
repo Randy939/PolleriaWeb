@@ -16,7 +16,7 @@
 @import url('reserva.css');
 
 :root{
-    --green:#27ae60;
+    --green:#2c5530;
     --black:#192a56;
     --light-color:#666;
     --red:#dd1515;
@@ -47,21 +47,6 @@ section{
 
 section:nth-child(even){
     background:#eee;
-}
-
-.sub-titulo{
-    text-align: center;
-    color:var(--green);
-    font-size: 2rem;
-    padding-top: 1rem;
-}
-
-.titulo{
-    text-align: center;
-    color:var(--black);
-    font-size: 3rem;
-    padding-top: 2rem;
-    text-transform: uppercase;
 }
 
 .btn{

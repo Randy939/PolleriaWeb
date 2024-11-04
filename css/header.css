@@ -78,7 +78,7 @@ header .icons .icon-circle {
 
 header .icons .icon-circle i {
     font-size: 2rem;
-    color: var(--black);
+    color: var(--green);
     transition: all 0.3s ease;
 }
 

@@ -1,7 +1,7 @@
 .footer {
     background: #fff;
     padding: 4rem 10%;
-    margin-top: 4rem;
+    margin-top: auto;
     box-shadow: 0 -8px 25px rgba(0,0,0,0.08);
     position: relative;
     z-index: 1;

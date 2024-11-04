@@ -4,8 +4,20 @@ document.addEventListener('DOMContentLoaded', function() {
     const btnVolver = document.querySelector('.btn-volver');
     const tituloPrincipal = document.querySelector('.titulo-principal');
 
-    // Ocultar el botón volver inicialmente
-    btnVolver.style.display = 'none';
+    // Asegurarse de que las categorías sean visibles al inicio
+    if (categoriasContainer) {
+        categoriasContainer.style.display = 'grid';
+        categoriasContainer.style.opacity = '1';
+        categoriasContainer.style.visibility = 'visible';
+    }
+
+    // Ocultar productos y botón volver inicialmente
+    if (productosContainer) {
+        productosContainer.style.display = 'none';
+    }
+    if (btnVolver) {
+        btnVolver.style.display = 'none';
+    }
 
     // Manejar clics en las categorías
     categoriasContainer.addEventListener('click', function(e) {
@@ -27,15 +39,12 @@ document.addEventListener('DOMContentLoaded', function() {
         btnVolver.style.display = 'block';
         
         // Ocultar categorías y mostrar productos
-        categoriasContainer.classList.remove('visible');
-        setTimeout(() => {
-            categoriasContainer.style.display = 'none';
-            productosContainer.style.display = 'block';
-        }, 300); // Esperar a que termine la transición de opacidad
+        categoriasContainer.style.display = 'none';
+        productosContainer.style.display = 'block';
         
         // Ocultar todos los productos primero
         productos.forEach(producto => {
-            producto.style.display = 'none';
+            producto.style.display = 'none'; // Cambiar a 'none' para ocultar todos los productos
         });
         
         // Mostrar solo los productos de la categoría seleccionada
@@ -49,11 +58,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 <h2>No hay productos disponibles en esta categoría</h2>
                 <p>Por favor, intenta con otra categoría o vuelve más tarde.</p>
             `;
+            productosContainer.innerHTML = ''; // Limpiar el contenedor
             productosContainer.appendChild(mensajeNoProductos);
         } else {
             // Si hay productos, mostrarlos
             productosCategoria.forEach(producto => {
-                producto.style.display = 'block';
+                producto.style.display = 'block'; // Cambiar a 'block' para mostrar solo los productos de la categoría
             });
         }
 
@@ -66,6 +76,12 @@ document.addEventListener('DOMContentLoaded', function() {
             'menu-dia': 'Menú del Día'
         };
         tituloPrincipal.textContent = titulosCategoria[categoria];
+
+        // Asegurarse de que el footer sea visible
+        const footer = document.querySelector('.footer');
+        if (footer) {
+            footer.style.display = 'block'; // Asegúrate de que el footer esté visible
+        }
     }
 
     // Manejar clic en botón volver
@@ -111,16 +127,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const categoriaFromUrl = urlParams.get('categoria-card');
 
     if (categoriaFromUrl) {
-        // Si viene de una URL con categoría, mantener categorías ocultas
+        // Si viene de una URL con categoría, ocultar categorías desde el inicio
         categoriasContainer.style.display = 'none';
         productosContainer.style.display = 'block';
         mostrarProductos(categoriaFromUrl);
     } else {
-        // Si no hay categoría en la URL, mostrar las categorías con una transición suave
+        // Si no hay categoría en la URL, mostrar las categorías
         categoriasContainer.style.display = 'grid';
-        setTimeout(() => {
-            categoriasContainer.classList.add('visible');
-        }, 50);
         productosContainer.style.display = 'none';
     }
 

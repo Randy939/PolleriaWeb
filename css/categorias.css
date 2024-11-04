@@ -5,9 +5,9 @@
     padding: 2rem;
     max-width: 1500px;
     margin: 0 auto;
-    height: 900px;
-    opacity: 0;
-    visibility: hidden;
+    min-height: 60vh;
+    opacity: 1;
+    visibility: visible;
     transition: opacity 0.3s ease;
 }
 

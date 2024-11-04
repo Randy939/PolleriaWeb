@@ -204,6 +204,7 @@
     .box-container {
         grid-template-columns: repeat(2, 1fr);
     }
+
 }
 
 @media (max-width: 576px) {
@@ -237,3 +238,20 @@
     color: #666;
     font-size: 1.6rem;
 }
+
+.productos-container {
+    min-height: 60vh;
+    margin-bottom: 3rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+/* Asegurarse de que el footer permanezca al final */
+.footer {
+    position: relative;
+    z-index: 1;
+    margin-top: auto;
+}
+

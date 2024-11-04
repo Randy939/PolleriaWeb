@@ -1,36 +1,64 @@
-.Acerca-de .row{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 3rem;
-    align-items: center;
+.Acerca-de {
+    padding: 2rem 10%;
+    background: #f8f9fa;
+}
+
+.Acerca-de .row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 4rem;
     background: #fff;
-    border-radius: 2rem;
-    box-shadow: var(--box-shadow);
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
     padding: 3rem;
     margin-top: 3rem;
+    transition: all 0.4s ease;
 }
 
-.Acerca-de .row .image{
-    flex: 1 1 45rem;
+.Acerca-de h3{
+    text-align: center;
+    color:var(--green);
+    font-size: 2.5rem;
+    padding-top: 0rem;
+    padding-bottom: 0.5rem;
+}
+
+.Acerca-de h1{
+    text-align: center;
+    color:var(--black);
+    font-size: 3rem;
+    padding: 0rem 5% 0rem;
+    text-transform: uppercase;
+}
+
+.Acerca-de .row:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+}
+
+.Acerca-de .row .image {
     position: relative;
+    border-radius: 20px;
     overflow: hidden;
-    border-radius: 1rem;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
 
-.Acerca-de .row .image img{
+.Acerca-de .row .image img {
     width: 100%;
+    height: 100%;
+    object-fit: cover;
     transition: transform 0.5s ease;
 }
 
-.Acerca-de .row .image:hover img{
+.Acerca-de .row .image:hover img {
     transform: scale(1.05);
 }
 
-.Acerca-de .row .image .experience-badge{
+.Acerca-de .row .image .experience-badge {
     position: absolute;
     bottom: 2rem;
     right: 2rem;
-    background: var(--green);
+    background: #2c5530;
     color: #fff;
     padding: 2rem;
     border-radius: 50%;
@@ -41,87 +69,165 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    box-shadow: 0 8px 25px rgba(44, 85, 48, 0.3);
     animation: float 3s ease-in-out infinite;
 }
 
-.Acerca-de .row .image .experience-badge .years{
+.Acerca-de .row .image .experience-badge .years {
     font-size: 3rem;
     font-weight: bold;
+    color: #ffc107;
 }
 
-.Acerca-de .row .image .experience-badge .text{
+.Acerca-de .row .image .experience-badge .text {
     font-size: 1.4rem;
     line-height: 1.2;
 }
 
-.Acerca-de .row .content{
-    flex: 1 1 45rem;
+.Acerca-de .row .content {
+    padding: 2rem;
 }
 
-.Acerca-de .row .content h3{
-    color: var(--black);
-    font-size: 3.5rem;
+.Acerca-de .row .content h3 {
+    font-size: 2.9rem;
+    color: #2c5530;
     margin-bottom: 2rem;
-    text-transform: uppercase;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
     position: relative;
     padding-bottom: 1rem;
 }
 
-.Acerca-de .row .content h3::after{
+.Acerca-de .row .content h3::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
     width: 8rem;
     height: 0.3rem;
-    background: var(--green);
+    background: #ffc107;
+    border-radius: 2px;
 }
 
-.Acerca-de .row .content .description p{
-    color: var(--light-color);
+.Acerca-de .row .content .description p {
+    color: #666;
     font-size: 1.6rem;
     line-height: 1.8;
-    margin-bottom: 1.5rem;
-    text-align: justify;
+    margin-bottom: 2rem;
+    font-family: 'Open Sans', sans-serif;
 }
 
-.Acerca-de .row .content .icons-container{
+.Acerca-de .row .content .icons-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+    grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
-    margin: 3rem 0;
+    margin-top: 3rem;
 }
 
-.Acerca-de .row .content .icons-container .icons{
-    background: #f7f7f7;
+.Acerca-de .row .content .icons-container .icons {
+    background: #f8f9fa;
     padding: 2rem;
-    border-radius: 1rem;
+    border-radius: 15px;
     display: flex;
     align-items: center;
     gap: 1.5rem;
     transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
-.Acerca-de .row .content .icons-container .icons:hover{
-    background: var(--green);
+.Acerca-de .row .content .icons-container .icons:hover {
+    background: #2c5530;
     transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(44, 85, 48, 0.2);
+}
+
+.Acerca-de .row .content .icons-container .icons i {
+    font-size: 3rem;
+    color: #ffc107;
+    transition: all 0.3s ease;
+}
+
+.Acerca-de .row .content .icons-container .icons .info h4 {
+    font-size: 1.8rem;
+    color: #2c5530;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.Acerca-de .row .content .icons-container .icons .info span {
+    font-size: 1.4rem;
+    color: #666;
+    transition: all 0.3s ease;
 }
 
 .Acerca-de .row .content .icons-container .icons:hover i,
 .Acerca-de .row .content .icons-container .icons:hover .info h4,
-.Acerca-de .row .content .icons-container .icons:hover .info span{
+.Acerca-de .row .content .icons-container .icons:hover .info span {
     color: #fff;
 }
 
-.Acerca-de .row .content .icons-container .icons i{
-    font-size: 3rem;
-    color: var(--green);
-    transition: all 0.3s ease;
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
-.Acerca-de .row .content .icons-container .icons .info h4{
-    font-size: 1.8rem;
-    color: var(--black);
-    margin-bottom: 0.5rem;
-    transition: all 0.3s ease;
+/* Media Queries */
+@media (max-width: 991px) {
+    .Acerca-de .row {
+        grid-template-columns: 1fr;
+    }
+    
+    .Acerca-de .row .image {
+        height: 400px;
+    }
+    
+    .Acerca-de .row .content .icons-container {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .Acerca-de {
+        padding: 3rem 5%;
+    }
+    
+    .Acerca-de .row {
+        padding: 2rem;
+    }
+    
+    .Acerca-de .row .image {
+        height: 300px;
+    }
+    
+    .Acerca-de .row .image .experience-badge {
+        width: 10rem;
+        height: 10rem;
+    }
+    
+    .Acerca-de .row .content h3 {
+        font-size: 2.5rem;
+    }
+}
+
+@media (max-width: 450px) {
+    .Acerca-de .row .content .icons-container .icons {
+        flex-direction: column;
+        text-align: center;
+        padding: 1.5rem;
+    }
+    
+    .Acerca-de .row .image .experience-badge {
+        width: 8rem;
+        height: 8rem;
+        padding: 1.5rem;
+    }
+    
+    .Acerca-de .row .image .experience-badge .years {
+        font-size: 2.5rem;
+    }
 }
