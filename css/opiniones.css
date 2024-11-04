@@ -1,119 +1,141 @@
 /* Bloque principal de Opiniones */
-.Opiniones .slide{
-    padding:2rem;
-    box-shadow:var(--box-shadow);
-    border:.1rem solid rgba(0,0,0,.2);
-    border-radius: .5rem;
-    position: relative;
+.Opiniones {
+    padding: 4rem 10%;
+    background: #f8f9fa;
 }
 
-.Opiniones .slide .fa-quote-right{
-    position: absolute;
-    top: 2rem; right: 2rem;
-    font-size: 6rem;
-    color:#ccc;
+.opinion-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    transition: all 0.4s ease;
+    border: 1px solid rgba(0,0,0,0.05);
 }
 
-.Opiniones .slide .user{
-    display:flex;
-    gap: 1.5rem;
+.opinion-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+.opinion-header {
+    display: flex;
     align-items: center;
-    padding-bottom: 1.5rem;
+    gap: 2rem;
+    margin-bottom: 2rem;
 }
 
-.Opiniones .slide .user img{
-    height: 7rem;
-    width: 7rem;
+.opinion-header img {
+    width: 6.5rem;
+    height: 6.5rem;
     border-radius: 50%;
     object-fit: cover;
+    border: 3px solid #2c5530;
+    padding: 3px;
 }
 
-.Opiniones .slide .user h3{
-    color:var(--black);
+.user-info h3 {
     font-size: 2rem;
-    padding-bottom: .5rem;
+    color: #2c5530;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-family: 'Poppins', sans-serif;
 }
 
-.Opiniones .slide .user i{
-    font-size: 1.3rem;
-    color:var(--green);
-}
-
-.Opiniones .slide p{
-    font-size: 1.5rem;
-    line-height: 1.8;
-    color:var(--light-color);
-}
-
-/* Elementos relacionados con acciones de opiniones */
-.opinion-acciones {
-    display: flex;
-    gap: 1rem;
-}
-
-.util-btn, .compartir-btn {
-    padding: 0.8rem 1.5rem;
-    border-radius: 2rem;
-    background: #f0f0f0;
-    border: none;
-    cursor: pointer;
+.rating {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    transition: all 0.3s ease;
 }
 
-.util-btn:hover, .compartir-btn:hover {
-    background: var(--green);
-    color: #fff;
-}
-
-.util-btn i, .compartir-btn i {
+.rating i {
+    color: #ffc107;
     font-size: 1.4rem;
 }
 
-.dejar-opinion {
-    text-align: center;
-    margin-top: 4rem;
-    padding: 2rem;
-    background: #fff;
-    border-radius: 1.5rem;
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+.fecha {
+    color: #666;
+    font-size: 1.3rem;
+    margin-left: 1rem;
 }
 
-.dejar-opinion h3 {
-    font-size: 2rem;
-    color: var(--black);
-    margin-bottom: 1.5rem;
+.opinion-content {
+    margin-bottom: 2rem;
 }
 
-.btn-opinion {
-    padding: 1.2rem 2.5rem;
-    background: var(--green);
-    color: #fff;
-    border: none;
-    border-radius: 2rem;
-    font-size: 1.6rem;
-    cursor: pointer;
-    display: inline-flex;
+.opinion-content p {
+    color: #666;
+    font-size: 1.5rem;
+    line-height: 1.8;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.opinion-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.plato-pedido {
+    display: flex;
     align-items: center;
     gap: 1rem;
+    color: #2c5530;
+    font-size: 1.4rem;
+}
+
+.plato-pedido i {
+    color: #ffc107;
+}
+
+.opinion-acciones button {
+    background: #f5f5f5;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    cursor: pointer;
     transition: all 0.3s ease;
+    color: #666;
 }
 
-.btn-opinion:hover {
-    background: var(--black);
-    transform: scale(1.05);
+.opinion-acciones button:hover {
+    background: #2c5530;
+    color: #fff;
+    transform: translateY(-2px);
 }
 
-.btn-opinion i {
-    font-size: 1.8rem;
+/* Estilos del Swiper */
+.Opiniones .swiper-pagination {
+    position: relative;
+    margin-top: 3rem;
 }
 
-/* Media queries relacionadas con opiniones */
+.Opiniones .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    background: #2c5530;
+    opacity: 0.5;
+}
+
+.Opiniones .swiper-pagination-bullet-active {
+    opacity: 1;
+    background: #ffc107;
+    transform: scale(1.2);
+}
+
+/* Media Queries */
 @media (max-width: 768px) {
+    .Opiniones {
+        padding: 3rem 5%;
+    }
+
     .opinion-card {
-        padding: 1.5rem;
+        padding: 2rem;
     }
 
     .opinion-header img {
@@ -122,15 +144,28 @@
     }
 
     .user-info h3 {
-        font-size: 1.6rem;
+        font-size: 1.8rem;
     }
 
     .opinion-content p {
         font-size: 1.4rem;
     }
 
-    .btn-opinion {
-        width: 100%;
+    .opinion-footer {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 576px) {
+    .opinion-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+    }
+
+    .rating {
         justify-content: center;
     }
 }

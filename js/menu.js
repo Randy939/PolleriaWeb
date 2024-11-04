@@ -27,8 +27,11 @@ document.addEventListener('DOMContentLoaded', function() {
         btnVolver.style.display = 'block';
         
         // Ocultar categorías y mostrar productos
-        categoriasContainer.style.display = 'none';
-        productosContainer.style.display = 'block';
+        categoriasContainer.classList.remove('visible');
+        setTimeout(() => {
+            categoriasContainer.style.display = 'none';
+            productosContainer.style.display = 'block';
+        }, 300); // Esperar a que termine la transición de opacidad
         
         // Ocultar todos los productos primero
         productos.forEach(producto => {
@@ -107,56 +110,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     const categoriaFromUrl = urlParams.get('categoria-card');
 
-
     if (categoriaFromUrl) {
-        // Aseguramos que el botón volver sea visible
-        btnVolver.style.display = 'block';
-        
-        // Ocultar las categorías y mostrar los productos
+        // Si viene de una URL con categoría, mantener categorías ocultas
         categoriasContainer.style.display = 'none';
         productosContainer.style.display = 'block';
-
-        // Ocultar todos los productos primero
-        const productos = document.querySelectorAll('.box');
-        productos.forEach(producto => {
-            producto.style.display = 'none';
-        });
-
-        // Buscar productos de la categoría
-        const productosCategoria = document.querySelectorAll(`.box[data-categoria="${categoriaFromUrl}"]`);
-        
-        // Eliminar mensaje anterior si existe
-        const mensajeExistente = document.querySelector('.mensaje-no-productos');
-        if (mensajeExistente) {
-            mensajeExistente.remove();
-        }
-
-        if (productosCategoria.length === 0) {
-            // Si no hay productos, mostrar mensaje
-            const mensajeNoProductos = document.createElement('div');
-            mensajeNoProductos.className = 'mensaje-no-productos';
-            mensajeNoProductos.innerHTML = `
-                <h2>No hay productos disponibles en esta categoría</h2>
-                <p>Por favor, intenta con otra categoría o vuelve más tarde.</p>
-            `;
-            productosContainer.appendChild(mensajeNoProductos);
-        } else {
-            // Si hay productos, mostrarlos
-            productosCategoria.forEach(producto => {
-                producto.style.display = 'block';
-            });
-        }
-
-        // Actualizar el título
-        const tituloPrincipal = document.querySelector('.titulo-principal');
-        const titulosCategoria = {
-            'pollos': 'Pollos a la Brasa',
-            'criollos': 'Platos Criollos',
-            'bebidas': 'Bebidas',
-            'promociones': 'Promociones',
-            'menu-dia': 'Menú del Día'
-        };
-        tituloPrincipal.textContent = titulosCategoria[categoriaFromUrl] || categoriaFromUrl.charAt(0).toUpperCase() + categoriaFromUrl.slice(1);
+        mostrarProductos(categoriaFromUrl);
+    } else {
+        // Si no hay categoría en la URL, mostrar las categorías con una transición suave
+        categoriasContainer.style.display = 'grid';
+        setTimeout(() => {
+            categoriasContainer.classList.add('visible');
+        }, 50);
+        productosContainer.style.display = 'none';
     }
 
     // Agregar evento al botón volver
