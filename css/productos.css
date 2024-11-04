@@ -132,6 +132,16 @@
     font-size: 1.6rem;
     font-weight: 600;
     color: #2c5530;
+    appearance: textfield;
+    -moz-appearance: textfield;
+    pointer-events: none;
+    user-select: none;
+}
+
+.cantidad-input::-webkit-outer-spin-button,
+.cantidad-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .btn.agregar-carrito {
@@ -162,7 +172,7 @@
 }
 
 .btn-volver {
-    display: flex;
+    display: none;
     align-items: center;
     gap: 1rem;
     padding: 1.2rem 2.5rem;
@@ -180,6 +190,9 @@
     background: #ffc107;
     color: #2c5530;
     transform: translateX(-5px);
+}
+.btn-volver span {
+    margin-left: 10px; /* Ajusta el margen según necesites */
 }
 
 .btn-volver i {
@@ -202,4 +215,25 @@
         flex-direction: column;
         gap: 1.5rem;
     }
+}
+
+.mensaje-no-productos {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+    margin: 2rem auto;
+    max-width: 600px;
+}
+
+.mensaje-no-productos h2 {
+    color: #2c5530;
+    font-size: 2.4rem;
+    margin-bottom: 1rem;
+}
+
+.mensaje-no-productos p {
+    color: #666;
+    font-size: 1.6rem;
 }

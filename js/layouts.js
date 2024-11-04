@@ -1,22 +1,26 @@
 document.addEventListener('DOMContentLoaded', async function() {
     const loader = document.querySelector('.loader-container');
-    const MINIMUM_LOADING_TIME = 2000; // 2 segundos de carga mínima
+    const MINIMUM_LOADING_TIME = 1000; // Reducimos a 1 segundo para una carga más rápida
 
     try {
-        // Registrar el tiempo de inicio
         const startTime = Date.now();
 
-        // Cargar header
-        const headerResponse = await fetch('/app/Views/layouts/header.html');
-        const headerData = await headerResponse.text();
-        document.getElementById('header-placeholder').innerHTML = headerData;
+        // Cargar header y footer en paralelo para optimizar
+        const [headerResponse, footerResponse] = await Promise.all([
+            fetch('/app/Views/layouts/header.html'),
+            fetch('/app/Views/layouts/footer.html')
+        ]);
 
-        // Cargar footer
-        const footerResponse = await fetch('/app/Views/layouts/footer.html');
-        const footerData = await footerResponse.text();
+        const [headerData, footerData] = await Promise.all([
+            headerResponse.text(),
+            footerResponse.text()
+        ]);
+
+        // Insertamos el contenido
+        document.getElementById('header-placeholder').innerHTML = headerData;
         document.getElementById('footer-placeholder').innerHTML = footerData;
 
-        // Inicializar eventos del header
+        // Inicializamos eventos
         initializeHeaderEvents();
 
         // Calcular tiempo transcurrido
