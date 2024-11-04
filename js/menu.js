@@ -2,141 +2,77 @@ document.addEventListener('DOMContentLoaded', function() {
     const categoriasContainer = document.querySelector('.categorias-container');
     const productosContainer = document.querySelector('.productos-container');
     const btnVolver = document.querySelector('.btn-volver');
-    
-    // Ocultar ambos contenedores inicialmente
-    categoriasContainer.style.display = 'none';
-    productosContainer.style.display = 'none';
-    
-    // Verificar si hay un parámetro de categoría en la URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const categoriaParam = urlParams.get('categoria');
-    
-    if (categoriaParam) {
-        // Mostrar directamente los productos sin transición inicial
-        mostrarProductosDirecto(categoriaParam);
-    } else {
-        // Mostrar categorías
-        categoriasContainer.style.display = 'grid';
-        categoriasContainer.style.opacity = '1';
-    }
+    const tituloPrincipal = document.querySelector('.titulo-principal');
 
-    // Event listeners para las tarjetas de categoría y sus botones
-    document.querySelectorAll('.categoria-card, .btn-categoria').forEach(element => {
-        element.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const categoriaCard = this.closest('[data-categoria]');
+    // Ocultar el botón volver inicialmente
+    btnVolver.style.display = 'none';
+
+    // Manejar clics en las categorías
+    categoriasContainer.addEventListener('click', function(e) {
+        const categoriaCard = e.target.closest('.categoria-card');
+        if (categoriaCard) {
             const categoria = categoriaCard.dataset.categoria;
-            
             mostrarProductos(categoria);
-        });
-    });
-
-    // Event listener para el botón volver
-    if (btnVolver) {
-        btnVolver.addEventListener('click', volverACategorias);
-    }
-});
-
-// Nueva función para mostrar productos directamente sin transición inicial
-function mostrarProductosDirecto(categoria) {
-    const categoriasContainer = document.querySelector('.categorias-container');
-    const productosContainer = document.querySelector('.productos-container');
-    const btnVolver = document.querySelector('.btn-volver');
-    
-    // Ocultar todos los productos inmediatamente
-    const productos = document.querySelectorAll('.box');
-    productos.forEach(producto => {
-        producto.style.display = 'none';
-    });
-    
-    categoriasContainer.style.display = 'none';
-    productosContainer.style.display = 'block';
-    productosContainer.style.opacity = '0';
-    btnVolver.style.display = 'inline-block';
-    
-    // Mostrar solo los productos de la categoría seleccionada
-    productos.forEach(producto => {
-        if (producto.dataset.categoria === categoria) {
-            producto.style.display = 'block';
         }
     });
-    
-    // Hacer visible el contenedor de productos
-    setTimeout(() => {
-        productosContainer.style.opacity = '1';
-    }, 50);
-}
 
-// Función original para transiciones al hacer clic en categorías
-function mostrarProductos(categoria) {
-    const categoriasContainer = document.querySelector('.categorias-container');
-    const productosContainer = document.querySelector('.productos-container');
-    const btnVolver = document.querySelector('.btn-volver');
-    const footer = document.querySelector('.footer');
-    
-    // Ocultar todos los productos inmediatamente
-    const productos = document.querySelectorAll('.box');
-    productos.forEach(producto => {
-        producto.style.display = 'none';
-    });
-    
-    categoriasContainer.style.opacity = '0';
-    setTimeout(() => {
+    // Función para mostrar productos
+    function mostrarProductos(categoria) {
         categoriasContainer.style.display = 'none';
         productosContainer.style.display = 'block';
-        btnVolver.style.display = 'inline-block';
-        
+        btnVolver.style.display = 'block';
+
         // Mostrar solo los productos de la categoría seleccionada
-        productos.forEach(producto => {
+        const todosLosProductos = document.querySelectorAll('.box');
+        todosLosProductos.forEach(producto => {
             if (producto.dataset.categoria === categoria) {
                 producto.style.display = 'block';
+            } else {
+                producto.style.display = 'none';
             }
         });
-        
-        setTimeout(() => {
-            productosContainer.style.opacity = '1';
-            
-            if (footer) {
-                footer.style.display = 'block';
-                footer.querySelector('.box-container').style.display = 'grid';
-            }
-        }, 50);
-    }, 300);
-}
 
-function volverACategorias() {
-    const categoriasContainer = document.querySelector('.categorias-container');
-    const productosContainer = document.querySelector('.productos-container');
-    const btnVolver = document.querySelector('.btn-volver');
-    const footer = document.querySelector('.footer');
-    
-    // Asegurar que el footer esté visible antes de la transición
-    if (footer) {
-        footer.style.display = 'block';
+        // Actualizar título según la categoría
+        const titulosCategoria = {
+            'pollos': 'Pollos a la Brasa',
+            'criollos': 'Platos Criollos',
+            'bebidas': 'Bebidas',
+            'promociones': 'Promociones',
+            'menu-dia': 'Menú del Día'
+        };
+        tituloPrincipal.textContent = titulosCategoria[categoria];
     }
-    
-    productosContainer.style.opacity = '0';
-    setTimeout(() => {
+
+    // Manejar clic en botón volver
+    btnVolver.addEventListener('click', function() {
+        categoriasContainer.style.display = 'grid';
         productosContainer.style.display = 'none';
         btnVolver.style.display = 'none';
-        
-        categoriasContainer.style.display = 'grid';
-        setTimeout(() => {
-            categoriasContainer.style.opacity = '1';
-            
-            // Asegurar que el footer permanezca visible después de la transición
-            if (footer) {
-                footer.style.display = 'block';
-                footer.querySelector('.box-container').style.display = 'grid';
-            }
-        }, 50);
-        
-        const url = new URL(window.location.href);
-        url.searchParams.delete('categoria');
-        window.history.replaceState({}, '', url);
-    }, 300);
-}
+        tituloPrincipal.textContent = 'Explora nuestras categorías';
+    });
 
-// ... resto del código existente ... 
+    // Manejar cantidad de productos
+    const cantidadControles = document.querySelectorAll('.cantidad-control');
+    cantidadControles.forEach(control => {
+        const input = control.querySelector('.cantidad-input');
+        const btnMenos = control.querySelector('.menos');
+        const btnMas = control.querySelector('.mas');
+
+        btnMenos.addEventListener('click', () => {
+            if (input.value > 1) {
+                input.value = parseInt(input.value) - 1;
+            }
+        });
+
+        btnMas.addEventListener('click', () => {
+            if (input.value < 99) {
+                input.value = parseInt(input.value) + 1;
+            }
+        });
+
+        input.addEventListener('change', () => {
+            if (input.value < 1) input.value = 1;
+            if (input.value > 99) input.value = 99;
+        });
+    });
+});

@@ -1,0 +1,94 @@
+.footer {
+    position: relative;
+    z-index: 1;
+    display: block !important;
+}
+
+.footer .box-container {
+    display: grid !important;
+    grid-template-columns: repeat(4, minmax(25rem, 1fr));
+    gap: 1.5rem;
+}
+
+.footer .box {
+    display: block !important;
+}
+
+.footer .box h3,
+.footer .box a {
+    display: block !important;
+}
+
+.footer .box h3 {
+    padding: .5rem 0;
+    font-size: 2.5rem;
+    color: var(--black);
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.footer .box a {
+    display: block;
+    padding: .5rem 0;
+    font-size: 1.5rem;
+    color: var(--light-color);
+    opacity: 1 !important;
+    visibility: visible !important;
+}
+
+.footer .box a:hover {
+    color: var(--green);
+    text-decoration: underline;
+}
+
+.footer .creditos {
+    text-align: center;
+    border-top: .1rem solid rgba(0,0,0,.1);
+    font-size: 2rem;
+    color: var(--black);
+    padding: .5rem;
+    padding-top: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.footer .creditos span {
+    color: var(--green);
+}
+
+/* Correcciones para el footer responsive */
+@media (max-width: 991px) {
+    .footer .box-container {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+
+    .footer .box {
+        text-align: center;
+    }
+}
+
+@media (max-width: 450px) {
+    .footer .box-container {
+        grid-template-columns: 1fr;
+    }
+
+    .footer .box {
+        text-align: center;
+    }
+
+    .footer .box h3 {
+        font-size: 2rem;
+        padding: 1rem 0;
+    }
+
+    .footer .box a {
+        font-size: 1.5rem;
+        padding: 0.5rem 0;
+        display: block;
+    }
+
+    .footer .creditos {
+        font-size: 1.5rem;
+        padding: 1rem 0.5rem;
+    }
+}

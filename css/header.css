@@ -21,6 +21,14 @@ header .logo i {
     color:var(--green);
 }
 
+header .navbar {
+    flex: 1; /* Asegura que el navbar ocupe el espacio disponible */
+    justify-content: center; /* Centra los elementos dentro del navbar */
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
 header .navbar a {
     font-size: 1.7rem;
     border-radius: .5rem;
@@ -105,11 +113,11 @@ header .icons .fa-user:hover {
     }
 
     header .navbar {
-        flex: 1;
         display: flex;
-        justify-content: center;
         align-items: center;
-        gap: 1rem;
+        justify-content: center;
+        flex: 1;
+        gap: 2rem;
         position: absolute;
         top: 100%;
         left: 0;
@@ -119,6 +127,7 @@ header .icons .fa-user:hover {
         padding: 1rem;
         flex-direction: column;
         clip-path: polygon(0 0, 100% 0, 0 0, 0 0);
+        width: 100%;
     }
 
     header .navbar.active {
@@ -128,9 +137,10 @@ header .icons .fa-user:hover {
     header .navbar a {
         display: block;
         padding: 1.5rem;
-        margin: 1rem;
+        margin: 0.5rem auto;
         font-size: 1.8rem;
         background: #eee;
         text-align: center;
+        width: 90%;
     }
 } 

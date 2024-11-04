@@ -1,3 +1,55 @@
+.Reserva form{
+    max-width: 90rem;
+    border-radius: .5rem;
+    box-shadow: var(--box-shadow);
+    border:.1rem solid rgba(0,0,0,.2);
+    background: #fff;
+    padding:1.5rem;
+    margin:0 auto;
+}
+
+.Reserva form .inputBox{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.Reserva form .inputBox .input{
+    width:49%;
+}
+
+.Reserva form .inputBox .input span{
+    display:block;
+    padding:.5rem 0;
+    font-size: 1.5rem;
+    color: var(--light-color);
+}
+
+.Reserva form .inputBox .input input,
+.Reserva form .inputBox .input textarea{
+    background: #eee;
+    border-radius: .5rem;
+    padding: 1rem;
+    font-size: 1.6rem;
+    color:var(--black);
+    text-transform: none;
+    margin-bottom:1rem;
+    width:100%;
+}
+
+.Reserva form .inputBox .input input:focus,
+.Reserva form .inputBox .input textarea:focus{
+    border: .1rem soli var(--green);
+}
+
+.Reserva form .inputBox .input textarea{
+    height:20rem;
+    resize:none;
+}
+
+.Reserva form .btn{
+    margin-top: 0;
+}
 /* Estilos principales para la sección de reserva */
 .Reserva {
     padding: 8rem 9% 2rem;

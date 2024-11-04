@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
+@import url('acercade.css');
+@import url('busqueda.css');
+@import url('carga.css');
+@import url('categorias.css');
+@import url('favoritos.css');
+@import url('footer.css');
+@import url('header.css');
+@import url('Inicio.css');
+@import url('login.css');
+@import url('menu.css');
+@import url('opiniones.css');
+@import url('perfil.css');
+@import url('productos.css');
+@import url('registro.css');
+@import url('reserva.css');
+
+:root{
+    --green:#27ae60;
+    --black:#192a56;
+    --light-color:#666;
+    --red:#dd1515;
+    --yellow:#e0bf00;
+    --box-shadow:0 .5rem 1.5rem rgba(0,0,0,.1);
+    --transition: all 0.3s ease;
+}
+*{
+    font-family: 'Nunito', sans-serif;
+    margin:0; padding:0;
+    box-sizing: border-box;
+    text-decoration: none;
+    outline: none; border:none;
+    text-transform: capitalize;
+    transition: var(--transition);
+}
+
+html{
+    font-size: 62.5%;
+    overflow-x: hidden;
+    scroll-padding-top: 5.5rem;
+    scroll-behavior: smooth;
+}
+
+section{
+    padding: 2rem 9%;
+}
+
+section:nth-child(even){
+    background:#eee;
+}
+
+.sub-titulo{
+    text-align: center;
+    color:var(--green);
+    font-size: 2rem;
+    padding-top: 1rem;
+}
+
+.titulo{
+    text-align: center;
+    color:var(--black);
+    font-size: 3rem;
+    padding-top: 2rem;
+    text-transform: uppercase;
+}
+
+.btn{
+    display: inline-block;
+    padding: .8rem 3rem;
+    font-size: 1.7rem;
+    color: #fff;
+    background: var(--black);
+    border-radius: .5rem;
+    cursor: pointer;
+    margin-top: 1rem;
+}
+
+.btn:hover{
+    background: var(--green);
+    letter-spacing: .1rem;
+}
+
+@media (max-width:991px){
+
+    html{
+        font-size: 55%;
+    }
+
+    section{
+        padding:2rem;
+    }
+}
+
+@media (max-width:768px){
+
+    .Inicio .Inicio-slider .slide .content h3{
+        font-size:5rem;
+    }
+}
+
+@media (max-width:450px){
+
+    html{
+        font-size: 50%;
+    }
+
+    .Reserva form .inputBox .input{
+        width:100%;
+    }
+}
