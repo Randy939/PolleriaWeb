@@ -1,0 +1,128 @@
+
+.Acerca-de .row{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    align-items: center;
+    background: #fff;
+    border-radius: 2rem;
+    box-shadow: var(--box-shadow);
+    padding: 3rem;
+    margin-top: 3rem;
+}
+
+.Acerca-de .row .image{
+    flex: 1 1 45rem;
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem;
+}
+
+.Acerca-de .row .image img{
+    width: 100%;
+    transition: transform 0.5s ease;
+}
+
+.Acerca-de .row .image:hover img{
+    transform: scale(1.05);
+}
+
+.Acerca-de .row .image .experience-badge{
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--green);
+    color: #fff;
+    padding: 2rem;
+    border-radius: 50%;
+    text-align: center;
+    width: 12rem;
+    height: 12rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    animation: float 3s ease-in-out infinite;
+}
+
+.Acerca-de .row .image .experience-badge .years{
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.Acerca-de .row .image .experience-badge .text{
+    font-size: 1.4rem;
+    line-height: 1.2;
+}
+
+.Acerca-de .row .content{
+    flex: 1 1 45rem;
+}
+
+.Acerca-de .row .content h3{
+    color: var(--black);
+    font-size: 3.5rem;
+    margin-bottom: 2rem;
+    text-transform: uppercase;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.Acerca-de .row .content h3::after{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 8rem;
+    height: 0.3rem;
+    background: var(--green);
+}
+
+.Acerca-de .row .content .description p{
+    color: var(--light-color);
+    font-size: 1.6rem;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    text-align: justify;
+}
+
+.Acerca-de .row .content .icons-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.Acerca-de .row .content .icons-container .icons{
+    background: #f7f7f7;
+    padding: 2rem;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.Acerca-de .row .content .icons-container .icons:hover{
+    background: var(--green);
+    transform: translateY(-5px);
+}
+
+.Acerca-de .row .content .icons-container .icons:hover i,
+.Acerca-de .row .content .icons-container .icons:hover .info h4,
+.Acerca-de .row .content .icons-container .icons:hover .info span{
+    color: #fff;
+}
+
+.Acerca-de .row .content .icons-container .icons i{
+    font-size: 3rem;
+    color: var(--green);
+    transition: all 0.3s ease;
+}
+
+.Acerca-de .row .content .icons-container .icons .info h4{
+    font-size: 1.8rem;
+    color: var(--black);
+    margin-bottom: 0.5rem;
+    transition: all 0.3s ease;
+}

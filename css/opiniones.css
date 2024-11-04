@@ -1,0 +1,136 @@
+/* Bloque principal de Opiniones */
+.Opiniones .slide{
+    padding:2rem;
+    box-shadow:var(--box-shadow);
+    border:.1rem solid rgba(0,0,0,.2);
+    border-radius: .5rem;
+    position: relative;
+}
+
+.Opiniones .slide .fa-quote-right{
+    position: absolute;
+    top: 2rem; right: 2rem;
+    font-size: 6rem;
+    color:#ccc;
+}
+
+.Opiniones .slide .user{
+    display:flex;
+    gap: 1.5rem;
+    align-items: center;
+    padding-bottom: 1.5rem;
+}
+
+.Opiniones .slide .user img{
+    height: 7rem;
+    width: 7rem;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.Opiniones .slide .user h3{
+    color:var(--black);
+    font-size: 2rem;
+    padding-bottom: .5rem;
+}
+
+.Opiniones .slide .user i{
+    font-size: 1.3rem;
+    color:var(--green);
+}
+
+.Opiniones .slide p{
+    font-size: 1.5rem;
+    line-height: 1.8;
+    color:var(--light-color);
+}
+
+/* Elementos relacionados con acciones de opiniones */
+.opinion-acciones {
+    display: flex;
+    gap: 1rem;
+}
+
+.util-btn, .compartir-btn {
+    padding: 0.8rem 1.5rem;
+    border-radius: 2rem;
+    background: #f0f0f0;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.3s ease;
+}
+
+.util-btn:hover, .compartir-btn:hover {
+    background: var(--green);
+    color: #fff;
+}
+
+.util-btn i, .compartir-btn i {
+    font-size: 1.4rem;
+}
+
+.dejar-opinion {
+    text-align: center;
+    margin-top: 4rem;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 1.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+}
+
+.dejar-opinion h3 {
+    font-size: 2rem;
+    color: var(--black);
+    margin-bottom: 1.5rem;
+}
+
+.btn-opinion {
+    padding: 1.2rem 2.5rem;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: 2rem;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-opinion:hover {
+    background: var(--black);
+    transform: scale(1.05);
+}
+
+.btn-opinion i {
+    font-size: 1.8rem;
+}
+
+/* Media queries relacionadas con opiniones */
+@media (max-width: 768px) {
+    .opinion-card {
+        padding: 1.5rem;
+    }
+
+    .opinion-header img {
+        width: 5rem;
+        height: 5rem;
+    }
+
+    .user-info h3 {
+        font-size: 1.6rem;
+    }
+
+    .opinion-content p {
+        font-size: 1.4rem;
+    }
+
+    .btn-opinion {
+        width: 100%;
+        justify-content: center;
+    }
+}

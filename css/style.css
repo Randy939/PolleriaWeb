@@ -1,5 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap');
 @import url('Inicio.css');
+@import url('header.css');
+@import url('busqueda.css');
+@import url('registro.css');
+@import url('menu.css');
+@import url('opiniones.css');
+@import url('reserva.css');
+@import url('perfil.css');
+@import url('login.css');
+@import url('favoritos.css');
+@import url('acercade.css');
 
 :root{
     --green:#27ae60;
@@ -64,135 +74,6 @@ section:nth-child(even){
 .btn:hover{
     background: var(--green);
     letter-spacing: .1rem;
-}
-
-header{
-    position: fixed;
-    top: 0; left: 0; right:0;
-    background: #fff;
-    padding:1rem 7%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 1000;
-    box-shadow: var(--box-shadow);
-}
-
-header .logo{
-    color:var(--black);
-    font-size: 2.5rem;
-    font-weight: bolder; 
-}
-
-header .logo i{
-    color:var(--green);
-}
-
-header .navbar a{
-    font-size: 1.7rem;
-    border-radius: .5rem;
-    padding:.5rem 1.5rem;
-    color:var(--light-color);
-}
-
-header .navbar a.active,
-header .navbar a:hover{
-    color:#fff;
-    background: var(--green);
-}
-
-header .icons {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-header .icons .icon-circle {
-    cursor: pointer;
-    height: 4.5rem;
-    width: 4.5rem;
-    border-radius: 50%;
-    background: #eee;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    text-decoration: none;
-}
-
-header .icons .icon-circle i {
-    font-size: 2rem;
-    color: var(--black);
-    transition: all 0.3s ease;
-}
-
-header .icons .icon-circle:hover {
-    background: var(--green);
-    transform: rotate(360deg);
-}
-
-header .icons .icon-circle:hover i {
-    color: #fff;
-}
-
-/* Mantener el menú hamburguesa visible en móvil */
-@media (max-width: 768px) {
-    header .icons #menu-bars {
-        display: flex;
-    }
-}
-
-#search-form{
-    position: fixed;
-    top: -110%; left: 0;
-    height: 100%; width: 100%;
-    z-index:1004;
-    background:rgba(0,0,0,.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 1rem;
-}
-
-#search-form.active{
-    top:0;
-}
-
-#search-form #search-box{
-    width: 50rem;
-    border-bottom: .1rem solid #fff;
-    padding: 1rem 0;
-    color: #fff;
-    font-size: 3rem;
-    text-transform: none;
-    background: none;
-}
-
-#search-form #search-box::placeholder{
-    color: #eee;
-}
-
-#search-form #search-box::-webkit-search-cancel-button{
-    -webkit-appearance: none;
-    appearance: none;
-}
-
-#search-form label{
-    color: #fff;
-    cursor: pointer;
-    font-size: 3rem;
-}
-
-#search-form label:hover{
-    color:var(--green);
-}
-
-#search-form #close{
-    position: absolute;
-    color:#fff;
-    cursor: pointer;
-    top: 2rem; right: 3rem;
-    font-size: 5rem;
 }
 
 .Ofertas .box-container{
@@ -273,52 +154,6 @@ header .icons .icon-circle:hover i {
     font-weight:bolder;
     margin-right:1rem;
     font-size: 2.5rem;
-}
-
-.Opiniones .slide{
-    padding:2rem;
-    box-shadow:var(--box-shadow);
-    border:.1rem solid rgba(0,0,0,.2);
-    border-radius: .5rem;
-    position: relative;
-}
-
-.Opiniones .slide .fa-quote-right{
-    position: absolute;
-    top: 2rem; right: 2rem;
-    font-size: 6rem;
-    color:#ccc;
-}
-
-.Opiniones .slide .user{
-    display:flex;
-    gap: 1.5rem;
-    align-items: center;
-    padding-bottom: 1.5rem;
-}
-
-.Opiniones .slide .user img{
-    height: 7rem;
-    width: 7rem;
-    border-radius: 50%;
-    object-fit: cover;
-}
-
-.Opiniones .slide .user h3{
-    color:var(--black);
-    font-size: 2rem;
-    padding-bottom: .5rem;
-}
-
-.Opiniones .slide .user i{
-    font-size: 1.3rem;
-    color:var(--green);
-}
-
-.Opiniones .slide p{
-    font-size: 1.5rem;
-    line-height: 1.8;
-    color:var(--light-color);
 }
 
 .Reserva form{
@@ -466,49 +301,12 @@ header .icons .icon-circle:hover i {
         font-size: 55%;
     }
 
-    header{
-        padding:1rem 2rem;
-    }
-
     section{
         padding:2rem;
     }
 }
 
 @media (max-width:768px){
-
-    header .icons #menu-bars {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    header .navbar{
-        position: absolute;
-        top:100%; left:0; right:0;
-        background: #fff;
-        border-top: .1rem solid rgba(0,0,0,.2);
-        border-bottom: .1rem solid rgba(0,0,0,.2);
-        padding: 1rem;
-        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
-    }
-
-    header .navbar.active{
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
-    }
-
-    header .navbar a{
-        display: block;
-        padding: 1.5rem;
-        margin: 1.5rem;
-        font-size: 2rem;
-        background: #eee;
-    }
-
-    #search-form #search-box{
-        width:90%;
-        margin:0 1rem;
-    }
 
     .Inicio .Inicio-slider .slide .content h3{
         font-size:5rem;
@@ -689,12 +487,6 @@ header .icons .icon-circle:hover i {
     }
 }
 
-header .icons .fa-user:hover {
-    color: #fff;
-    background: var(--green);
-    transform: rotate(360deg);
-}
-
 /* Estilos para los filtros */
 .filtros {
     text-align: center;
@@ -778,95 +570,6 @@ header .icons .fa-user:hover {
     align-items: center;
     gap: 1rem;
     margin: 1.5rem 0;
-}
-
-.opinion-acciones {
-    display: flex;
-    gap: 1rem;
-}
-
-.util-btn, .compartir-btn {
-    padding: 0.8rem 1.5rem;
-    border-radius: 2rem;
-    background: #f0f0f0;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: all 0.3s ease;
-}
-
-.util-btn:hover, .compartir-btn:hover {
-    background: var(--green);
-    color: #fff;
-}
-
-.util-btn i, .compartir-btn i {
-    font-size: 1.4rem;
-}
-
-.dejar-opinion {
-    text-align: center;
-    margin-top: 4rem;
-    padding: 2rem;
-    background: #fff;
-    border-radius: 1.5rem;
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
-}
-
-.dejar-opinion h3 {
-    font-size: 2rem;
-    color: var(--black);
-    margin-bottom: 1.5rem;
-}
-
-.btn-opinion {
-    padding: 1.2rem 2.5rem;
-    background: var(--green);
-    color: #fff;
-    border: none;
-    border-radius: 2rem;
-    font-size: 1.6rem;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 1rem;
-    transition: all 0.3s ease;
-}
-
-.btn-opinion:hover {
-    background: var(--black);
-    transform: scale(1.05);
-}
-
-.btn-opinion i {
-    font-size: 1.8rem;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .opinion-card {
-        padding: 1.5rem;
-    }
-
-    .opinion-header img {
-        width: 5rem;
-        height: 5rem;
-    }
-
-    .user-info h3 {
-        font-size: 1.6rem;
-    }
-
-    .opinion-content p {
-        font-size: 1.4rem;
-    }
-
-    .btn-opinion {
-        width: 100%;
-        justify-content: center;
-    }
 }
 
 /* Estilos para las categoras del menú */
@@ -1380,56 +1083,6 @@ header .icons .fa-user:hover {
 .Inicio .swiper-button-prev:hover {
     background: var(--green);
     color: #fff;
-}
-
-/* Correcciones para el header responsive */
-@media (max-width: 768px) {
-    header {
-        padding: 1rem;
-    }
-
-    header .logo {
-        font-size: 2rem;
-    }
-
-    header .icons {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    header .icons i,
-    header .icons a {
-        height: 4rem;
-        width: 4rem;
-        line-height: 4rem;
-        font-size: 1.5rem;
-    }
-
-    header .navbar {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: #fff;
-        border-top: .1rem solid rgba(0,0,0,.2);
-        padding: 0;
-        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
-        transition: .3s ease;
-    }
-
-    header .navbar.active {
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
-    }
-
-    header .navbar a {
-        display: block;
-        padding: 1.5rem;
-        margin: 1rem;
-        font-size: 1.8rem;
-        background: #eee;
-        text-align: center;
-    }
 }
 
 /* Correcciones para el footer responsive */
