@@ -17,21 +17,33 @@ document.getElementById('registroForm').addEventListener('submit', async functio
         });
         
         const data = await response.json();
+        console.log('Respuesta del servidor:', data);
         
         if (data.status === 'success') {
             localStorage.setItem('usuario', JSON.stringify({
-                id: data.data.id,
                 nombre: document.getElementById('nombre').value,
                 email: document.getElementById('email').value
             }));
             
-            alert('Registro exitoso');
-            window.location.href = '/index.html';
+            const mensajeExito = document.createElement('div');
+            mensajeExito.className = 'mensaje-exito';
+            mensajeExito.textContent = 'Registro exitoso';
+            document.getElementById('registroForm').insertBefore(mensajeExito, document.querySelector('.btn-registro'));
+            
+            setTimeout(() => {
+                window.location.href = '/index.html';
+            }, 1500);
         } else {
-            alert(data.message || 'Error en el registro');
+            const mensajeError = document.createElement('div');
+            mensajeError.className = 'mensaje-error';
+            mensajeError.textContent = data.message || 'Error en el registro';
+            document.getElementById('registroForm').insertBefore(mensajeError, document.querySelector('.btn-registro'));
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Error al intentar registrar el usuario');
+        const mensajeError = document.createElement('div');
+        mensajeError.className = 'mensaje-error';
+        mensajeError.textContent = 'Error al intentar registrar el usuario';
+        document.getElementById('registroForm').insertBefore(mensajeError, document.querySelector('.btn-registro'));
     }
 }); 
