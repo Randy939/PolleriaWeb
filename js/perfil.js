@@ -149,13 +149,25 @@ function cambiarSeccion(seccion) {
 async function actualizarDatosPersonales() {
     try {
         const usuario = JSON.parse(localStorage.getItem('usuario'));
+        
+        // Verificar que todos los elementos existan antes de acceder a sus valores
+        const nombre = document.getElementById('nombre');
+        const apellido = document.getElementById('apellido');
+        const email = document.getElementById('email');
+        const telefono = document.getElementById('telefono');
+        const direccion = document.getElementById('direccion');
+
+        if (!nombre || !apellido || !email || !telefono || !direccion) {
+            throw new Error('No se encontraron todos los campos del formulario');
+        }
+
         const formData = {
             id: usuario.id,
-            nombre: document.getElementById('nombre').value,
-            apellido: document.getElementById('apellido').value,
-            email: document.getElementById('email').value,
-            telefono: document.getElementById('telefono').value,
-            direccion: document.getElementById('direccion').value
+            nombre: nombre.value,
+            apellido: apellido.value,
+            email: email.value,
+            telefono: telefono.value,
+            direccion: direccion.value
         };
 
         const response = await fetch(`${API_BASE_URL}/app/Models/actualizar_usuario.php`, {
@@ -170,19 +182,29 @@ async function actualizarDatosPersonales() {
         
         if (data.status === 'success') {
             mostrarMensaje('Datos actualizados correctamente', 'success');
-            // Actualizar datos en localStorage
-            usuario.nombre = formData.nombre;
-            usuario.email = formData.email;
-            localStorage.setItem('usuario', JSON.stringify(usuario));
             
-            // Actualizar nombre en el sidebar
-            document.getElementById('nombre-usuario').textContent = 
-                `${formData.nombre} ${formData.apellido}`;
-            document.getElementById('email-usuario').textContent = formData.email;
+            // Actualizar datos en localStorage
+            const usuarioActualizado = {
+                ...usuario,
+                ...formData
+            };
+            localStorage.setItem('usuario', JSON.stringify(usuarioActualizado));
+            
+            // Actualizar nombre y email en el sidebar
+            const nombreUsuarioElement = document.getElementById('nombre-usuario');
+            const emailUsuarioElement = document.getElementById('email-usuario');
+            
+            if (nombreUsuarioElement) {
+                nombreUsuarioElement.textContent = `${formData.nombre} ${formData.apellido}`;
+            }
+            if (emailUsuarioElement) {
+                emailUsuarioElement.textContent = formData.email;
+            }
         } else {
-            throw new Error(data.message);
+            throw new Error(data.message || 'Error al actualizar los datos');
         }
     } catch (error) {
+        console.error('Error:', error);
         mostrarMensaje(error.message || 'Error al actualizar los datos', 'error');
     }
 }
