@@ -34,11 +34,14 @@ class Usuario {
         $this->direccion = htmlspecialchars(strip_tags($this->direccion));
         $this->telefono = htmlspecialchars(strip_tags($this->telefono));
 
+        // Hash de la contraseña
+        $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
+
         // Vincular valores
         $stmt->bindParam(":nombre", $this->nombre);
         $stmt->bindParam(":apellido", $this->apellido);
         $stmt->bindParam(":email", $this->email);
-        $stmt->bindParam(":password", $this->password);
+        $stmt->bindParam(":password", $password_hash);
         $stmt->bindParam(":direccion", $this->direccion);
         $stmt->bindParam(":telefono", $this->telefono);
 
@@ -107,7 +110,23 @@ class Usuario {
         return $stmt->execute();
     }
 
-    public function cambiarPassword() {
+    public function cambiarPassword($password_actual) {
+        // Verificar la contraseña actual
+        $query = "SELECT password FROM " . $this->table_name . " WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":id", $this->id);
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            $row = $stmt->fetch(PDO::FETCH_ASSOC);
+            if (!password_verify($password_actual, $row['password'])) {
+                throw new Exception("La contraseña actual es incorrecta");
+            }
+        } else {
+            throw new Exception("Usuario no encontrado");
+        }
+
+        // Actualizar la contraseña
         $query = "UPDATE " . $this->table_name . "
                 SET password = :password
                 WHERE id = :id";

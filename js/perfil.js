@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function cargarDatosUsuario(usuario) {
     try {
-        const response = await fetch(`/api/usuario.php?id=${usuario.id}`);
+        const response = await fetch(`/app/Models/usuario.php?id=${usuario.id}`);
         const data = await response.json();
         
         if (data.status === 'success') {
@@ -102,7 +102,7 @@ async function actualizarDatosPersonales() {
             telefono: document.getElementById('telefono').value
         };
 
-        const response = await fetch('/api/actualizar_usuario.php', {
+        const response = await fetch('/app/Models/actualizar_usuario.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -145,7 +145,7 @@ async function cambiarPassword() {
             throw new Error('Las contraseñas no coinciden');
         }
 
-        const response = await fetch('/api/cambiar_password.php', {
+        const response = await fetch('/app/Models/cambiar_password.php', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -168,7 +168,7 @@ async function cambiarPassword() {
 
 async function cargarDirecciones(usuarioId) {
     try {
-        const response = await fetch(`/api/direcciones.php?usuario_id=${usuarioId}`);
+        const response = await fetch(`/app/Models/direcciones.php?usuario_id=${usuarioId}`);
         const data = await response.json();
         
         const direccionesList = document.querySelector('.direcciones-lista');
