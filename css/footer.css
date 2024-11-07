@@ -1,4 +1,5 @@
-.footer {
+
+footer.footer {
     background: #fff;
     padding: 4rem 10%;
     margin-top: auto;
@@ -7,7 +8,7 @@
     z-index: 1;
 }
 
-.footer .box-container {
+footer .box-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 3rem;
@@ -15,19 +16,19 @@
     margin: 0 auto;
 }
 
-.footer .box {
+footer .box {
     padding: 2rem;
     border-radius: 15px;
     background: #f8f9fa;
     transition: all 0.3s ease;
 }
 
-.footer .box:hover {
+footer .box:hover {
     transform: translateY(-5px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.1);
 }
 
-.footer .box h3 {
+footer .box h3 {
     font-size: 2.2rem;
     color: #2c5530;
     padding-bottom: 1.5rem;
@@ -37,7 +38,7 @@
     margin-bottom: 2rem;
 }
 
-.footer .box h3::after {
+footer .box h3::after {
     content: '';
     position: absolute;
     left: 0;
@@ -48,7 +49,7 @@
     border-radius: 2px;
 }
 
-.footer .box a {
+footer .box a {
     display: block;
     padding: 1rem 0;
     font-size: 1.5rem;
@@ -60,7 +61,7 @@
     gap: 1rem;
 }
 
-.footer .box a:hover {
+footer .box a:hover {
     color: #2c5530;
     transform: translateX(8px);
 }
@@ -70,7 +71,7 @@
     font-size: 1.8rem;
 }
 
-.footer .creditos {
+footer .creditos {
     text-align: center;
     margin-top: 3rem;
     padding-top: 3rem;
@@ -79,28 +80,28 @@
     color: #666;
 }
 
-.footer .creditos span {
+footer .creditos span {
     color: #2c5530;
     font-weight: 600;
 }
 
 /* Media Queries */
 @media (max-width: 991px) {
-    .footer .box-container {
+    footer .box-container {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 450px) {
-    .footer .box-container {
+    footer .box-container {
         grid-template-columns: 1fr;
     }
     
-    .footer {
+    footer {
         padding: 3rem 5%;
     }
     
-    .footer .box {
+    footer .box {
         padding: 1.5rem;
     }
 }

@@ -13,7 +13,7 @@
 
     <div id="header-placeholder"></div>
 
-    <section class="menu" id="menu" style="padding-bottom: 2rem;">
+    <section class="menu" id="menu">
             <div class="titulo-container">
                 <h1 class="titulo-principal">Explora nuestras categorías</h1>
                 <button class="btn-volver">
@@ -87,7 +87,7 @@
 
         <!-- El contenedor de productos se ocultará inicialmente -->
         <div class="productos-container" style="display: none;">
-            <div class="box-container">
+            <div class="caja-contenedora">
                 <!-- Productos de Pollos -->
                 <div class="box" data-categoria="pollos" data-id="producto1">
                     <div class="image">
@@ -230,6 +230,11 @@
                 </div>
             </div>
         </div>
+
+        <div class="mensaje-no-productos" style="display: none;">
+            <h2>No hay productos disponibles</h2>
+            <p>Por favor, selecciona otra categoría.</p>
+        </div>
     </section>
 
     <div id="footer-placeholder"></div>
@@ -237,6 +242,6 @@
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="/js/layouts.js"></script>
     <script src="/js/menu.js"></script>
-    
+    <script src="/js/carrito.js"></script>
 </body>
 </html> 

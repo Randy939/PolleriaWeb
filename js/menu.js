@@ -2,145 +2,81 @@ document.addEventListener('DOMContentLoaded', function() {
     const categoriasContainer = document.querySelector('.categorias-container');
     const productosContainer = document.querySelector('.productos-container');
     const btnVolver = document.querySelector('.btn-volver');
-    const tituloPrincipal = document.querySelector('.titulo-principal');
+    const categoriaCards = document.querySelectorAll('.categoria-card');
+    const cantidadBtns = document.querySelectorAll('.cantidad-btn');
+    const mensajeNoProductos = document.querySelector('.mensaje-no-productos');
 
-    // Asegurarse de que las categorías sean visibles al inicio
-    if (categoriasContainer) {
-        categoriasContainer.style.display = 'grid';
-        categoriasContainer.style.opacity = '1';
-        categoriasContainer.style.visibility = 'visible';
-    }
-
-    // Ocultar productos y botón volver inicialmente
-    if (productosContainer) {
-        productosContainer.style.display = 'none';
-    }
-    if (btnVolver) {
-        btnVolver.style.display = 'none';
-    }
-
-    // Manejar clics en las categorías
-    categoriasContainer.addEventListener('click', function(e) {
-        const categoriaCard = e.target.closest('.categoria-card');
-        if (categoriaCard) {
-            const categoria = categoriaCard.dataset.categoria;
-            mostrarProductos(categoria);
-        }
-    });
-
-    // Función para mostrar productos
+    // Función para mostrar productos de una categoría
     function mostrarProductos(categoria) {
-        const categoriasContainer = document.querySelector('.categorias-container');
-        const productosContainer = document.querySelector('.productos-container');
-        const btnVolver = document.querySelector('.btn-volver');
-        const productos = document.querySelectorAll('.box');
-        
-        // Mostrar el botón volver cuando se muestran los productos
-        btnVolver.style.display = 'block';
-        
-        // Ocultar categorías y mostrar productos
         categoriasContainer.style.display = 'none';
         productosContainer.style.display = 'block';
-        
-        // Ocultar todos los productos primero
+        btnVolver.style.display = 'flex';
+
+        const productos = productosContainer.querySelectorAll('.box');
+        let hayProductos = false;
+
         productos.forEach(producto => {
-            producto.style.display = 'none'; // Cambiar a 'none' para ocultar todos los productos
+            if (producto.dataset.categoria === categoria) {
+                producto.style.display = 'block';
+                hayProductos = true;
+            } else {
+                producto.style.display = 'none';
+            }
         });
-        
-        // Mostrar solo los productos de la categoría seleccionada
-        const productosCategoria = document.querySelectorAll(`.box[data-categoria="${categoria}"]`);
-        
-        if (productosCategoria.length === 0) {
-            // Si no hay productos en esta categoría, mostrar mensaje
-            const mensajeNoProductos = document.createElement('div');
-            mensajeNoProductos.className = 'mensaje-no-productos';
-            mensajeNoProductos.innerHTML = `
-                <h2>No hay productos disponibles en esta categoría</h2>
-                <p>Por favor, intenta con otra categoría o vuelve más tarde.</p>
-            `;
-            productosContainer.innerHTML = ''; // Limpiar el contenedor
-            productosContainer.appendChild(mensajeNoProductos);
+
+        // Mostrar mensaje si no hay productos
+        if (!hayProductos) {
+            mensajeNoProductos.style.display = 'block';
         } else {
-            // Si hay productos, mostrarlos
-            productosCategoria.forEach(producto => {
-                producto.style.display = 'block'; // Cambiar a 'block' para mostrar solo los productos de la categoría
-            });
-        }
-
-        // Actualizar título según la categoría
-        const titulosCategoria = {
-            'pollos': 'Pollos a la Brasa',
-            'criollos': 'Platos Criollos',
-            'bebidas': 'Bebidas',
-            'promociones': 'Promociones',
-            'menu-dia': 'Menú del Día'
-        };
-        tituloPrincipal.textContent = titulosCategoria[categoria];
-
-        // Asegurarse de que el footer sea visible
-        const footer = document.querySelector('.footer');
-        if (footer) {
-            footer.style.display = 'block'; // Asegúrate de que el footer esté visible
+            mensajeNoProductos.style.display = 'none';
         }
     }
 
-    // Manejar clic en botón volver
-    btnVolver.addEventListener('click', function() {
-        const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('categoria-card')) {
-        window.location.href = '/app/Views/pages/menu.html';
-    } else {
+    // Función para volver a la vista de categorías
+    function volverACategorias() {
         categoriasContainer.style.display = 'grid';
         productosContainer.style.display = 'none';
         btnVolver.style.display = 'none';
-        tituloPrincipal.textContent = 'Explora nuestras categorías';
+        mensajeNoProductos.style.display = 'none';
     }
-});
 
-    // Manejar cantidad de productos
-    const cantidadControles = document.querySelectorAll('.cantidad-control');
-    cantidadControles.forEach(control => {
-        const input = control.querySelector('.cantidad-input');
-        const btnMenos = control.querySelector('.menos');
-        const btnMas = control.querySelector('.mas');
-
-        btnMenos.addEventListener('click', () => {
-            if (input.value > 1) {
-                input.value = parseInt(input.value) - 1;
-            }
-        });
-
-        btnMas.addEventListener('click', () => {
-            if (input.value < 99) {
-                input.value = parseInt(input.value) + 1;
-            }
-        });
-
-        input.addEventListener('change', () => {
-            if (input.value < 1) input.value = 1;
-            if (input.value > 99) input.value = 99;
+    // Evento para cada tarjeta de categoría
+    categoriaCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const categoria = card.dataset.categoria;
+            mostrarProductos(categoria);
         });
     });
 
-    // Obtener la categoría de la URL si existe
+    // Evento para el botón de volver
+    btnVolver.addEventListener('click', volverACategorias);
+
+    // Control de cantidad
+    cantidadBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('.cantidad-input');
+            let value = parseInt(input.value);
+
+            if (this.classList.contains('mas')) {
+                value = Math.min(value + 1, 99);
+            } else if (this.classList.contains('menos')) {
+                value = Math.max(value - 1, 1);
+            }
+
+            input.value = value;
+        });
+    });
+
+    // Función para manejar categoría desde URL
     const urlParams = new URLSearchParams(window.location.search);
     const categoriaFromUrl = urlParams.get('categoria-card');
 
-    if (categoriaFromUrl) {
-        // Si viene de una URL con categoría, ocultar categorías desde el inicio
-        categoriasContainer.style.display = 'none';
-        productosContainer.style.display = 'block';
-        mostrarProductos(categoriaFromUrl);
-    } else {
-        // Si no hay categoría en la URL, mostrar las categorías
-        categoriasContainer.style.display = 'grid';
-        productosContainer.style.display = 'none';
-    }
-
-    // Agregar evento al botón volver
-    if (btnVolver) {
-        btnVolver.addEventListener('click', () => {
-            window.location.href = '/app/Views/pages/menu.html';
-        });
-    }
+        if (categoriaFromUrl) {
+            categoriasContainer.style.display = 'none';
+            productosContainer.style.display = 'block';
+            mostrarProductos(categoriaFromUrl);
+        } else {
+            categoriasContainer.style.display = 'grid';
+            productosContainer.style.display = 'none';
+        }
 });

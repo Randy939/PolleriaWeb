@@ -33,15 +33,8 @@ document.addEventListener('DOMContentLoaded', async function() {
             );
         }
 
-        // Ocultar el loader con una transición suave
-        loader.style.opacity = '0';
-        setTimeout(() => {
-            loader.style.display = 'none';
-        }, 500); // Esperar 500ms para que termine la transición
-
     } catch (error) {
         console.error('Error cargando los componentes:', error);
-        loader.style.display = 'none';
     }
 });
 

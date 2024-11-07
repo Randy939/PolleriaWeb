@@ -212,6 +212,18 @@
     .Acerca-de .row .content h3 {
         font-size: 2.5rem;
     }
+
+    .Acerca-de .row .image .experience-badge .years {
+        font-size: 2.5rem;
+        position: relative;
+        top: -5px;
+    }
+
+    .Acerca-de .row .image .experience-badge .text {
+        font-size: 1.5rem;
+        position: relative;
+        top: -6px;
+    }
 }
 
 @media (max-width: 450px) {
@@ -229,5 +241,13 @@
     
     .Acerca-de .row .image .experience-badge .years {
         font-size: 2.5rem;
+        position: relative;
+        top: -5px;
+    }
+
+    .Acerca-de .row .image .experience-badge .text {
+        font-size: 1rem;
+        position: relative;
+        top: -6px;
     }
 }
