@@ -170,6 +170,16 @@ class Usuario {
 
     public function agregarDireccion($direccion) {
         try {
+            // Verificar si el usuario existe y tiene permisos
+            $query = "SELECT id FROM " . $this->table_name . " WHERE id = :id LIMIT 1";
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":id", $this->id);
+            $stmt->execute();
+            
+            if($stmt->rowCount() === 0) {
+                throw new Exception("Usuario no encontrado o sin permisos");
+            }
+
             $query = "INSERT INTO " . $this->table_direcciones . "
                     (usuario_id, direccion, referencia)
                     VALUES (:usuario_id, :direccion, :referencia)";
@@ -184,8 +194,14 @@ class Usuario {
             $stmt->bindParam(":direccion", $direccion['direccion']);
             $stmt->bindParam(":referencia", $direccion['referencia']);
             
-            return $stmt->execute();
+            if(!$stmt->execute()) {
+                $error = $stmt->errorInfo();
+                throw new Exception("Error al ejecutar la consulta: " . $error[2]);
+            }
+            
+            return true;
         } catch(PDOException $e) {
+            error_log("Error en agregarDireccion: " . $e->getMessage());
             throw new Exception("Error al agregar dirección: " . $e->getMessage());
         }
     }

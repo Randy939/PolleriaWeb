@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
     // Manejar formulario de datos personales
     document.getElementById('form-datos-personales').addEventListener('submit', async function(e) {
         e.preventDefault();
@@ -224,6 +223,46 @@ async function cargarDirecciones(usuarioId) {
 document.querySelector('.btn-agregar').addEventListener('click', function() {
     mostrarFormularioDireccion();
 });
+
+async function guardarDireccion(form, direccionId = null) {
+    try {
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+        const formData = {
+            usuario_id: usuario.id,
+            direccion: form.querySelector('[name="direccion"]').value,
+            referencia: form.querySelector('[name="referencia"]').value
+        };
+
+        console.log('Enviando datos:', formData);
+
+        const response = await fetch(`${API_BASE_URL}/app/Models/direcciones.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+        const responseText = await response.text();
+        console.log('Respuesta del servidor:', responseText);
+
+        try {
+            const data = JSON.parse(responseText);
+            if (data.status === 'success') {
+                mostrarMensaje('Dirección guardada correctamente', 'success');
+                await cargarDirecciones(usuario.id);
+            } else {
+                throw new Error(data.message || 'Error al guardar la dirección');
+            }
+        } catch (jsonError) {
+            console.error('Error al parsear respuesta:', jsonError);
+            throw new Error('Respuesta inválida del servidor');
+        }
+    } catch (error) {
+        console.error('Error completo:', error);
+        mostrarMensaje(error.message, 'error');
+    }
+}
 
 function mostrarFormularioDireccion(direccion = null) {
     const modal = document.createElement('div');
