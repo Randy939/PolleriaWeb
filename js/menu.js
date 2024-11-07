@@ -69,9 +69,9 @@ document.addEventListener('DOMContentLoaded', function() {
                             <div class="precio-cantidad">
                                 <span class="precio">S/. ${producto.precio}</span>
                                 <div class="cantidad-control">
-                                    <button class="cantidad-btn menos">-</button>
+                                    <button class="cantidad-btne menos">-</button>
                                     <input type="number" class="cantidad-input" value="1" min="1" max="99" readonly>
-                                    <button class="cantidad-btn mas">+</button>
+                                    <button class="cantidad-btne mas">+</button>
                                 </div>
                             </div>
                             <button class="btn agregar-carrito" 
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Función para activar controles de cantidad
     function activarControlesCantidad() {
-        const cantidadBtns = document.querySelectorAll('.cantidad-btn');
+        const cantidadBtns = document.querySelectorAll('.cantidad-btne');
         cantidadBtns.forEach(btn => {
             btn.addEventListener('click', function() {
                 const input = this.parentElement.querySelector('.cantidad-input');
