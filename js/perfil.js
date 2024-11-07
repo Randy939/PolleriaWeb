@@ -53,6 +53,11 @@ document.addEventListener('DOMContentLoaded', function() {
         e.preventDefault();
         await cambiarPassword();
     });
+
+    // Agregar manejador para el botón de nueva dirección
+    document.querySelector('.btn-agregar').addEventListener('click', () => {
+        mostrarFormularioDireccion();
+    });
 });
 
 async function cargarDatosUsuario(usuario) {
@@ -227,10 +232,14 @@ document.querySelector('.btn-agregar').addEventListener('click', function() {
 async function guardarDireccion(form, direccionId = null) {
     try {
         const usuario = JSON.parse(localStorage.getItem('usuario'));
+        if (!usuario || !usuario.id) {
+            throw new Error('No se encontró información del usuario');
+        }
+
         const formData = {
             usuario_id: usuario.id,
             direccion: form.querySelector('[name="direccion"]').value,
-            referencia: form.querySelector('[name="referencia"]').value
+            referencia: form.querySelector('[name="referencia"]').value || ''
         };
 
         console.log('Enviando datos:', formData);
@@ -238,25 +247,29 @@ async function guardarDireccion(form, direccionId = null) {
         const response = await fetch(`${API_BASE_URL}/app/Models/direcciones.php`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
             body: JSON.stringify(formData)
         });
 
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
+
         const responseText = await response.text();
         console.log('Respuesta del servidor:', responseText);
 
-        try {
-            const data = JSON.parse(responseText);
-            if (data.status === 'success') {
-                mostrarMensaje('Dirección guardada correctamente', 'success');
-                await cargarDirecciones(usuario.id);
-            } else {
-                throw new Error(data.message || 'Error al guardar la dirección');
-            }
-        } catch (jsonError) {
-            console.error('Error al parsear respuesta:', jsonError);
-            throw new Error('Respuesta inválida del servidor');
+        if (!responseText) {
+            throw new Error('El servidor no devolvió ninguna respuesta');
+        }
+
+        const data = JSON.parse(responseText);
+        if (data.status === 'success') {
+            mostrarMensaje('Dirección guardada correctamente', 'success');
+            await cargarDirecciones(usuario.id);
+        } else {
+            throw new Error(data.message || 'Error al guardar la dirección');
         }
     } catch (error) {
         console.error('Error completo:', error);

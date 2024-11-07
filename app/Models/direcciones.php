@@ -1,5 +1,8 @@
 <?php
-header("Access-Control-Allow-Origin: https://gentle-arithmetic-98eb61.netlify.app");
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+header("Access-Control-Allow-Origin: https://gentle-arithmetic-98eb61.netlify.app");  // Cambia esto según tu dominio
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: GET, POST, DELETE");
 header("Access-Control-Max-Age: 3600");
@@ -11,62 +14,41 @@ require_once 'usuario.php';
 try {
     $database = new Database();
     $db = $database->getConnection();
-    
-    // Verificar permisos de base de datos
-    try {
-        $testQuery = "INSERT INTO " . $table_direcciones . " 
-                     (usuario_id, direccion, referencia) 
-                     VALUES (0, 'test', 'test')";
-        $db->prepare($testQuery);
-        // Si no hay error, tiene permisos
-    } catch(PDOException $e) {
-        error_log("Error de permisos: " . $e->getMessage());
-        throw new Exception("El usuario no tiene permisos suficientes para realizar esta operación");
-    }
-
     $usuario = new Usuario($db);
 
-    switch($_SERVER["REQUEST_METHOD"]) {
-        case 'GET':
-            if(isset($_GET['usuario_id'])) {
-                $usuario->id = $_GET['usuario_id'];
-                $direcciones = $usuario->obtenerDirecciones();
-                
-                http_response_code(200);
-                echo json_encode(array(
-                    "status" => "success",
-                    "direcciones" => $direcciones
-                ));
-            }
-            break;
-            
-        case 'POST':
-            // Agregar logging para debug
-            error_log("Recibiendo POST request para direcciones");
-            $rawData = file_get_contents("php://input");
-            error_log("Datos recibidos: " . $rawData);
-            
-            $data = json_decode($rawData);
-            if(!empty($data->usuario_id) && !empty($data->direccion)) {
-                $usuario->id = $data->usuario_id;
-                $direccion = array(
-                    "direccion" => $data->direccion,
-                    "referencia" => $data->referencia ?? ''
-                );
-                
-                if($usuario->agregarDireccion($direccion)) {
-                    http_response_code(201);
-                    echo json_encode(array(
-                        "status" => "success", 
-                        "message" => "Dirección agregada."
-                    ));
-                } else {
-                    throw new Exception("No se pudo agregar la dirección");
-                }
-            } else {
-                throw new Exception("Datos incompletos");
-            }
-            break;
+    if ($_SERVER["REQUEST_METHOD"] === 'POST') {
+        $rawData = file_get_contents("php://input");
+        error_log("Datos recibidos: " . $rawData);
+        
+        $data = json_decode($rawData);
+        
+        if (json_last_error() !== JSON_ERROR_NONE) {
+            throw new Exception("Error al decodificar JSON: " . json_last_error_msg());
+        }
+
+        if (empty($data->usuario_id)) {
+            throw new Exception("ID de usuario no proporcionado");
+        }
+
+        if (empty($data->direccion)) {
+            throw new Exception("Dirección no proporcionada");
+        }
+
+        $usuario->id = $data->usuario_id;
+        $direccion = array(
+            "direccion" => $data->direccion,
+            "referencia" => $data->referencia ?? ''
+        );
+        
+        if ($usuario->agregarDireccion($direccion)) {
+            http_response_code(201);
+            echo json_encode(array(
+                "status" => "success", 
+                "message" => "Dirección agregada correctamente"
+            ));
+        } else {
+            throw new Exception("No se pudo agregar la dirección");
+        }
     }
 } catch(Exception $e) {
     error_log("Error en direcciones.php: " . $e->getMessage());
