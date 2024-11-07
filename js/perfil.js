@@ -57,13 +57,24 @@ document.addEventListener('DOMContentLoaded', function() {
 async function cargarDatosUsuario(usuario) {
     try {
         console.log('ID de usuario:', usuario.id);
-        const response = await fetch(`/app/Models/obtener_usuario.php?id=${usuario.id}`);
+        const response = await fetch(`/app/Models/obtener_usuario.php?id=${usuario.id}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        const responseText = await response.text();
+        console.log('Respuesta raw:', responseText);
+        
+        let data;
+        try {
+            data = JSON.parse(responseText);
+        } catch (e) {
+            console.error('Error al parsear JSON:', e);
+            throw new Error('La respuesta del servidor no es JSON válido');
         }
         
-        const data = await response.json();
         console.log('Datos recibidos:', data);
         
         if (data.status === 'success') {

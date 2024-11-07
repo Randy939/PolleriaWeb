@@ -1,13 +1,22 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+// Prevenir cualquier salida antes de los headers
+ob_start();
+// Configurar headers
 header('Content-Type: application/json');
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET');
+header('Access-Control-Allow-Headers: Content-Type');
+
 require_once 'database.php';
 require_once 'usuario.php';
 
-$database = new Database();
-$db = $database->getConnection();
+try {
+    $database = new Database();
+    $db = $database->getConnection();
 
-if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
-    try {
+    if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
         $query = "SELECT id, nombre, apellido, email, telefono, direccion 
                  FROM usuarios 
                  WHERE id = :id 
@@ -29,16 +38,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['id'])) {
                 'message' => 'Usuario no encontrado'
             ]);
         }
-    } catch (Exception $e) {
+    } else {
         echo json_encode([
             'status' => 'error',
-            'message' => $e->getMessage()
+            'message' => 'ID de usuario no proporcionado'
         ]);
     }
-} else {
+} catch (Exception $e) {
     echo json_encode([
         'status' => 'error',
-        'message' => 'ID de usuario no proporcionado'
+        'message' => $e->getMessage()
     ]);
 }
+
+// Limpiar cualquier salida pendiente
+ob_end_flush();
 ?> 
