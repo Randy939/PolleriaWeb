@@ -158,8 +158,7 @@ async function actualizarDatosPersonales() {
             nombre: document.getElementById('nombre'),
             apellido: document.getElementById('apellido'),
             email: document.getElementById('email'),
-            telefono: document.getElementById('telefono'),
-            direccion: document.getElementById('direccion')
+            telefono: document.getElementById('telefono')
         };
 
         // Verificar que todos los campos existan
@@ -177,8 +176,7 @@ async function actualizarDatosPersonales() {
             nombre: campos.nombre.value.trim(),
             apellido: campos.apellido.value.trim(),
             email: campos.email.value.trim(),
-            telefono: campos.telefono.value.trim(),
-            direccion: campos.direccion.value.trim()
+            telefono: campos.telefono.value.trim()
         };
 
         // Validar que ningún campo esté vacío
