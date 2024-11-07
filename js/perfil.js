@@ -1,3 +1,5 @@
+const API_BASE_URL = 'https://randy939-001-site1.qtempurl.com';
+
 document.addEventListener('DOMContentLoaded', function() {
     const usuario = JSON.parse(localStorage.getItem('usuario'));
     
@@ -57,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function() {
 async function cargarDatosUsuario(usuario) {
     try {
         console.log('ID de usuario:', usuario.id);
-        const response = await fetch(`/app/Models/obtener_usuario.php?id=${usuario.id}`, {
+        const response = await fetch(`${API_BASE_URL}/app/Models/obtener_usuario.php?id=${usuario.id}`, {
             method: 'GET',
             credentials: 'include',
             headers: {
@@ -118,7 +120,7 @@ async function actualizarDatosPersonales() {
             direccion: document.getElementById('direccion').value
         };
 
-        const response = await fetch('/app/Models/actualizar_usuario.php', {
+        const response = await fetch(`${API_BASE_URL}/app/Models/actualizar_usuario.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -161,7 +163,7 @@ async function cambiarPassword() {
             throw new Error('Las contraseñas no coinciden');
         }
 
-        const response = await fetch('/app/Models/cambiar_password.php', {
+        const response = await fetch(`${API_BASE_URL}/app/Models/cambiar_password.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -184,7 +186,7 @@ async function cambiarPassword() {
 
 async function cargarDirecciones(usuarioId) {
     try {
-        const response = await fetch(`/app/Models/direcciones.php?usuario_id=${usuarioId}`);
+        const response = await fetch(`${API_BASE_URL}/app/Models/direcciones.php?usuario_id=${usuarioId}`);
         const data = await response.json();
         
         const direccionesList = document.querySelector('.direcciones-lista');
