@@ -56,26 +56,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function cargarDatosUsuario(usuario) {
     try {
-        const response = await fetch(`/app/Models/usuario.php?id=${usuario.id}`);
+        const response = await fetch(`/app/Models/obtener_usuario.php?id=${usuario.id}`);
         const data = await response.json();
-        console.log(data);
         
         if (data.status === 'success') {
-            document.getElementById('nombre').value = data.usuario.nombre;
-            document.getElementById('apellido').value = data.usuario.apellido;
-            document.getElementById('email').value = data.usuario.email;
-            document.getElementById('telefono').value = data.usuario.telefono;
-            document.getElementById('direccion').value = data.usuario.direccion;
+            document.getElementById('nombre').value = data.usuario.nombre || '';
+            document.getElementById('apellido').value = data.usuario.apellido || '';
+            document.getElementById('email').value = data.usuario.email || '';
+            document.getElementById('telefono').value = data.usuario.telefono || '';
+            document.getElementById('direccion').value = data.usuario.direccion || '';
             
             document.getElementById('nombre-usuario').textContent = 
-                `${data.usuario.nombre} ${data.usuario.apellido}`;
-            document.getElementById('email-usuario').textContent = data.usuario.email;
+                `${data.usuario.nombre || ''} ${data.usuario.apellido || ''}`;
+            document.getElementById('email-usuario').textContent = data.usuario.email || '';
         } else {
-            throw new Error(data.message);
+            throw new Error(data.message || 'Error al cargar datos del usuario');
         }
     } catch (error) {
-        mostrarMensaje('Error al cargar datos del usuario', 'error');
-        console.error(error);
+        mostrarMensaje('Error al cargar datos del usuario: ' + error.message, 'error');
+        console.error('Error:', error);
     }
 }
 
