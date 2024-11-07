@@ -113,8 +113,8 @@
     width: 3rem;
     height: 3rem;
     border: none;
-    background: #2c5530;
-    color: #fff;
+    background: #fff;
+    color: #2c5530;
     border-radius: 50%;
     cursor: pointer;
     transition: all 0.3s ease;
