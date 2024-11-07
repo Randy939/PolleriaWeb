@@ -59,22 +59,18 @@ async function cargarDatosUsuario(usuario) {
         console.log('ID de usuario:', usuario.id);
         const response = await fetch(`/app/Models/obtener_usuario.php?id=${usuario.id}`, {
             method: 'GET',
+            credentials: 'include',
             headers: {
-                'Accept': 'application/json'
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             }
         });
         
-        const responseText = await response.text();
-        console.log('Respuesta raw:', responseText);
-        
-        let data;
-        try {
-            data = JSON.parse(responseText);
-        } catch (e) {
-            console.error('Error al parsear JSON:', e);
-            throw new Error('La respuesta del servidor no es JSON válido');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
+        const data = await response.json();
         console.log('Datos recibidos:', data);
         
         if (data.status === 'success') {
