@@ -266,24 +266,55 @@
     .box {
         max-width: 500px;
         margin: 0 auto;
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction: column;
     }
 
     .box .image {
         height: 250px;
+        width: 100%;
+    }
+
+    .box .content {
+        padding: 2rem;
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
     }
 
     .box .content h3 {
         font-size: 2rem;
-        margin-bottom: 1.2rem;
+        margin-bottom: 1rem;
     }
 
     .box .content p {
-        font-size: 1.5rem;
-        margin-bottom: 1.8rem;
+        font-size: 1.3rem;
+        margin-bottom: 1.5rem;
     }
 
-    .precio {
-        font-size: 2rem;
+    .precio-cantidad {
+        flex-direction: column;
+        gap: 1.5rem;
+        align-items: center;
+        padding: 0;
+        margin-bottom: 1.5rem;
+    }
+
+    .cantidad-control {
+        width: 80%;
+        justify-content: center;
+        background: #f8f8f8;
+        padding: 0.8rem;
+    }
+
+    .btn.agregar-carrito {
+        width: 100%;
+        padding: 1.2rem;
+        font-size: 1.4rem;
+        margin-top: auto;
     }
 }
 
