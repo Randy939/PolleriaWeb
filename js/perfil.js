@@ -149,26 +149,46 @@ function cambiarSeccion(seccion) {
 async function actualizarDatosPersonales() {
     try {
         const usuario = JSON.parse(localStorage.getItem('usuario'));
-        
-        // Verificar que todos los elementos existan antes de acceder a sus valores
-        const nombre = document.getElementById('nombre');
-        const apellido = document.getElementById('apellido');
-        const email = document.getElementById('email');
-        const telefono = document.getElementById('telefono');
-        const direccion = document.getElementById('direccion');
-
-        if (!nombre || !apellido || !email || !telefono || !direccion) {
-            throw new Error('No se encontraron todos los campos del formulario');
+        if (!usuario || !usuario.id) {
+            throw new Error('No se encontró información del usuario');
         }
 
+        // Obtener todos los campos del formulario
+        const campos = {
+            nombre: document.getElementById('nombre'),
+            apellido: document.getElementById('apellido'),
+            email: document.getElementById('email'),
+            telefono: document.getElementById('telefono'),
+            direccion: document.getElementById('direccion')
+        };
+
+        // Verificar que todos los campos existan
+        const camposFaltantes = Object.entries(campos)
+            .filter(([nombre, elemento]) => !elemento)
+            .map(([nombre]) => nombre);
+
+        if (camposFaltantes.length > 0) {
+            throw new Error(`Campos faltantes en el formulario: ${camposFaltantes.join(', ')}`);
+        }
+
+        // Crear objeto con los datos del formulario
         const formData = {
             id: usuario.id,
-            nombre: nombre.value,
-            apellido: apellido.value,
-            email: email.value,
-            telefono: telefono.value,
-            direccion: direccion.value
+            nombre: campos.nombre.value.trim(),
+            apellido: campos.apellido.value.trim(),
+            email: campos.email.value.trim(),
+            telefono: campos.telefono.value.trim(),
+            direccion: campos.direccion.value.trim()
         };
+
+        // Validar que ningún campo esté vacío
+        const camposVacios = Object.entries(formData)
+            .filter(([key, value]) => key !== 'id' && !value)
+            .map(([key]) => key);
+
+        if (camposVacios.length > 0) {
+            throw new Error(`Los siguientes campos son requeridos: ${camposVacios.join(', ')}`);
+        }
 
         const response = await fetch(`${API_BASE_URL}/app/Models/actualizar_usuario.php`, {
             method: 'POST',
@@ -200,6 +220,19 @@ async function actualizarDatosPersonales() {
             if (emailUsuarioElement) {
                 emailUsuarioElement.textContent = formData.email;
             }
+
+            // Volver a poner los campos en modo readonly
+            Object.values(campos).forEach(campo => {
+                if (campo) campo.readOnly = true;
+            });
+
+            // Restaurar botones de edición
+            document.querySelectorAll('.btn-editar').forEach(btn => {
+                btn.innerHTML = '<i class="fas fa-edit"></i>';
+            });
+
+            // Ocultar botón guardar
+            document.querySelector('.btn-guardar').style.display = 'none';
         } else {
             throw new Error(data.message || 'Error al actualizar los datos');
         }
