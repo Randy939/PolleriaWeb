@@ -12,7 +12,6 @@
     text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
     position: relative;
     animation: tituloEntrada 1.2s ease-out;
-    margin-top: 6rem;
 }
 
 .titulo-principal::after {
@@ -76,38 +75,6 @@
 
 .menu {
     padding: 7rem 10%;
-}
-
-@media (max-width: 768px) {
-    .titulo-principal {
-        font-size: 3.5rem;
-        padding: 1.5rem 0;
-    }
-
-    .titulo-principal::after {
-        width: 120px;
-        height: 4px;
-    }
-
-    .menu {
-        padding: 5rem 5%;
-    }
-}
-
-@media (max-width: 480px) {
-    .titulo-principal {
-        font-size: 2.8rem;
-        letter-spacing: 2px;
-        margin-top: 8rem;
-    }
-
-    .titulo-principal::after {
-        width: 100px;
-    }
-
-    .menu {
-        padding: 3rem 3%;
-    }
 }
 
 

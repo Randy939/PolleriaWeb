@@ -284,25 +284,67 @@
     }
 }
 
-@media (max-width: 480px) {
-    .titulo-principal {
-        font-size: 2.8rem;
-        padding: 8rem 0 1.5rem;
+@media (max-width: 500px) {
+    .caja-contenedora {
+        padding: 0.8rem;
+    }
+
+    .box {
+        max-width: 100%;
+    }
+
+    .box .image {
+        height: 200px;
+    }
+
+    .box .content {
+        padding: 1.5rem;
+    }
+
+    .box .content h3 {
+        font-size: 1.8rem;
+        margin-bottom: 0.8rem;
+    }
+
+    .box .content p {
+        font-size: 1.3rem;
+        margin-bottom: 1.2rem;
     }
 
     .precio-cantidad {
         flex-direction: column;
         gap: 1rem;
         align-items: center;
+        padding: 0;
+        margin-bottom: 1.2rem;
+    }
+
+    .precio {
+        font-size: 1.8rem;
     }
 
     .cantidad-control {
         width: 100%;
         justify-content: center;
+        gap: 1rem;
+    }
+
+    .cantidad-btne {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+
+    .cantidad-input {
+        width: 3.5rem;
+        font-size: 1.4rem;
     }
 
     .btn.agregar-carrito {
         padding: 1rem;
         font-size: 1.4rem;
+    }
+
+    .btn.agregar-carrito i {
+        font-size: 1.6rem;
     }
 }
