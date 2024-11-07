@@ -6,6 +6,9 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
+    cargarDatosUsuario(usuario);
+    cargarDirecciones(usuario.id);
+
     // Cargar datos del usuario
     cargarDatosUsuario(usuario);
 
@@ -54,14 +57,24 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-function cargarDatosUsuario(usuario) {
-    document.getElementById('nombre-usuario').textContent = `${usuario.nombre}`;
-    document.getElementById('email-usuario').textContent = usuario.email;
-    
-    // Cargar datos en el formulario
-    document.getElementById('nombre').value = usuario.nombre;
-    document.getElementById('email').value = usuario.email;
-    // ... cargar otros campos
+async function cargarDatosUsuario(usuario) {
+    try {
+        const response = await fetch(`/api/usuario.php?id=${usuario.id}`);
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+            document.getElementById('nombre').value = data.usuario.nombre;
+            document.getElementById('apellido').value = data.usuario.apellido;
+            document.getElementById('email').value = data.usuario.email;
+            document.getElementById('telefono').value = data.usuario.telefono;
+            
+            document.getElementById('nombre-usuario').textContent = 
+                `${data.usuario.nombre} ${data.usuario.apellido}`;
+            document.getElementById('email-usuario').textContent = data.usuario.email;
+        }
+    } catch (error) {
+        mostrarMensaje('Error al cargar datos del usuario', 'error');
+    }
 }
 
 function cambiarSeccion(seccion) {
@@ -80,25 +93,49 @@ function cambiarSeccion(seccion) {
 
 async function actualizarDatosPersonales() {
     try {
-        // Implementar lógica para actualizar datos
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
         const formData = {
+            id: usuario.id,
             nombre: document.getElementById('nombre').value,
             apellido: document.getElementById('apellido').value,
+            email: document.getElementById('email').value,
             telefono: document.getElementById('telefono').value
         };
 
-        // Hacer la petición al servidor
-        // ... código para actualizar datos
+        const response = await fetch('/api/actualizar_usuario.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
 
-        mostrarMensaje('Datos actualizados correctamente', 'success');
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+            mostrarMensaje('Datos actualizados correctamente', 'success');
+            // Actualizar datos en localStorage
+            usuario.nombre = formData.nombre;
+            usuario.email = formData.email;
+            localStorage.setItem('usuario', JSON.stringify(usuario));
+            
+            // Actualizar nombre en el sidebar
+            document.getElementById('nombre-usuario').textContent = 
+                `${formData.nombre} ${formData.apellido}`;
+            document.getElementById('email-usuario').textContent = formData.email;
+        } else {
+            throw new Error(data.message);
+        }
     } catch (error) {
-        mostrarMensaje('Error al actualizar los datos', 'error');
+        mostrarMensaje(error.message || 'Error al actualizar los datos', 'error');
     }
 }
 
 async function cambiarPassword() {
     try {
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
         const formData = {
+            id: usuario.id,
             password_actual: document.querySelector('[name="password_actual"]').value,
             password_nueva: document.querySelector('[name="password_nueva"]').value,
             password_confirmar: document.querySelector('[name="password_confirmar"]').value
@@ -108,13 +145,99 @@ async function cambiarPassword() {
             throw new Error('Las contraseñas no coinciden');
         }
 
-        // Hacer la petición al servidor
-        // ... código para cambiar contraseña
+        const response = await fetch('/api/cambiar_password.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
 
-        mostrarMensaje('Contraseña actualizada correctamente', 'success');
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+            mostrarMensaje('Contraseña actualizada correctamente', 'success');
+            document.getElementById('form-cambiar-password').reset();
+        } else {
+            throw new Error(data.message);
+        }
     } catch (error) {
         mostrarMensaje(error.message, 'error');
     }
+}
+
+async function cargarDirecciones(usuarioId) {
+    try {
+        const response = await fetch(`/api/direcciones.php?usuario_id=${usuarioId}`);
+        const data = await response.json();
+        
+        const direccionesList = document.querySelector('.direcciones-lista');
+        
+        if (data.status === 'success' && data.direcciones.length > 0) {
+            direccionesList.innerHTML = data.direcciones.map(dir => `
+                <div class="direccion-item">
+                    <p class="direccion-texto">${dir.direccion}</p>
+                    <p class="direccion-referencia">${dir.referencia || ''}</p>
+                    <div class="direccion-acciones">
+                        <button class="btn-editar" data-id="${dir.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-eliminar" data-id="${dir.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            direccionesList.innerHTML = '<p>No hay direcciones registradas</p>';
+        }
+    } catch (error) {
+        mostrarMensaje('Error al cargar las direcciones', 'error');
+    }
+}
+
+// Agregar manejador para el botón de nueva dirección
+document.querySelector('.btn-agregar').addEventListener('click', function() {
+    mostrarFormularioDireccion();
+});
+
+function mostrarFormularioDireccion(direccion = null) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h3>${direccion ? 'Editar' : 'Nueva'} Dirección</h3>
+            <form id="form-direccion">
+                <div class="form-group">
+                    <label>Dirección</label>
+                    <input type="text" name="direccion" required 
+                           value="${direccion ? direccion.direccion : ''}">
+                </div>
+                <div class="form-group">
+                    <label>Referencia</label>
+                    <input type="text" name="referencia" 
+                           value="${direccion ? direccion.referencia : ''}">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancelar">Cancelar</button>
+                    <button type="submit" class="btn-guardar">Guardar</button>
+                </div>
+            </form>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+    
+    // Manejadores de eventos para el modal
+    modal.querySelector('.btn-cancelar').addEventListener('click', () => {
+        modal.remove();
+    });
+    
+    modal.querySelector('#form-direccion').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await guardarDireccion(e.target, direccion?.id);
+        modal.remove();
+    });
 }
 
 function cerrarSesion() {

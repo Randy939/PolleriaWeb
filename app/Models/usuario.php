@@ -80,5 +80,69 @@ class Usuario {
             throw new Exception("Error en la consulta de login: " . $e->getMessage());
         }
     }
+
+    public function actualizar() {
+        $query = "UPDATE " . $this->table_name . "
+                SET nombre = :nombre,
+                    apellido = :apellido,
+                    email = :email,
+                    telefono = :telefono
+                WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+
+        // Sanitizar
+        $this->nombre = htmlspecialchars(strip_tags($this->nombre));
+        $this->apellido = htmlspecialchars(strip_tags($this->apellido));
+        $this->email = htmlspecialchars(strip_tags($this->email));
+        $this->telefono = htmlspecialchars(strip_tags($this->telefono));
+
+        // Vincular valores
+        $stmt->bindParam(":nombre", $this->nombre);
+        $stmt->bindParam(":apellido", $this->apellido);
+        $stmt->bindParam(":email", $this->email);
+        $stmt->bindParam(":telefono", $this->telefono);
+        $stmt->bindParam(":id", $this->id);
+
+        return $stmt->execute();
+    }
+
+    public function cambiarPassword() {
+        $query = "UPDATE " . $this->table_name . "
+                SET password = :password
+                WHERE id = :id";
+
+        $stmt = $this->conn->prepare($query);
+        
+        // Hash de la nueva contraseña
+        $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
+        
+        $stmt->bindParam(":password", $password_hash);
+        $stmt->bindParam(":id", $this->id);
+
+        return $stmt->execute();
+    }
+
+    public function obtenerDirecciones() {
+        $query = "SELECT * FROM direcciones WHERE usuario_id = :usuario_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":usuario_id", $this->id);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function agregarDireccion($direccion) {
+        $query = "INSERT INTO direcciones 
+                (usuario_id, direccion, referencia)
+                VALUES (:usuario_id, :direccion, :referencia)";
+        
+        $stmt = $this->conn->prepare($query);
+        
+        $stmt->bindParam(":usuario_id", $this->id);
+        $stmt->bindParam(":direccion", $direccion['direccion']);
+        $stmt->bindParam(":referencia", $direccion['referencia']);
+        
+        return $stmt->execute();
+    }
 }
 ?> 
