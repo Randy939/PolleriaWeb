@@ -23,15 +23,14 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const data = await response.json();
         
         if (data.status === "success") {
-            // Guardar los datos del usuario en localStorage
-            localStorage.setItem('usuario', JSON.stringify({
-                id: data.data.id,
-                nombre: data.data.nombre,
-                email: email
-            }));
-            
-            // Redirigir directamente al index
-            window.location.href = '/index.html';
+            const usuario = {
+                id: data.usuario.id,
+                nombre: data.usuario.nombre,
+                apellido: data.usuario.apellido,
+                email: data.usuario.email
+            };
+            localStorage.setItem('usuario', JSON.stringify(usuario));
+            window.location.href = '/app/Views/pages/perfil.html';
         } else {
             errorDiv.textContent = data.message || "Error al iniciar sesión";
             errorDiv.style.display = 'block';
