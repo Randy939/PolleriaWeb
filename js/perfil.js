@@ -56,8 +56,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function cargarDatosUsuario(usuario) {
     try {
+        console.log('ID de usuario:', usuario.id);
         const response = await fetch(`/app/Models/obtener_usuario.php?id=${usuario.id}`);
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
         const data = await response.json();
+        console.log('Datos recibidos:', data);
         
         if (data.status === 'success') {
             document.getElementById('nombre').value = data.usuario.nombre || '';
@@ -73,8 +80,8 @@ async function cargarDatosUsuario(usuario) {
             throw new Error(data.message || 'Error al cargar datos del usuario');
         }
     } catch (error) {
+        console.error('Error completo:', error);
         mostrarMensaje('Error al cargar datos del usuario: ' + error.message, 'error');
-        console.error('Error:', error);
     }
 }
 
