@@ -15,6 +15,8 @@
     transition: all 0.4s ease;
     position: relative;
     border: 1px solid rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
 }
 
 .box:hover {
@@ -26,6 +28,7 @@
     position: relative;
     height: 250px;
     overflow: hidden;
+    flex-shrink: 0;
 }
 
 .box .image img {
@@ -60,6 +63,9 @@
 .box .content {
     padding: 2rem;
     text-align: center;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .box .content .stars {
@@ -256,6 +262,11 @@
     .box {
         max-width: 500px;
         margin: 0 auto;
+        height: auto;
+    }
+
+    .box .image {
+        height: 200px;
     }
 
     .box .content h3 {
