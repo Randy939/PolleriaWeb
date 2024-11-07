@@ -20,7 +20,7 @@ document.getElementById('registroForm').addEventListener('submit', async functio
         
         if (data.status === 'success') {
             alert('Registro exitoso');
-            window.location.href = 'login.html';
+            window.location.href = 'index.html';
         } else {
             alert(data.message || 'Error en el registro');
         }
