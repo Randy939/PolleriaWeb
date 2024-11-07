@@ -32,7 +32,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             
             // Redirigir a la página anterior o al inicio
             const previousPage = document.referrer;
-            window.location.href = previousPage || '/app/Views/pages/index.html';
+            window.location.href = previousPage || 'index.html';
         } else {
             errorDiv.textContent = data.message || "Error al iniciar sesión";
             errorDiv.style.display = 'block';
