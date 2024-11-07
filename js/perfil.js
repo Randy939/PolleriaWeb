@@ -196,12 +196,21 @@ async function cambiarPassword() {
 
 async function cargarDirecciones(usuarioId) {
     try {
-        const response = await fetch(`${API_BASE_URL}/app/Models/direcciones.php?usuario_id=${usuarioId}`);
-        const data = await response.json();
-        
+        const response = await fetch(`${API_BASE_URL}/app/Models/direcciones.php?usuario_id=${usuarioId}`, {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const responseText = await response.text();
+        console.log('Respuesta direcciones:', responseText);
+
+        const data = JSON.parse(responseText);
         const direccionesList = document.querySelector('.direcciones-lista');
         
-        if (data.status === 'success' && data.direcciones.length > 0) {
+        if (data.status === 'success' && data.direcciones && data.direcciones.length > 0) {
             direccionesList.innerHTML = data.direcciones.map(dir => `
                 <div class="direccion-item">
                     <p class="direccion-texto">${dir.direccion}</p>
@@ -220,7 +229,8 @@ async function cargarDirecciones(usuarioId) {
             direccionesList.innerHTML = '<p>No hay direcciones registradas</p>';
         }
     } catch (error) {
-        mostrarMensaje('Error al cargar las direcciones', 'error');
+        console.error('Error al cargar direcciones:', error);
+        mostrarMensaje('Error al cargar las direcciones: ' + error.message, 'error');
     }
 }
 

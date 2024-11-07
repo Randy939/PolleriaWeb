@@ -153,8 +153,7 @@ class Usuario {
 
     public function obtenerDirecciones() {
         try {
-            $query = "SELECT id, direccion, referencia 
-                     FROM " . $this->table_direcciones . " 
+            $query = "SELECT * FROM " . $this->table_direcciones . " 
                      WHERE usuario_id = :usuario_id 
                      ORDER BY id DESC";
             
@@ -164,6 +163,7 @@ class Usuario {
             
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch(PDOException $e) {
+            error_log("Error al obtener direcciones: " . $e->getMessage());
             throw new Exception("Error al obtener direcciones: " . $e->getMessage());
         }
     }

@@ -16,6 +16,21 @@ try {
     $db = $database->getConnection();
     $usuario = new Usuario($db);
 
+    if ($_SERVER["REQUEST_METHOD"] === 'GET') {
+        if(isset($_GET['usuario_id'])) {
+            $usuario->id = $_GET['usuario_id'];
+            $direcciones = $usuario->obtenerDirecciones();
+            
+            http_response_code(200);
+            echo json_encode(array(
+                "status" => "success",
+                "direcciones" => $direcciones
+            ));
+        } else {
+            throw new Exception("ID de usuario no proporcionado");
+        }
+    }
+
     if ($_SERVER["REQUEST_METHOD"] === 'POST') {
         $rawData = file_get_contents("php://input");
         error_log("Datos recibidos: " . $rawData);
