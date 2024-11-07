@@ -1,13 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@200;300;400;600;700&display=swap');
 
-:root {
-    --green: #27ae60;
-    --yellow: #ffd700;
-    --black: #192a56;
-    --light-color: #666;
-    --box-shadow: 0 .5rem 1.5rem rgba(0,0,0,.1);
-}
-
 * {
     font-family: 'Nunito', sans-serif;
     margin: 0;
@@ -31,7 +23,7 @@ body {
     min-height: 100vh;
 }
 
-header {
+header.registro-header {
     position: fixed;
     top: 0;
     left: 0;
@@ -45,10 +37,11 @@ header {
     box-shadow: var(--box-shadow);
 }
 
-header .logo {
+header.registro-header .logo {
     color: var(--black);
     font-size: 2.5rem;
     font-weight: bolder;
+    margin-left: 2.5rem;
 }
 
 header .logo i {

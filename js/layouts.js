@@ -56,8 +56,8 @@ function initializeHeaderEvents() {
     const navLinks = document.querySelectorAll('.navbar a');
     navLinks.forEach(link => {
         link.addEventListener('click', () => {
-            menuBars?.classList.remove('fa-times');
-            navbar?.classList.remove('active');
+            menuBars.classList.remove('fa-times');
+            navbar.classList.remove('active');
         });
     });
 

@@ -13,22 +13,11 @@ header {
     animation: headerFadeIn 0.7s ease forwards; /* Agregamos la animación */
 }
 
-/* Agregamos la animación al final del archivo */
-@keyframes headerFadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
 header .logo {
     color:var(--black);
     font-size: 2.5rem;
-    font-weight: bolder; 
+    font-weight: bolder;
+    margin-left: -6rem;
 }
 
 header .logo i {
@@ -74,27 +63,31 @@ header .icons .icon-circle {
     justify-content: center;
     transition: all 0.3s ease;
     text-decoration: none;
+    position: relative;
 }
 
 header .icons .icon-circle i {
     font-size: 2rem;
     color: var(--green);
     transition: all 0.3s ease;
+    position: absolute; /* Cambia a posición absoluta */
+    top: 50%; /* Centra verticalmente */
+    left: 50%; /* Centra horizontalmente */
+    transform: translate(-50%, -50%); /* Ajusta para centrar completamente */
 }
 
 header .icons .icon-circle:hover {
     background: var(--green);
     transform: rotate(360deg);
+    transition: transform 0.3s ease;
 }
 
 header .icons .icon-circle:hover i {
     color: #fff;
 }
 
-header .icons .fa-user:hover {
-    color: #fff;
-    background: var(--green);
-    transform: rotate(360deg);
+header .icons .icon-circle.fa-times::before {
+    content: none; /* Evita que se muestre el pseudo-elemento */
 }
 
 /* Mantener el menú hamburguesa visible en móvil */
@@ -109,7 +102,8 @@ header .icons .fa-user:hover {
     }
 
     header .logo {
-        font-size: 2rem;
+        font-size: 1.9rem;
+        margin-left: 0.5rem;
     }
 
     header .icons {
@@ -124,6 +118,11 @@ header .icons .fa-user:hover {
         width: 4rem;
         line-height: 4rem;
         font-size: 1.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        text-decoration: none;
     }
 
     header .navbar {
@@ -157,4 +156,15 @@ header .icons .fa-user:hover {
         text-align: center;
         width: 90%;
     }
-} 
+}
+
+@keyframes headerFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
