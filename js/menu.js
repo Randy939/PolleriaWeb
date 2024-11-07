@@ -3,23 +3,42 @@ document.addEventListener('DOMContentLoaded', function() {
     const productosContainer = document.querySelector('.productos-container');
     const btnVolver = document.querySelector('.btn-volver');
     const mensajeNoProductos = document.querySelector('.mensaje-no-productos');
+    const tituloPrincipal = document.querySelector('.titulo-principal');
     const API_URL = 'https://randy939-001-site1.qtempurl.com/app/Controllers/productos.php';
 
-    // Mapeo de data-categoria a IDs de la base de datos
+    // Mapeo de data-categoria a IDs y nombres de la base de datos
     const categoriaMapping = {
-        'pollos': 1,
-        'criollos': 2,
-        'bebidas': 3,
-        'promociones': 4,
-        'menu-dia': 5
+        'pollos': {
+            id: 1,
+            nombre: 'Pollos a la Brasa'
+        },
+        'criollos': {
+            id: 2,
+            nombre: 'Platos Criollos'
+        },
+        'bebidas': {
+            id: 3,
+            nombre: 'Bebidas'
+        },
+        'promociones': {
+            id: 4,
+            nombre: 'Promociones'
+        },
+        'menu-dia': {
+            id: 5,
+            nombre: 'Menú del Día'
+        }
     };
 
     // Función para cargar productos por categoría
     async function cargarProductos(categoriaSlug) {
         try {
-            const categoriaId = categoriaMapping[categoriaSlug];
+            const categoriaId = categoriaMapping[categoriaSlug].id;
             const response = await fetch(`${API_URL}?categoria_id=${categoriaId}`);
             const data = await response.json();
+
+            // Actualizar el título con el nombre de la categoría
+            tituloPrincipal.textContent = categoriaMapping[categoriaSlug].nombre;
 
             if (data.status === 'success' && data.productos) {
                 const cajaContenedora = productosContainer.querySelector('.caja-contenedora');
@@ -87,6 +106,8 @@ document.addEventListener('DOMContentLoaded', function() {
         productosContainer.style.display = 'none';
         btnVolver.style.display = 'none';
         mensajeNoProductos.style.display = 'none';
+        // Restaurar el título original
+        tituloPrincipal.textContent = 'Explora nuestras categorías';
     }
 
     // Función para activar controles de cantidad
