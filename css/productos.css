@@ -104,7 +104,7 @@
 .cantidad-control {
     display: flex;
     align-items: center;
-    background: #2c5530;
+    background: #fff;
     border-radius: 50px;
     padding: 0.5rem;
 }
