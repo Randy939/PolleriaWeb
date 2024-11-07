@@ -29,8 +29,10 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
                 apellido: data.usuario.apellido,
                 email: data.usuario.email
             };
+
             localStorage.setItem('usuario', JSON.stringify(usuario));
-            window.location.href = '/app/Views/pages/perfil.html';
+            // Redirigir directamente al index
+            window.location.href = '/index.html';
         } else {
             errorDiv.textContent = data.message || "Error al iniciar sesión";
             errorDiv.style.display = 'block';
