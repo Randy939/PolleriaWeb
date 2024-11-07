@@ -1,8 +1,6 @@
 const API_BASE_URL = 'https://randy939-001-site1.qtempurl.com';
 
-document.addEventListener('DOMContentLoaded', inicializarPerfil);
-
-async function inicializarPerfil() {
+document.addEventListener('DOMContentLoaded', function() {
     const usuario = JSON.parse(localStorage.getItem('usuario'));
     
     if (!usuario) {
@@ -10,102 +8,104 @@ async function inicializarPerfil() {
         return;
     }
 
-    await Promise.all([
-        cargarDatosUsuario(usuario),
-        cargarDirecciones(usuario.id)
-    ]);
-
-    inicializarEventListeners();
-}
-
-function inicializarEventListeners() {
-    // Navegación del menú
+    cargarDatosUsuario(usuario);
+    cargarDirecciones(usuario.id);
+    
+    // Manejar navegación del menú
     document.querySelectorAll('.menu-item').forEach(item => {
-        item.addEventListener('click', manejarNavegacionMenu);
+        item.addEventListener('click', function(e) {
+            if (this.id === 'btn-cerrar-sesion') {
+                cerrarSesion();
+                return;
+            }
+
+            e.preventDefault();
+            const seccion = this.dataset.section;
+            cambiarSeccion(seccion);
+        });
     });
 
-    // Edición de campos
+    // Manejar edición de campos
     document.querySelectorAll('.btn-editar').forEach(btn => {
-        btn.addEventListener('click', manejarEdicionCampo);
+        btn.addEventListener('click', function() {
+            const input = this.parentElement.querySelector('input');
+            const btnGuardar = document.querySelector('.btn-guardar');
+            
+            if (input.readOnly) {
+                input.readOnly = false;
+                input.focus();
+                btnGuardar.style.display = 'block';
+                this.innerHTML = '<i class="fas fa-times"></i>';
+            } else {
+                input.readOnly = true;
+                this.innerHTML = '<i class="fas fa-edit"></i>';
+            }
+        });
     });
 
-    // Formularios
-    document.getElementById('form-datos-personales')?.addEventListener('submit', async (e) => {
+    // Manejar formulario de datos personales
+    document.getElementById('form-datos-personales').addEventListener('submit', async function(e) {
         e.preventDefault();
         await actualizarDatosPersonales();
     });
 
-    document.getElementById('form-cambiar-password')?.addEventListener('submit', async (e) => {
+    // Manejar formulario de cambio de contraseña
+    document.getElementById('form-cambiar-password').addEventListener('submit', async function(e) {
         e.preventDefault();
         await cambiarPassword();
     });
-
-    // Botón agregar dirección
-    document.querySelector('.btn-agregar')?.addEventListener('click', () => {
-        mostrarFormularioDireccion();
-    });
-}
-
-function manejarNavegacionMenu(e) {
-    if (this.id === 'btn-cerrar-sesion') {
-        cerrarSesion();
-        return;
-    }
-
-    e.preventDefault();
-    cambiarSeccion(this.dataset.section);
-}
-
-function manejarEdicionCampo() {
-    const input = this.parentElement.querySelector('input');
-    const btnGuardar = document.querySelector('.btn-guardar');
-    
-    if (input.readOnly) {
-        activarEdicion(input, this, btnGuardar);
-    } else {
-        desactivarEdicion(input, this);
-    }
-}
-
-function activarEdicion(input, btn, btnGuardar) {
-    input.readOnly = false;
-    input.focus();
-    btnGuardar.style.display = 'block';
-    btn.innerHTML = '<i class="fas fa-times"></i>';
-}
-
-function desactivarEdicion(input, btn) {
-    input.readOnly = true;
-    btn.innerHTML = '<i class="fas fa-edit"></i>';
-}
+});
 
 async function cargarDatosUsuario(usuario) {
     try {
-        const response = await fetch(`${API_BASE_URL}/app/Models/obtener_usuario.php?id=${usuario.id}`);
-        if (!response.ok) throw new Error('Error en la respuesta del servidor');
+        console.log('ID de usuario:', usuario.id);
+        const response = await fetch(`${API_BASE_URL}/app/Models/obtener_usuario.php?id=${usuario.id}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
         const data = await response.json();
+        console.log('Datos recibidos:', data);
+        
         if (data.status === 'success') {
-            actualizarCamposUsuario(data.usuario);
+            document.getElementById('nombre').value = data.usuario.nombre || '';
+            document.getElementById('apellido').value = data.usuario.apellido || '';
+            document.getElementById('email').value = data.usuario.email || '';
+            document.getElementById('telefono').value = data.usuario.telefono || '';
+            document.getElementById('direccion').value = data.usuario.direccion || '';
+            
+            document.getElementById('nombre-usuario').textContent = 
+                `${data.usuario.nombre || ''} ${data.usuario.apellido || ''}`;
+            document.getElementById('email-usuario').textContent = data.usuario.email || '';
         } else {
             throw new Error(data.message || 'Error al cargar datos del usuario');
         }
     } catch (error) {
+        console.error('Error completo:', error);
         mostrarMensaje('Error al cargar datos del usuario: ' + error.message, 'error');
     }
 }
 
-function actualizarCamposUsuario(usuario) {
-    const campos = ['nombre', 'apellido', 'email', 'telefono', 'direccion'];
-    campos.forEach(campo => {
-        const elemento = document.getElementById(campo);
-        if (elemento) elemento.value = usuario[campo] || '';
+function cambiarSeccion(seccion) {
+    // Actualizar menú activo
+    document.querySelectorAll('.menu-item').forEach(item => {
+        item.classList.remove('active');
     });
+    document.querySelector(`.menu-item[data-section="${seccion}"]`).classList.add('active');
 
-    // Actualizar header del perfil
-    document.getElementById('nombre-usuario').textContent = 
-        `${usuario.nombre || ''} ${usuario.apellido || ''}`;
-    document.getElementById('email-usuario').textContent = usuario.email || '';
+    // Mostrar sección correspondiente
+    document.querySelectorAll('.perfil-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    document.getElementById(seccion).classList.add('active');
 }
 
 async function actualizarDatosPersonales() {
@@ -122,31 +122,31 @@ async function actualizarDatosPersonales() {
 
         const response = await fetch(`${API_BASE_URL}/app/Models/actualizar_usuario.php`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: JSON.stringify(formData)
         });
 
         const data = await response.json();
+        
         if (data.status === 'success') {
-            actualizarDatosLocales(formData);
             mostrarMensaje('Datos actualizados correctamente', 'success');
+            // Actualizar datos en localStorage
+            usuario.nombre = formData.nombre;
+            usuario.email = formData.email;
+            localStorage.setItem('usuario', JSON.stringify(usuario));
+            
+            // Actualizar nombre en el sidebar
+            document.getElementById('nombre-usuario').textContent = 
+                `${formData.nombre} ${formData.apellido}`;
+            document.getElementById('email-usuario').textContent = formData.email;
         } else {
             throw new Error(data.message);
         }
     } catch (error) {
         mostrarMensaje(error.message || 'Error al actualizar los datos', 'error');
     }
-}
-
-function actualizarDatosLocales(formData) {
-    const usuario = JSON.parse(localStorage.getItem('usuario'));
-    usuario.nombre = formData.nombre;
-    usuario.email = formData.email;
-    localStorage.setItem('usuario', JSON.stringify(usuario));
-
-    document.getElementById('nombre-usuario').textContent = 
-        `${formData.nombre} ${formData.apellido}`;
-    document.getElementById('email-usuario').textContent = formData.email;
 }
 
 async function cambiarPassword() {
@@ -169,12 +169,21 @@ async function cambiarPassword() {
             body: JSON.stringify(formData)
         });
 
-        const data = await response.json();
-        if (data.status === 'success') {
-            mostrarMensaje('Contraseña actualizada correctamente', 'success');
-            document.getElementById('form-cambiar-password').reset();
-        } else {
-            throw new Error(data.message);
+        // Agregar diagnóstico
+        const responseText = await response.text();
+        console.log('Respuesta del servidor:', responseText);
+
+        try {
+            const data = JSON.parse(responseText);
+            if (data.status === 'success') {
+                mostrarMensaje('Contraseña actualizada correctamente', 'success');
+                document.getElementById('form-cambiar-password').reset();
+            } else {
+                throw new Error(data.message);
+            }
+        } catch (jsonError) {
+            console.error('Error al parsear JSON:', jsonError);
+            throw new Error('El servidor devolvió una respuesta inválida');
         }
     } catch (error) {
         mostrarMensaje(error.message, 'error');
@@ -186,50 +195,35 @@ async function cargarDirecciones(usuarioId) {
         const response = await fetch(`${API_BASE_URL}/app/Models/direcciones.php?usuario_id=${usuarioId}`);
         const data = await response.json();
         
-        actualizarListaDirecciones(data);
+        const direccionesList = document.querySelector('.direcciones-lista');
+        
+        if (data.status === 'success' && data.direcciones.length > 0) {
+            direccionesList.innerHTML = data.direcciones.map(dir => `
+                <div class="direccion-item">
+                    <p class="direccion-texto">${dir.direccion}</p>
+                    <p class="direccion-referencia">${dir.referencia || ''}</p>
+                    <div class="direccion-acciones">
+                        <button class="btn-editar" data-id="${dir.id}">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn-eliminar" data-id="${dir.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            direccionesList.innerHTML = '<p>No hay direcciones registradas</p>';
+        }
     } catch (error) {
         mostrarMensaje('Error al cargar las direcciones', 'error');
     }
 }
 
-function actualizarListaDirecciones(data) {
-    const direccionesList = document.querySelector('.direcciones-lista');
-    if (!direccionesList) return;
-
-    if (data.status === 'success' && data.direcciones.length > 0) {
-        direccionesList.innerHTML = data.direcciones.map(dir => crearElementoDireccion(dir)).join('');
-        inicializarBotonesDireccion();
-    } else {
-        direccionesList.innerHTML = '<p>No hay direcciones registradas</p>';
-    }
-}
-
-function crearElementoDireccion(dir) {
-    return `
-        <div class="direccion-item">
-            <p class="direccion-texto">${dir.direccion}</p>
-            <p class="direccion-referencia">${dir.referencia || ''}</p>
-            <div class="direccion-acciones">
-                <button class="btn-editar-direccion" data-id="${dir.id}">
-                    <i class="fas fa-edit"></i>
-                </button>
-                <button class="btn-eliminar-direccion" data-id="${dir.id}">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </div>
-        </div>
-    `;
-}
-
-function inicializarBotonesDireccion() {
-    document.querySelectorAll('.btn-editar-direccion').forEach(btn => {
-        btn.addEventListener('click', () => editarDireccion(btn.dataset.id));
-    });
-
-    document.querySelectorAll('.btn-eliminar-direccion').forEach(btn => {
-        btn.addEventListener('click', () => eliminarDireccion(btn.dataset.id));
-    });
-}
+// Agregar manejador para el botón de nueva dirección
+document.querySelector('.btn-agregar').addEventListener('click', function() {
+    mostrarFormularioDireccion();
+});
 
 function mostrarFormularioDireccion(direccion = null) {
     const modal = document.createElement('div');
@@ -257,57 +251,17 @@ function mostrarFormularioDireccion(direccion = null) {
     `;
 
     document.body.appendChild(modal);
-    inicializarEventosModal(modal, direccion);
-}
-
-function inicializarEventosModal(modal, direccion) {
-    modal.querySelector('.btn-cancelar').addEventListener('click', () => modal.remove());
+    
+    // Manejadores de eventos para el modal
+    modal.querySelector('.btn-cancelar').addEventListener('click', () => {
+        modal.remove();
+    });
     
     modal.querySelector('#form-direccion').addEventListener('submit', async (e) => {
         e.preventDefault();
         await guardarDireccion(e.target, direccion?.id);
         modal.remove();
     });
-}
-
-async function guardarDireccion(form, direccionId = null) {
-    try {
-        const usuario = JSON.parse(localStorage.getItem('usuario'));
-        const formData = {
-            usuario_id: usuario.id,
-            direccion: form.direccion.value,
-            referencia: form.referencia.value,
-            id: direccionId
-        };
-
-        const response = await fetch(`${API_BASE_URL}/app/Models/direcciones.php`, {
-            method: direccionId ? 'PUT' : 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData)
-        });
-
-        const data = await response.json();
-        if (data.status === 'success') {
-            mostrarMensaje(direccionId ? 'Dirección actualizada' : 'Dirección agregada', 'success');
-            await cargarDirecciones(usuario.id);
-        } else {
-            throw new Error(data.message);
-        }
-    } catch (error) {
-        mostrarMensaje(error.message, 'error');
-    }
-}
-
-function cambiarSeccion(seccion) {
-    document.querySelectorAll('.menu-item').forEach(item => {
-        item.classList.remove('active');
-    });
-    document.querySelector(`.menu-item[data-section="${seccion}"]`)?.classList.add('active');
-
-    document.querySelectorAll('.perfil-section').forEach(section => {
-        section.classList.remove('active');
-    });
-    document.getElementById(seccion)?.classList.add('active');
 }
 
 function cerrarSesion() {
@@ -320,5 +274,8 @@ function mostrarMensaje(mensaje, tipo) {
     div.className = `mensaje mensaje-${tipo}`;
     div.textContent = mensaje;
     document.body.appendChild(div);
-    setTimeout(() => div.remove(), 3000);
+
+    setTimeout(() => {
+        div.remove();
+    }, 3000);
 } 
