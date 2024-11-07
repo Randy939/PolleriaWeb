@@ -23,14 +23,13 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const data = await response.json();
         
         if (data.status === "success") {
-            const usuario = {
-                id: data.usuario.id,
-                nombre: data.usuario.nombre,
-                apellido: data.usuario.apellido,
-                email: data.usuario.email
-            };
-
-            localStorage.setItem('usuario', JSON.stringify(usuario));
+            // Guardar los datos del usuario en localStorage
+            localStorage.setItem('usuario', JSON.stringify({
+                id: data.data.id,
+                nombre: data.data.nombre,
+                email: email
+            }));
+            
             // Redirigir directamente al index
             window.location.href = '/index.html';
         } else {
