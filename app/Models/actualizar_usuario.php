@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $usuario->apellido = $data->apellido;
     $usuario->email = $data->email;
     $usuario->telefono = $data->telefono;
+    $usuario->direccion = $data->direccion;
 
     try {
         if ($usuario->actualizar()) {

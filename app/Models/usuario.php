@@ -89,7 +89,8 @@ class Usuario {
                 SET nombre = :nombre,
                     apellido = :apellido,
                     email = :email,
-                    telefono = :telefono
+                    telefono = :telefono,
+                    direccion = :direccion
                 WHERE id = :id";
 
         $stmt = $this->conn->prepare($query);
@@ -99,12 +100,14 @@ class Usuario {
         $this->apellido = htmlspecialchars(strip_tags($this->apellido));
         $this->email = htmlspecialchars(strip_tags($this->email));
         $this->telefono = htmlspecialchars(strip_tags($this->telefono));
+        $this->direccion = htmlspecialchars(strip_tags($this->direccion));
 
         // Vincular valores
         $stmt->bindParam(":nombre", $this->nombre);
         $stmt->bindParam(":apellido", $this->apellido);
         $stmt->bindParam(":email", $this->email);
         $stmt->bindParam(":telefono", $this->telefono);
+        $stmt->bindParam(":direccion", $this->direccion);
         $stmt->bindParam(":id", $this->id);
 
         return $stmt->execute();

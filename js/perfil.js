@@ -8,10 +8,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     cargarDatosUsuario(usuario);
     cargarDirecciones(usuario.id);
-
-    // Cargar datos del usuario
-    cargarDatosUsuario(usuario);
-
+    
     // Manejar navegación del menú
     document.querySelectorAll('.menu-item').forEach(item => {
         item.addEventListener('click', function(e) {
@@ -61,19 +58,24 @@ async function cargarDatosUsuario(usuario) {
     try {
         const response = await fetch(`/app/Models/usuario.php?id=${usuario.id}`);
         const data = await response.json();
+        console.log(data);
         
         if (data.status === 'success') {
             document.getElementById('nombre').value = data.usuario.nombre;
             document.getElementById('apellido').value = data.usuario.apellido;
             document.getElementById('email').value = data.usuario.email;
             document.getElementById('telefono').value = data.usuario.telefono;
+            document.getElementById('direccion').value = data.usuario.direccion;
             
             document.getElementById('nombre-usuario').textContent = 
                 `${data.usuario.nombre} ${data.usuario.apellido}`;
             document.getElementById('email-usuario').textContent = data.usuario.email;
+        } else {
+            throw new Error(data.message);
         }
     } catch (error) {
         mostrarMensaje('Error al cargar datos del usuario', 'error');
+        console.error(error);
     }
 }
 
@@ -99,7 +101,8 @@ async function actualizarDatosPersonales() {
             nombre: document.getElementById('nombre').value,
             apellido: document.getElementById('apellido').value,
             email: document.getElementById('email').value,
-            telefono: document.getElementById('telefono').value
+            telefono: document.getElementById('telefono').value,
+            direccion: document.getElementById('direccion').value
         };
 
         const response = await fetch('/app/Models/actualizar_usuario.php', {
