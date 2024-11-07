@@ -5,6 +5,7 @@
     padding: 2rem;
     max-width: 1500px;
     margin: 0 auto;
+    min-height: 60vh;
 }
 
 .box {
@@ -17,6 +18,9 @@
     border: 1px solid rgba(0,0,0,0.08);
     display: flex;
     flex-direction: column;
+    max-width: 100%;
+    margin: 0 auto;
+    height: 100%;
 }
 
 .box:hover {
@@ -248,8 +252,8 @@
 @media (max-width: 1200px) {
     .caja-contenedora {
         grid-template-columns: repeat(2, 1fr);
-        gap: 2rem;
         padding: 1.5rem;
+        gap: 2rem;
     }
 }
 
@@ -262,7 +266,6 @@
     .box {
         max-width: 500px;
         margin: 0 auto;
-        height: auto;
     }
 
     .box .image {
@@ -285,7 +288,7 @@
 @media (max-width: 480px) {
     .titulo-principal {
         font-size: 2.8rem;
-        padding: 1.5rem 0;
+        padding: 8rem 0 1.5rem;
     }
 
     .precio-cantidad {

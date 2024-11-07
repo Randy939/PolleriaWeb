@@ -19,8 +19,14 @@ document.getElementById('registroForm').addEventListener('submit', async functio
         const data = await response.json();
         
         if (data.status === 'success') {
+            localStorage.setItem('usuario', JSON.stringify({
+                id: data.data.id,
+                nombre: document.getElementById('nombre').value,
+                email: document.getElementById('email').value
+            }));
+            
             alert('Registro exitoso');
-            window.location.href = 'index.html';
+            window.location.href = '/index.html';
         } else {
             alert(data.message || 'Error en el registro');
         }

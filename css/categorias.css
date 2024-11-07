@@ -132,3 +132,9 @@
         font-size: 1.3rem;
     }
 }
+
+@media (max-width: 480px) {
+    .categorias-container {
+        padding-top: 8rem;
+    }
+}
