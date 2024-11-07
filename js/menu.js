@@ -5,37 +5,19 @@ document.addEventListener('DOMContentLoaded', function() {
     const mensajeNoProductos = document.querySelector('.mensaje-no-productos');
     const API_URL = 'https://randy939-001-site1.qtempurl.com/app/Controllers/productos.php';
 
-    // Función para cargar las categorías
-    async function cargarCategorias() {
-        try {
-            const response = await fetch(API_URL);
-            const data = await response.json();
-            
-            if (data.status === 'success' && data.categorias) {
-                categoriasContainer.innerHTML = data.categorias.map(categoria => `
-                    <div class="categoria-card" data-categoria="${categoria.id}">
-                        <div class="categoria-imagen">
-                            <img src="/images/${categoria.nombre.toLowerCase().replace(/ /g, '-')}.png" alt="${categoria.nombre}">
-                            <div class="overlay"></div>
-                        </div>
-                        <div class="categoria-content">
-                            <h3>${categoria.nombre}</h3>
-                            <a href="#" class="btn-categoria">Ver Menú <i class="fas fa-arrow-right"></i></a>
-                        </div>
-                    </div>
-                `).join('');
-
-                // Reactivar los event listeners para las nuevas tarjetas
-                activarEventListeners();
-            }
-        } catch (error) {
-            console.error('Error al cargar categorías:', error);
-        }
-    }
+    // Mapeo de data-categoria a IDs de la base de datos
+    const categoriaMapping = {
+        'pollos': 1,
+        'criollos': 2,
+        'bebidas': 3,
+        'promociones': 4,
+        'menu-dia': 5
+    };
 
     // Función para cargar productos por categoría
-    async function cargarProductos(categoriaId) {
+    async function cargarProductos(categoriaSlug) {
         try {
+            const categoriaId = categoriaMapping[categoriaSlug];
             const response = await fetch(`${API_URL}?categoria_id=${categoriaId}`);
             const data = await response.json();
 
@@ -84,7 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 `).join('');
 
-                // Reactivar los controles de cantidad
                 activarControlesCantidad();
             }
         } catch (error) {
@@ -93,11 +74,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Función para mostrar productos de una categoría
-    function mostrarProductos(categoriaId) {
+    function mostrarProductos(categoriaSlug) {
         categoriasContainer.style.display = 'none';
         productosContainer.style.display = 'block';
         btnVolver.style.display = 'flex';
-        cargarProductos(categoriaId);
+        cargarProductos(categoriaSlug);
     }
 
     // Función para volver a la vista de categorías
@@ -106,17 +87,6 @@ document.addEventListener('DOMContentLoaded', function() {
         productosContainer.style.display = 'none';
         btnVolver.style.display = 'none';
         mensajeNoProductos.style.display = 'none';
-    }
-
-    // Función para activar event listeners
-    function activarEventListeners() {
-        const categoriaCards = document.querySelectorAll('.categoria-card');
-        categoriaCards.forEach(card => {
-            card.addEventListener('click', () => {
-                const categoriaId = card.dataset.categoria;
-                mostrarProductos(categoriaId);
-            });
-        });
     }
 
     // Función para activar controles de cantidad
@@ -137,12 +107,17 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+    // Activar event listeners para las categorías
+    const categoriaCards = document.querySelectorAll('.categoria-card');
+    categoriaCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const categoriaSlug = card.dataset.categoria;
+            mostrarProductos(categoriaSlug);
+        });
+    });
 
     // Evento para el botón de volver
     btnVolver.addEventListener('click', volverACategorias);
-
-    // Cargar categorías al iniciar
-    cargarCategorias();
 
     // Manejar categoría desde URL
     const urlParams = new URLSearchParams(window.location.search);

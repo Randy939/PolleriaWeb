@@ -1,9 +1,14 @@
 <?php
 header('Access-Control-Allow-Origin: https://gentle-arithmetic-98eb61.netlify.app');
-header('Access-Control-Allow-Methods: POST, OPTIONS');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With');
 header('Access-Control-Allow-Credentials: true');
 header('Content-Type: application/json; charset=UTF-8');
+
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 include_once '../config/database.php';
 
@@ -56,7 +61,8 @@ class ProductosController {
 
             $stmt->execute();
             
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            return $resultado ? $resultado : [];
         } catch(PDOException $e) {
             throw new Exception("Error al obtener productos: " . $e->getMessage());
         }
@@ -104,36 +110,23 @@ class ProductosController {
 try {
     $controller = new ProductosController();
     
-    // Obtener parámetros de la URL
-    $request_method = $_SERVER["REQUEST_METHOD"];
-    $path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '';
+    // Simplificar la obtención de parámetros
     $categoria_id = isset($_GET['categoria_id']) ? $_GET['categoria_id'] : null;
     $producto_id = isset($_GET['id']) ? $_GET['id'] : null;
 
-    switch($request_method) {
-        case 'GET':
-            if ($producto_id) {
-                // Obtener un producto específico
-                $resultado = $controller->obtenerProducto($producto_id);
-            } elseif ($categoria_id) {
-                // Obtener productos de una categoría específica
-                $resultado = [
-                    "status" => "success",
-                    "productos" => $controller->obtenerProductosPorCategoria($categoria_id)
-                ];
-            } else {
-                // Obtener todos los productos y categorías
-                $resultado = $controller->obtenerProductosYCategorias();
-            }
-            break;
-            
-        default:
-            $resultado = [
-                "status" => "error",
-                "message" => "Método no permitido"
-            ];
-            http_response_code(405);
-            break;
+    // Simplificar el switch ya que solo manejamos GET
+    if ($producto_id) {
+        $resultado = [
+            "status" => "success",
+            "producto" => $controller->obtenerProducto($producto_id)
+        ];
+    } elseif ($categoria_id) {
+        $resultado = [
+            "status" => "success",
+            "productos" => $controller->obtenerProductosPorCategoria($categoria_id)
+        ];
+    } else {
+        $resultado = $controller->obtenerProductosYCategorias();
     }
     
     echo json_encode($resultado);
