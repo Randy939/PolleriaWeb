@@ -14,6 +14,7 @@
 @import url('productos.css');
 @import url('registro.css');
 @import url('reserva.css');
+@import url('carrito.css');
 
 :root{
     --green:#2c5530;

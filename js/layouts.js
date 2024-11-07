@@ -33,6 +33,13 @@ document.addEventListener('DOMContentLoaded', async function() {
             );
         }
 
+        // Agregar carrito
+        fetch('/app/Views/layouts/carrito.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('carrito-placeholder').innerHTML = data;
+            });
+
     } catch (error) {
         console.error('Error cargando los componentes:', error);
     }
