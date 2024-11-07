@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const productosContainer = document.querySelector('.productos-container');
     const btnVolver = document.querySelector('.btn-volver');
     const mensajeNoProductos = document.querySelector('.mensaje-no-productos');
-    const API_URL = 'https://tu-api-url.com/app/Controllers/productos.php';
+    const API_URL = 'https://randy939-001-site1.qtempurl.com/app/Controllers/productos.php';
 
     // Función para cargar las categorías
     async function cargarCategorias() {
