@@ -1,4 +1,14 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
+    // Esperar a que el header esté cargado
+    await new Promise(resolve => {
+        const checkHeader = setInterval(() => {
+            if (document.querySelector('.navbar')) {
+                clearInterval(checkHeader);
+                resolve();
+            }
+        }, 100);
+    });
+
     let menu = document.querySelector('#menu-bars');
     let navbar = document.querySelector('.navbar');
 
@@ -17,22 +27,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // Asignar clase active según la página actual
     navLinks.forEach(link => {
         const href = link.getAttribute('href');
-
-        // Para la página de inicio
-        if ((currentPath === '/' || currentPath === '/index.html') && href === '/') {
-            link.classList.add('active');
+        
+        if (currentPath === '/' || currentPath.endsWith('index.html')) {
+            if (href === '/') {
+                link.classList.add('active');
+            }
+        } 
+        else if (currentPath.includes('/app/Views/pages/menu.html')) {
+            if (currentUrl.includes('categoria-card=promociones')) {
+                if (href.includes('promociones')) {
+                    link.classList.add('active');
+                }
+            } else if (href === '/app/Views/pages/menu.html') {
+                link.classList.add('active');
+            }
         }
-        // Para la página de menú con promociones
-        else if (currentPath.includes('menu.html') && currentUrl.includes('promociones') && href.includes('promociones')) {
-            link.classList.add('active');
-        }
-        // Para la página de menú general
-        else if (currentPath.includes('menu.html') && !currentUrl.includes('promociones') && href === '/app/Views/pages/menu.html') {
-            link.classList.add('active');
-        }
-        // Para la página de reserva
-        else if (currentPath.includes('reserva.html') && href.includes('reserva.html')) {
-            link.classList.add('active');
+        else if (currentPath.includes('/app/Views/pages/reserva.html')) {
+            if (href.includes('reserva.html')) {
+                link.classList.add('active');
+            }
         }
     });
 
