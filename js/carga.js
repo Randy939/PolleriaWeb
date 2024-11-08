@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
-    function loader() {
-        document.querySelector('.loader-container')?.classList.add('fade-out');
+    const loaderContainer = document.querySelector('.loader-container');
+    
+    if (loaderContainer) {
+        setTimeout(() => {
+            loaderContainer.classList.add('fade-out');
+            setTimeout(() => {
+                loaderContainer.style.display = 'none';
+            }, 500);
+        }, 2000);
     }
-
-    function fadeOut() {
-        setInterval(loader, 3000);
-    }
-
-    window.onload = fadeOut;
 }); 
