@@ -1,0 +1,188 @@
+.carrito-panel {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 400px;
+    height: 100vh;
+    background: #fff;
+    z-index: 2000;
+    padding: 2rem;
+    transition: 0.5s ease;
+    box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.carrito-panel.active {
+    right: 0;
+}
+
+.carrito-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+}
+
+.carrito-header h3 {
+    color: var(--green);
+    font-size: 2.2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.cerrar-carrito {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--light-color);
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.cerrar-carrito:hover {
+    color: var(--red);
+    transform: rotate(90deg);
+}
+
+.carrito-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 2rem 0;
+}
+
+.carrito-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+    background: #f9f9f9;
+    animation: slideIn 0.3s ease;
+}
+
+.carrito-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 0.8rem;
+}
+
+.item-detalles {
+    flex: 1;
+}
+
+.item-detalles h4 {
+    font-size: 1.6rem;
+    color: var(--black);
+    margin-bottom: 0.5rem;
+}
+
+.item-precio {
+    color: var(--green);
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.item-cantidad {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+}
+
+.cantidad-btn {
+    background: var(--green);
+    color: #fff;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.cantidad-btn:hover {
+    background: var(--yellow);
+    transform: scale(1.1);
+}
+
+.carrito-footer {
+    padding-top: 2rem;
+    border-top: 1px solid #eee;
+}
+
+.total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    font-size: 2rem;
+    color: var(--black);
+}
+
+.total-precio {
+    color: var(--green);
+    font-weight: 700;
+}
+
+.btn-checkout {
+    width: 100%;
+    padding: 1.5rem;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: 1rem;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    transition: 0.3s ease;
+}
+
+.btn-checkout:hover {
+    background: var(--yellow);
+    transform: translateY(-3px);
+}
+
+.overlay-carrito {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 1999;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s ease;
+}
+
+.overlay-carrito.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 576px) {
+    .carrito-panel {
+        width: 100%;
+    }
+}
