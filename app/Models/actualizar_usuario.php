@@ -2,7 +2,7 @@
 header("Access-Control-Allow-Origin: https://gentle-arithmetic-98eb61.netlify.app");
 header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET, OPTIONS");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
@@ -28,21 +28,25 @@ try {
         $usuario->apellido = $data->apellido;
         $usuario->email = $data->email;
         $usuario->telefono = $data->telefono;
-        $usuario->direccion = $data->direccion;
         
         if($usuario->actualizar()) {
             http_response_code(200);
-            echo json_encode(array("status" => "success", "message" => "Usuario actualizado."));
+            echo json_encode(array(
+                "status" => "success", 
+                "message" => "Usuario actualizado."
+            ));
         } else {
-            http_response_code(503);
-            echo json_encode(array("status" => "error", "message" => "No se pudo actualizar el usuario."));
+            throw new Exception("No se pudo actualizar el usuario.");
         }
     } else {
-        http_response_code(400);
-        echo json_encode(array("status" => "error", "message" => "Datos incompletos."));
+        throw new Exception("ID de usuario no proporcionado.");
     }
 } catch(Exception $e) {
+    error_log("Error en actualizar_usuario.php: " . $e->getMessage());
     http_response_code(500);
-    echo json_encode(array("status" => "error", "message" => $e->getMessage()));
+    echo json_encode(array(
+        "status" => "error", 
+        "message" => $e->getMessage()
+    ));
 }
 ?> 

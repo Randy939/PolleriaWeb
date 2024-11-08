@@ -93,8 +93,7 @@ class Usuario {
                     SET nombre = :nombre,
                         apellido = :apellido,
                         email = :email,
-                        telefono = :telefono,
-                        direccion = :direccion
+                        telefono = :telefono
                     WHERE id = :id";
 
             $stmt = $this->conn->prepare($query);
@@ -107,7 +106,6 @@ class Usuario {
             $stmt->bindParam(":apellido", $this->apellido);
             $stmt->bindParam(":email", $this->email);
             $stmt->bindParam(":telefono", $this->telefono);
-            $stmt->bindParam(":direccion", $this->direccion);
             $stmt->bindParam(":id", $this->id);
 
             return $stmt->execute();

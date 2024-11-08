@@ -179,15 +179,6 @@ async function actualizarDatosPersonales() {
             telefono: campos.telefono.value.trim()
         };
 
-        // Validar que ningún campo esté vacío
-        const camposVacios = Object.entries(formData)
-            .filter(([key, value]) => key !== 'id' && !value)
-            .map(([key]) => key);
-
-        if (camposVacios.length > 0) {
-            throw new Error(`Los siguientes campos son requeridos: ${camposVacios.join(', ')}`);
-        }
-
         const response = await fetch(`${API_BASE_URL}/app/Models/actualizar_usuario.php`, {
             method: 'POST',
             headers: {
@@ -195,6 +186,10 @@ async function actualizarDatosPersonales() {
             },
             body: JSON.stringify(formData)
         });
+
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
 
         const data = await response.json();
         
@@ -218,19 +213,6 @@ async function actualizarDatosPersonales() {
             if (emailUsuarioElement) {
                 emailUsuarioElement.textContent = formData.email;
             }
-
-            // Volver a poner los campos en modo readonly
-            Object.values(campos).forEach(campo => {
-                if (campo) campo.readOnly = true;
-            });
-
-            // Restaurar botones de edición
-            document.querySelectorAll('.btn-editar').forEach(btn => {
-                btn.innerHTML = '<i class="fas fa-edit"></i>';
-            });
-
-            // Ocultar botón guardar
-            document.querySelector('.btn-guardar').style.display = 'none';
         } else {
             throw new Error(data.message || 'Error al actualizar los datos');
         }
