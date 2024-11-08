@@ -32,14 +32,12 @@ class Usuario {
             // Sanitizar datos
             $this->sanitizarDatos();
 
-            // Hash de la contraseña
-            $password_hash = password_hash($this->password, PASSWORD_BCRYPT);
-
-            // Vincular valores
+            // La contraseña ya viene hasheada desde registro.php
+            // No necesitamos hashearla de nuevo aquí
             $stmt->bindParam(":nombre", $this->nombre);
             $stmt->bindParam(":apellido", $this->apellido);
             $stmt->bindParam(":email", $this->email);
-            $stmt->bindParam(":password", $password_hash);
+            $stmt->bindParam(":password", $this->password); // Ya está hasheada
             $stmt->bindParam(":direccion", $this->direccion);
             $stmt->bindParam(":telefono", $this->telefono);
 
