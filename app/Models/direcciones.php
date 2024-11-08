@@ -1,6 +1,6 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0); // Desactivar la salida de errores PHP
+ini_set('display_errors', 0);
 
 header("Access-Control-Allow-Origin: https://gentle-arithmetic-98eb61.netlify.app");
 header("Access-Control-Allow-Credentials: true");
@@ -9,19 +9,37 @@ header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
-// Manejar preflight OPTIONS request
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
 
-require_once '../config/database.php';
-require_once 'usuario.php';
-
 try {
+    require_once '../config/database.php';
+    require_once 'usuario.php';
+
     $database = new Database();
     $db = $database->getConnection();
     $usuario = new Usuario($db);
+
+    if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+        if (!isset($_GET['id']) || !isset($_GET['usuario_id'])) {
+            throw new Exception("ID de dirección o usuario no proporcionado");
+        }
+
+        $usuario->id = $_GET['usuario_id'];
+        
+        if ($usuario->eliminarDireccion($_GET['id'])) {
+            http_response_code(200);
+            echo json_encode(array(
+                "status" => "success",
+                "message" => "Dirección eliminada correctamente"
+            ));
+        } else {
+            throw new Exception("No se pudo eliminar la dirección");
+        }
+        exit();
+    }
 
     if ($_SERVER["REQUEST_METHOD"] === 'GET') {
         if(isset($_GET['usuario_id'])) {
@@ -97,24 +115,6 @@ try {
             throw new Exception("No se pudo actualizar la dirección");
         }
     }
-
-    if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-        if (!isset($_GET['id']) || !isset($_GET['usuario_id'])) {
-            throw new Exception("ID de dirección o usuario no proporcionado");
-        }
-
-        $usuario->id = $_GET['usuario_id'];
-        
-        if ($usuario->eliminarDireccion($_GET['id'])) {
-            http_response_code(200);
-            echo json_encode(array(
-                "status" => "success",
-                "message" => "Dirección eliminada correctamente"
-            ));
-        } else {
-            throw new Exception("No se pudo eliminar la dirección");
-        }
-    }
 } catch(Exception $e) {
     error_log("Error en direcciones.php: " . $e->getMessage());
     http_response_code(500);
@@ -122,5 +122,6 @@ try {
         "status" => "error",
         "message" => $e->getMessage()
     ));
+    exit();
 }
 ?> 

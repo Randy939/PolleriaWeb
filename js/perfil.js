@@ -447,11 +447,14 @@ async function eliminarDireccion(direccionId) {
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
-            }
+            },
+            credentials: 'include'
         });
 
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+        // Verificar si la respuesta es JSON válido
+        const contentType = response.headers.get("content-type");
+        if (!contentType || !contentType.includes("application/json")) {
+            throw new Error("La respuesta del servidor no es JSON válido");
         }
 
         const data = await response.json();
@@ -464,7 +467,7 @@ async function eliminarDireccion(direccionId) {
         }
     } catch (error) {
         console.error('Error:', error);
-        mostrarMensaje('Error al eliminar la dirección', 'error');
+        mostrarMensaje('Error al eliminar la dirección: ' + error.message, 'error');
     }
 }
 
