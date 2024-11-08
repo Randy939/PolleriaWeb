@@ -2,34 +2,38 @@ document.addEventListener('DOMContentLoaded', function() {
     let menu = document.querySelector('#menu-bars');
     let navbar = document.querySelector('.navbar');
 
+    // Obtener la ruta actual
+    const currentPath = window.location.pathname;
+
+    // Obtener todos los enlaces de navegación
+    const navLinks = document.querySelectorAll('.navbar a');
+
+    // Remover clase active de todos los enlaces
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+    });
+
+    // Asignar clase active según la página actual
+    navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+
+        if (currentPath === '/' && href === '/') {
+            link.classList.add('active');
+        } else if (currentPath.includes('menu.html')) {
+            if (currentPath.includes('promociones') && href.includes('promociones')) {
+                link.classList.add('active');
+            } else if (!currentPath.includes('promociones') && href === '/app/Views/pages/menu.html') {
+                link.classList.add('active');
+            }
+        } else if (currentPath.includes('reserva.html') && href.includes('reserva.html')) {
+            link.classList.add('active');
+        }
+    });
+
     if (menu) {
         menu.onclick = () => {
             menu.classList.toggle('fa-times');
             navbar.classList.toggle('active');
         }
-    }
-
-    let section = document.querySelectorAll('section');
-    let navLinks = document.querySelectorAll('header .navbar a');
-
-    window.onscroll = () => {
-        if (menu) {
-            menu.classList.remove('fa-times');
-            navbar.classList.remove('active');
-        }
-
-        section.forEach(sec => {
-            let top = window.scrollY;
-            let height = sec.offsetHeight;
-            let offset = sec.offsetTop - 150;
-            let id = sec.getAttribute('id');
-
-            if (top >= offset && top < offset + height) {
-                navLinks.forEach(link => {
-                    link.classList.remove('active');
-                    document.querySelector('header .navbar a[href*="'+id+'"]')?.classList.add('active');
-                });
-            }
-        });
     }
 }); 

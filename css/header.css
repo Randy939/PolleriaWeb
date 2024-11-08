@@ -35,8 +35,8 @@ header .navbar {
 header .navbar a {
     font-size: 1.7rem;
     border-radius: .5rem;
-    padding:.5rem 1.5rem;
-    color:var(--light-color);
+    padding: .5rem 1.5rem;
+    color: var(--light-color);
 }
 
 header .navbar a.active,
