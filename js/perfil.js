@@ -269,12 +269,18 @@ async function cambiarPassword() {
 
         const response = await fetch(`${API_BASE_URL}/app/Models/cambiar_password.php`, {
             method: 'POST',
+            mode: 'cors',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
             body: JSON.stringify(formData)
         });
+
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
 
         const data = await response.json();
         
@@ -285,7 +291,8 @@ async function cambiarPassword() {
             throw new Error(data.message || 'Error al cambiar la contraseña');
         }
     } catch (error) {
-        mostrarMensaje(error.message, 'error');
+        console.error('Error:', error);
+        mostrarMensaje(error.message || 'Error al cambiar la contraseña', 'error');
     }
 }
 
