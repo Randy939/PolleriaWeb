@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let menu = document.querySelector('#menu-bars');
     let navbar = document.querySelector('.navbar');
 
-    // Obtener la ruta actual
+    // Obtener la ruta actual y la URL completa
     const currentPath = window.location.pathname;
     const currentUrl = window.location.href;
 
@@ -19,26 +19,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const href = link.getAttribute('href');
 
         // Para la página de inicio
-        if (currentPath === '/' || currentPath === '/index.html') {
-            if (href === '/') {
-                link.classList.add('active');
-            }
+        if ((currentPath === '/' || currentPath === '/index.html') && href === '/') {
+            link.classList.add('active');
         }
-        // Para la página de menú
-        else if (currentPath.includes('/app/Views/pages/menu.html')) {
-            if (currentUrl.includes('categoria-card=promociones')) {
-                if (href.includes('promociones')) {
-                    link.classList.add('active');
-                }
-            } else if (href === '/app/Views/pages/menu.html') {
-                link.classList.add('active');
-            }
+        // Para la página de menú con promociones
+        else if (currentPath.includes('menu.html') && currentUrl.includes('promociones') && href.includes('promociones')) {
+            link.classList.add('active');
+        }
+        // Para la página de menú general
+        else if (currentPath.includes('menu.html') && !currentUrl.includes('promociones') && href === '/app/Views/pages/menu.html') {
+            link.classList.add('active');
         }
         // Para la página de reserva
-        else if (currentPath.includes('/app/Views/pages/reserva.html')) {
-            if (href.includes('reserva.html')) {
-                link.classList.add('active');
-            }
+        else if (currentPath.includes('reserva.html') && href.includes('reserva.html')) {
+            link.classList.add('active');
         }
     });
 
