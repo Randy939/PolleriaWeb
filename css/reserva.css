@@ -66,7 +66,7 @@
 
 .Reserva .titulo {
     text-align: center;
-    color: var(--black);
+    color: var(--green);
     font-size: 4rem;
     margin-bottom: 2rem;
     position: relative;
@@ -111,7 +111,7 @@
 .input-field i {
     position: absolute;
     top: 50%;
-    left: 2rem;
+    left: 1.5rem;
     transform: translateY(-50%);
     font-size: 2rem;
     color: var(--green);
@@ -266,4 +266,8 @@
     .input-field textarea {
         padding: 1.2rem 4.5rem;
     }
+}
+
+.input-field.comentario {
+    grid-column: 1 / -1;
 }
