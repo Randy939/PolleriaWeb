@@ -23,20 +23,35 @@ try {
     $usuario = new Usuario($db);
 
     if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+        error_log("DELETE request recibido");
+        error_log("GET params: " . print_r($_GET, true));
+        
         if (!isset($_GET['id']) || !isset($_GET['usuario_id'])) {
+            error_log("Faltan parámetros requeridos");
             throw new Exception("ID de dirección o usuario no proporcionado");
         }
 
         $usuario->id = $_GET['usuario_id'];
+        error_log("Intentando eliminar dirección ID: {$_GET['id']} para usuario ID: {$_GET['usuario_id']}");
         
-        if ($usuario->eliminarDireccion($_GET['id'])) {
-            http_response_code(200);
-            echo json_encode(array(
-                "status" => "success",
-                "message" => "Dirección eliminada correctamente"
-            ));
-        } else {
-            throw new Exception("No se pudo eliminar la dirección");
+        try {
+            $resultado = $usuario->eliminarDireccion($_GET['id']);
+            error_log("Resultado de eliminación: " . ($resultado ? "true" : "false"));
+            
+            if ($resultado) {
+                http_response_code(200);
+                $response = array(
+                    "status" => "success",
+                    "message" => "Dirección eliminada correctamente"
+                );
+                error_log("Respuesta de éxito: " . json_encode($response));
+                echo json_encode($response);
+            } else {
+                throw new Exception("No se pudo eliminar la dirección");
+            }
+        } catch (Exception $e) {
+            error_log("Error en eliminación: " . $e->getMessage());
+            throw $e;
         }
         exit();
     }

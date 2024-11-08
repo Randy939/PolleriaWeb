@@ -442,7 +442,10 @@ async function eliminarDireccion(direccionId) {
 
     try {
         const usuario = JSON.parse(localStorage.getItem('usuario'));
-        const response = await fetch(`${API_BASE_URL}/app/Models/direcciones.php?id=${direccionId}&usuario_id=${usuario.id}`, {
+        const url = `${API_BASE_URL}/app/Models/direcciones.php?id=${direccionId}&usuario_id=${usuario.id}`;
+        console.log('URL de eliminación:', url);
+
+        const response = await fetch(url, {
             method: 'DELETE',
             headers: {
                 'Accept': 'application/json',
@@ -451,22 +454,32 @@ async function eliminarDireccion(direccionId) {
             credentials: 'include'
         });
 
-        // Verificar si la respuesta es JSON válido
-        const contentType = response.headers.get("content-type");
-        if (!contentType || !contentType.includes("application/json")) {
-            throw new Error("La respuesta del servidor no es JSON válido");
+        console.log('Status de la respuesta:', response.status);
+        console.log('Headers de la respuesta:', Object.fromEntries(response.headers.entries()));
+
+        const responseText = await response.text();
+        console.log('Respuesta del servidor (texto):', responseText);
+
+        if (!responseText) {
+            throw new Error('La respuesta del servidor está vacía');
         }
 
-        const data = await response.json();
-        
-        if (data.status === 'success') {
-            mostrarMensaje('Dirección eliminada correctamente', 'success');
-            await cargarDirecciones();
-        } else {
-            throw new Error(data.message || 'Error al eliminar la dirección');
+        try {
+            const data = JSON.parse(responseText);
+            console.log('Datos parseados:', data);
+
+            if (data.status === 'success') {
+                mostrarMensaje('Dirección eliminada correctamente', 'success');
+                await cargarDirecciones();
+            } else {
+                throw new Error(data.message || 'Error al eliminar la dirección');
+            }
+        } catch (parseError) {
+            console.error('Error al parsear JSON:', parseError);
+            throw new Error(`Error al parsear la respuesta del servidor: ${responseText}`);
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error completo:', error);
         mostrarMensaje('Error al eliminar la dirección: ' + error.message, 'error');
     }
 }
