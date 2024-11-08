@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 header("Access-Control-Allow-Origin: https://gentle-arithmetic-98eb61.netlify.app");
 header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET, OPTIONS");
+header("Access-Control-Allow-Methods: GET, OPTIONS, POST, PUT, DELETE");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
@@ -70,6 +70,49 @@ try {
             ));
         } else {
             throw new Exception("No se pudo agregar la dirección");
+        }
+    }
+
+    if ($_SERVER["REQUEST_METHOD"] === 'PUT') {
+        $rawData = file_get_contents("php://input");
+        $data = json_decode($rawData);
+        
+        if (empty($data->direccion_id) || empty($data->usuario_id) || empty($data->direccion)) {
+            throw new Exception("Datos incompletos");
+        }
+
+        $usuario->id = $data->usuario_id;
+        $direccion = array(
+            "direccion" => $data->direccion,
+            "referencia" => $data->referencia ?? ''
+        );
+        
+        if ($usuario->actualizarDireccion($data->direccion_id, $direccion)) {
+            http_response_code(200);
+            echo json_encode(array(
+                "status" => "success", 
+                "message" => "Dirección actualizada correctamente"
+            ));
+        } else {
+            throw new Exception("No se pudo actualizar la dirección");
+        }
+    }
+
+    if ($_SERVER["REQUEST_METHOD"] === 'DELETE') {
+        if (!isset($_GET['id']) || !isset($_GET['usuario_id'])) {
+            throw new Exception("ID de dirección o usuario no proporcionado");
+        }
+
+        $usuario->id = $_GET['usuario_id'];
+        
+        if ($usuario->eliminarDireccion($_GET['id'])) {
+            http_response_code(200);
+            echo json_encode(array(
+                "status" => "success", 
+                "message" => "Dirección eliminada correctamente"
+            ));
+        } else {
+            throw new Exception("No se pudo eliminar la dirección");
         }
     }
 } catch(Exception $e) {

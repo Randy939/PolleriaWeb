@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         cargarDatosUsuario(usuario);
-        cargarDirecciones(usuario.id);
+        cargarDirecciones();
         
         // Manejar navegación del menú
         document.querySelectorAll('.menu-item').forEach(item => {
@@ -263,9 +263,10 @@ async function cambiarPassword() {
     }
 }
 
-async function cargarDirecciones(usuarioId) {
+async function cargarDirecciones() {
     try {
-        const response = await fetch(`${API_BASE_URL}/app/Models/direcciones.php?usuario_id=${usuarioId}`, {
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+        const response = await fetch(`${API_BASE_URL}/app/Models/direcciones.php?usuario_id=${usuario.id}`, {
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -273,33 +274,36 @@ async function cargarDirecciones(usuarioId) {
             }
         });
 
-        const responseText = await response.text();
-        console.log('Respuesta direcciones:', responseText);
-
-        const data = JSON.parse(responseText);
-        const direccionesList = document.querySelector('.direcciones-lista');
+        const data = await response.json();
+        const direccionesLista = document.querySelector('.direcciones-lista');
+        direccionesLista.innerHTML = '';
         
-        if (data.status === 'success' && data.direcciones && data.direcciones.length > 0) {
-            direccionesList.innerHTML = data.direcciones.map(dir => `
-                <div class="direccion-item">
-                    <p class="direccion-texto">${dir.direccion}</p>
-                    <p class="direccion-referencia">${dir.referencia || ''}</p>
+        if (data.direcciones && data.direcciones.length > 0) {
+            data.direcciones.forEach(direccion => {
+                const direccionElement = document.createElement('div');
+                direccionElement.className = 'direccion-item';
+                direccionElement.innerHTML = `
+                    <div class="direccion-info">
+                        <p class="direccion-principal">${direccion.direccion}</p>
+                        <p class="direccion-referencia">${direccion.referencia || ''}</p>
+                    </div>
                     <div class="direccion-acciones">
-                        <button class="btn-editar" data-id="${dir.id}">
+                        <button class="btn-editar" onclick="mostrarFormularioDireccion(${JSON.stringify(direccion)})">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn-eliminar" data-id="${dir.id}">
+                        <button class="btn-eliminar" onclick="eliminarDireccion(${direccion.id})">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
-                </div>
-            `).join('');
+                `;
+                direccionesLista.appendChild(direccionElement);
+            });
         } else {
-            direccionesList.innerHTML = '<p>No hay direcciones registradas</p>';
+            direccionesLista.innerHTML = '<p class="no-direcciones">No hay direcciones registradas</p>';
         }
     } catch (error) {
-        console.error('Error al cargar direcciones:', error);
-        mostrarMensaje('Error al cargar las direcciones: ' + error.message, 'error');
+        console.error('Error:', error);
+        mostrarMensaje('Error al cargar las direcciones', 'error');
     }
 }
 
@@ -346,7 +350,7 @@ async function guardarDireccion(form, direccionId = null) {
         const data = JSON.parse(responseText);
         if (data.status === 'success') {
             mostrarMensaje('Dirección guardada correctamente', 'success');
-            await cargarDirecciones(usuario.id);
+            await cargarDirecciones();
         } else {
             throw new Error(data.message || 'Error al guardar la dirección');
         }
@@ -409,4 +413,66 @@ function mostrarMensaje(mensaje, tipo) {
     setTimeout(() => {
         div.remove();
     }, 3000);
+}
+
+// Función para eliminar dirección
+async function eliminarDireccion(direccionId) {
+    if (!confirm('¿Estás seguro de que deseas eliminar esta dirección?')) {
+        return;
+    }
+
+    try {
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+        const response = await fetch(`${API_BASE_URL}/app/Models/direcciones.php?id=${direccionId}&usuario_id=${usuario.id}`, {
+            method: 'DELETE'
+        });
+
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+            mostrarMensaje('Dirección eliminada correctamente', 'success');
+            await cargarDirecciones();
+        } else {
+            throw new Error(data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        mostrarMensaje('Error al eliminar la dirección', 'error');
+    }
+}
+
+// Modificar la función guardarDireccion existente para manejar actualizaciones
+async function guardarDireccion(form, direccionId = null) {
+    try {
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+        const formData = {
+            usuario_id: usuario.id,
+            direccion: form.direccion.value.trim(),
+            referencia: form.referencia.value.trim()
+        };
+
+        if (direccionId) {
+            formData.direccion_id = direccionId;
+        }
+
+        const response = await fetch(`${API_BASE_URL}/app/Models/direcciones.php`, {
+            method: direccionId ? 'PUT' : 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+            mostrarMensaje(direccionId ? 'Dirección actualizada correctamente' : 'Dirección agregada correctamente', 'success');
+            await cargarDirecciones();
+        } else {
+            throw new Error(data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        mostrarMensaje(error.message, 'error');
+    }
 } 
