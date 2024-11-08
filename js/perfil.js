@@ -244,38 +244,45 @@ async function actualizarDatosPersonales() {
 async function cambiarPassword() {
     try {
         const usuario = JSON.parse(localStorage.getItem('usuario'));
+        const passwordActual = document.querySelector('[name="password_actual"]').value;
+        const passwordNueva = document.querySelector('[name="password_nueva"]').value;
+        const passwordConfirmar = document.querySelector('[name="password_confirmar"]').value;
+
+        // Validaciones
+        if (!passwordActual || !passwordNueva || !passwordConfirmar) {
+            throw new Error('Todos los campos son obligatorios');
+        }
+
+        if (passwordNueva !== passwordConfirmar) {
+            throw new Error('Las contraseñas nuevas no coinciden');
+        }
+
+        if (passwordNueva.length < 6) {
+            throw new Error('La contraseña debe tener al menos 6 caracteres');
+        }
+
         const formData = {
             id: usuario.id,
-            password_actual: document.querySelector('[name="password_actual"]').value,
-            password_nueva: document.querySelector('[name="password_nueva"]').value,
-            password_confirmar: document.querySelector('[name="password_confirmar"]').value
+            password_actual: passwordActual,
+            password_nueva: passwordNueva
         };
-
-        if (formData.password_nueva !== formData.password_confirmar) {
-            throw new Error('Las contraseñas no coinciden');
-        }
 
         const response = await fetch(`${API_BASE_URL}/app/Models/cambiar_password.php`, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
             body: JSON.stringify(formData)
         });
 
-        // Agregar diagnóstico
-        const responseText = await response.text();
-        console.log('Respuesta del servidor:', responseText);
-
-        try {
-            const data = JSON.parse(responseText);
-            if (data.status === 'success') {
-                mostrarMensaje('Contraseña actualizada correctamente', 'success');
-                document.getElementById('form-cambiar-password').reset();
-            } else {
-                throw new Error(data.message);
-            }
-        } catch (jsonError) {
-            console.error('Error al parsear JSON:', jsonError);
-            throw new Error('El servidor devolvió una respuesta inválida');
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+            mostrarMensaje('Contraseña actualizada correctamente', 'success');
+            document.getElementById('form-cambiar-password').reset();
+        } else {
+            throw new Error(data.message || 'Error al cambiar la contraseña');
         }
     } catch (error) {
         mostrarMensaje(error.message, 'error');

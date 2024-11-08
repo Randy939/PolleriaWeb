@@ -22,31 +22,51 @@ class Usuario {
                 throw new Exception("Este correo electrónico ya está registrado");
             }
 
+            $this->conn->beginTransaction();
+
             $query = "INSERT INTO " . $this->table_name . "
-                    (nombre, apellido, email, password, direccion, telefono)
+                    (nombre, apellido, email, password, telefono)
                     VALUES
-                    (:nombre, :apellido, :email, :password, :direccion, :telefono)";
+                    (:nombre, :apellido, :email, :password, :telefono)";
 
             $stmt = $this->conn->prepare($query);
 
             // Sanitizar datos
             $this->sanitizarDatos();
 
-            // La contraseña ya viene hasheada desde registro.php
-            // No necesitamos hashearla de nuevo aquí
             $stmt->bindParam(":nombre", $this->nombre);
             $stmt->bindParam(":apellido", $this->apellido);
             $stmt->bindParam(":email", $this->email);
-            $stmt->bindParam(":password", $this->password); // Ya está hasheada
-            $stmt->bindParam(":direccion", $this->direccion);
+            $stmt->bindParam(":password", $this->password);
             $stmt->bindParam(":telefono", $this->telefono);
 
             if($stmt->execute()) {
                 $this->id = $this->conn->lastInsertId();
+                
+                // Si hay una dirección inicial, agregarla a la tabla direcciones
+                if (!empty($this->direccion)) {
+                    $queryDireccion = "INSERT INTO " . $this->table_direcciones . "
+                                    (usuario_id, direccion)
+                                    VALUES
+                                    (:usuario_id, :direccion)";
+                    
+                    $stmtDireccion = $this->conn->prepare($queryDireccion);
+                    $stmtDireccion->bindParam(":usuario_id", $this->id);
+                    $stmtDireccion->bindParam(":direccion", $this->direccion);
+                    
+                    if (!$stmtDireccion->execute()) {
+                        throw new Exception("Error al guardar la dirección inicial");
+                    }
+                }
+                
+                $this->conn->commit();
                 return true;
             }
+            
+            $this->conn->rollBack();
             return false;
         } catch(PDOException $e) {
+            $this->conn->rollBack();
             throw new Exception("Error en el registro: " . $e->getMessage());
         }
     }

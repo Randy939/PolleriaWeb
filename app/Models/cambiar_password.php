@@ -1,26 +1,22 @@
 <?php
-// Habilitar reporte de errores
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 header("Access-Control-Allow-Origin: https://gentle-arithmetic-98eb61.netlify.app");
+header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST");
+header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+
+// Manejar preflight OPTIONS request
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 require_once '../config/database.php';
 require_once 'usuario.php';
 
 try {
-    // Capturar el input raw
-    $rawInput = file_get_contents("php://input");
-    error_log("Input recibido: " . $rawInput);
-    
-    $data = json_decode($rawInput);
-    if (json_last_error() !== JSON_ERROR_NONE) {
-        throw new Exception("Error decodificando JSON: " . json_last_error_msg());
-    }
+    $data = json_decode(file_get_contents("php://input"));
     
     if(!empty($data->id) && !empty($data->password_actual) && !empty($data->password_nueva)) {
         $database = new Database();
@@ -32,14 +28,15 @@ try {
         
         if($usuario->cambiarPassword($data->password_actual)) {
             http_response_code(200);
-            echo json_encode(array("status" => "success", "message" => "Contraseña actualizada."));
+            echo json_encode(array("status" => "success", "message" => "Contraseña actualizada correctamente"));
+        } else {
+            throw new Exception("La contraseña actual es incorrecta");
         }
     } else {
-        throw new Exception("Datos incompletos");
+        throw new Exception("Faltan datos requeridos");
     }
 } catch(Exception $e) {
-    error_log("Error en cambiar_password.php: " . $e->getMessage());
-    http_response_code(500);
+    http_response_code(200); // Cambiamos a 200 para evitar errores CORS
     echo json_encode(array("status" => "error", "message" => $e->getMessage()));
 }
 ?> 
