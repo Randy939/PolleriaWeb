@@ -19,30 +19,38 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Obtener todos los enlaces de navegación
     const navLinks = document.querySelectorAll('.navbar a');
 
+    // Función para obtener la ruta limpia
+    const cleanPath = (path) => path.replace(/^\/+|\/+$/g, '');
+
     // Remover clase active de todos los enlaces
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-    });
+    navLinks.forEach(link => link.classList.remove('active'));
 
     // Asignar clase active según la página actual
     navLinks.forEach(link => {
         const href = link.getAttribute('href');
-        
-        if (currentPath === '/' || currentPath.endsWith('index.html')) {
-            if (href === '/') {
-                link.classList.add('active');
-            }
-        } 
-        else if (currentPath.includes('/app/Views/pages/menu.html')) {
-            if (currentUrl.includes('categoria-card=promociones')) {
-                if (href.includes('promociones')) {
-                    link.classList.add('active');
-                }
-            } else if (href === '/app/Views/pages/menu.html') {
+        const cleanCurrentPath = cleanPath(currentPath);
+        const cleanHref = cleanPath(href);
+
+        // Para la página de inicio
+        if (cleanCurrentPath === '' || cleanCurrentPath === 'index.html') {
+            if (cleanHref === '') {
                 link.classList.add('active');
             }
         }
-        else if (currentPath.includes('/app/Views/pages/reserva.html')) {
+        // Para la página de promociones
+        else if (cleanCurrentPath.includes('menu.html') && currentUrl.includes('promociones')) {
+            if (href.includes('promociones')) {
+                link.classList.add('active');
+            }
+        }
+        // Para la página de menú general
+        else if (cleanCurrentPath.includes('menu.html') && !currentUrl.includes('promociones')) {
+            if (cleanHref.endsWith('menu.html') && !href.includes('promociones')) {
+                link.classList.add('active');
+            }
+        }
+        // Para la página de reserva
+        else if (cleanCurrentPath.includes('reserva.html')) {
             if (href.includes('reserva.html')) {
                 link.classList.add('active');
             }
