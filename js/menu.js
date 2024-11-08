@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="box" data-categoria="${producto.categoria_id}">
                         <div class="image">
                             <img src="${producto.imagen}" alt="${producto.nombre}">
-                            <a href="#" class="fas fa-heart"></a>
+                            <a href="#" class="fas fa-heart ${favoritos.includes(producto.id.toString()) ? 'active' : ''}"></a>
                         </div>
                         <div class="content">
                             <div class="stars">
@@ -165,4 +165,31 @@ document.addEventListener('DOMContentLoaded', function() {
             carrito.agregarItem(producto);
         }
     });
+
+    // Función para manejar favoritos
+    function manejarFavoritos(e) {
+        if (e.target.classList.contains('fa-heart')) {
+            e.preventDefault();
+            const favoritos = JSON.parse(localStorage.getItem('favoritos')) || [];
+            const productoId = e.target.closest('.box').dataset.id;
+            
+            if (favoritos.includes(productoId)) {
+                // Remover de favoritos
+                const index = favoritos.indexOf(productoId);
+                favoritos.splice(index, 1);
+                e.target.classList.remove('active');
+            } else {
+                // Agregar a favoritos
+                favoritos.push(productoId);
+                e.target.classList.add('active');
+            }
+            
+            localStorage.setItem('favoritos', JSON.stringify(favoritos));
+            e.target.classList.add('heartbeat');
+            setTimeout(() => e.target.classList.remove('heartbeat'), 300);
+        }
+    }
+
+    // Agregar el event listener para favoritos
+    document.addEventListener('click', manejarFavoritos);
 });

@@ -17,6 +17,7 @@
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(30rem, 1fr));
     gap: 2rem;
+    padding: 2rem;
 }
 
 .no-favoritos {
@@ -51,5 +52,17 @@
 
 .fa-heart.active {
     color: var(--red) !important;
+    background: rgba(255, 255, 255, 0.9) !important;
     animation: heartBeat 0.3s ease-in-out;
-} 
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .favoritos {
+        padding: 6rem 5% 3rem;
+    }
+    
+    .box-container {
+        grid-template-columns: repeat(auto-fit, minmax(25rem, 1fr));
+    }
+}
