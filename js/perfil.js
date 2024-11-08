@@ -52,6 +52,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 } else {
                     input.readOnly = true;
                     this.innerHTML = '<i class="fas fa-edit"></i>';
+                    
+                    // Restaurar valor original
+                    const usuario = JSON.parse(localStorage.getItem('usuario'));
+                    const fieldName = input.id;
+                    input.value = usuario[fieldName] || '';
+                    
+                    // Verificar si hay algún campo en modo edición
+                    const camposEditables = Array.from(document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"]'))
+                        .some(input => !input.readOnly);
+                    
+                    // Ocultar botón guardar si no hay campos en edición
+                    if (!camposEditables) {
+                        btnGuardar.style.display = 'none';
+                    }
                 }
             });
         });
@@ -80,55 +94,45 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function cargarDatosUsuario(usuario) {
     try {
-        if (!usuario || !usuario.id) {
-            throw new Error('Usuario no válido');
-        }
-
-        console.log('Cargando datos para usuario ID:', usuario.id);
+        const response = await fetch(`${API_BASE_URL}/app/Models/obtener_usuario.php?id=${usuario.id}`);
+        const data = await response.json();
         
-        const response = await fetch(`${API_BASE_URL}/app/Models/obtener_usuario.php?id=${usuario.id}`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        });
+        if (data.status === 'success') {
+            const campos = {
+                nombre: document.getElementById('nombre'),
+                apellido: document.getElementById('apellido'),
+                email: document.getElementById('email'),
+                telefono: document.getElementById('telefono')
+            };
 
-        if (!response.ok) {
-            throw new Error(`Error HTTP: ${response.status}`);
-        }
-
-        const responseText = await response.text();
-        console.log('Respuesta del servidor:', responseText);
-
-        const data = JSON.parse(responseText);
-        
-        if (data.status === 'success' && data.usuario) {
-            // Actualizar campos
-            const campos = ['nombre', 'apellido', 'email', 'telefono', 'direccion'];
-            campos.forEach(campo => {
-                const elemento = document.getElementById(campo);
-                if (elemento) {
-                    elemento.value = data.usuario[campo] || '';
+            // Establecer valores y bloquear campos
+            Object.entries(campos).forEach(([key, input]) => {
+                if (input) {
+                    input.value = data.usuario[key] || '';
+                    input.readOnly = true; // Bloquear campos por defecto
                 }
             });
+
+            // Actualizar información en el sidebar
+            const nombreUsuarioElement = document.getElementById('nombre-usuario');
+            const emailUsuarioElement = document.getElementById('email-usuario');
             
-            // Actualizar nombre y email en el sidebar
-            const nombreCompleto = `${data.usuario.nombre || ''} ${data.usuario.apellido || ''}`.trim();
-            document.getElementById('nombre-usuario').textContent = nombreCompleto || 'Usuario';
-            document.getElementById('email-usuario').textContent = data.usuario.email || '';
-            
-            // Actualizar localStorage con los datos más recientes
-            localStorage.setItem('usuario', JSON.stringify({
-                ...usuario,
-                ...data.usuario
-            }));
-        } else {
-            throw new Error(data.message || 'Error al cargar datos del usuario');
+            if (nombreUsuarioElement) {
+                nombreUsuarioElement.textContent = `${data.usuario.nombre} ${data.usuario.apellido}`;
+            }
+            if (emailUsuarioElement) {
+                emailUsuarioElement.textContent = data.usuario.email;
+            }
+
+            // Ocultar botón guardar inicialmente
+            const btnGuardar = document.querySelector('.btn-guardar');
+            if (btnGuardar) {
+                btnGuardar.style.display = 'none';
+            }
         }
     } catch (error) {
-        console.error('Error completo:', error);
-        mostrarMensaje('Error al cargar datos del usuario: ' + error.message, 'error');
+        console.error('Error:', error);
+        mostrarMensaje('Error al cargar los datos del usuario', 'error');
     }
 }
 
@@ -213,6 +217,21 @@ async function actualizarDatosPersonales() {
             if (emailUsuarioElement) {
                 emailUsuarioElement.textContent = formData.email;
             }
+
+            // Bloquear todos los campos y restaurar botones
+            Object.values(campos).forEach(campo => {
+                if (campo) {
+                    campo.readOnly = true;
+                }
+            });
+
+            // Restaurar botones de edición
+            document.querySelectorAll('.btn-editar').forEach(btn => {
+                btn.innerHTML = '<i class="fas fa-edit"></i>';
+            });
+
+            // Ocultar botón guardar
+            document.querySelector('.btn-guardar').style.display = 'none';
         } else {
             throw new Error(data.message || 'Error al actualizar los datos');
         }
