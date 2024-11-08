@@ -5,17 +5,25 @@ document.addEventListener('DOMContentLoaded', function() {
     const searchBox = document.querySelector('#search-box');
     const API_URL = 'https://randy939-001-site1.qtempurl.com/app/Controllers/productos.php';
 
+    // Prevenir el comportamiento por defecto del formulario
+    searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+    });
+
     if (searchIcon && searchForm) {
-        searchIcon.onclick = () => {
+        searchIcon.onclick = (e) => {
+            e.preventDefault();
             searchForm.classList.toggle('active');
             searchBox.focus();
         }
     }
 
     if (closeBtn && searchForm) {
-        closeBtn.onclick = () => {
+        closeBtn.onclick = (e) => {
+            e.preventDefault();
             searchForm.classList.remove('active');
             searchBox.value = '';
+            ocultarResultados();
         }
     }
 
@@ -66,7 +74,9 @@ document.addEventListener('DOMContentLoaded', function() {
             resultadosContainer.innerHTML = `
                 <div class="results-list">
                     ${resultados.map(producto => `
-                        <a href="/app/Views/pages/menu.html?categoria-card=${obtenerSlugCategoria(producto.categoria_id)}&producto=${producto.id}" class="result-item">
+                        <a href="/app/Views/pages/menu.html?categoria-card=${obtenerSlugCategoria(producto.categoria_id)}&producto=${producto.id}" 
+                           class="result-item"
+                           onclick="window.location.href=this.href; return false;">
                             <img src="${producto.imagen}" alt="${producto.nombre}">
                             <div class="result-info">
                                 <h4>${producto.nombre}</h4>
@@ -76,6 +86,16 @@ document.addEventListener('DOMContentLoaded', function() {
                     `).join('')}
                 </div>
             `;
+
+            // Agregar event listeners a los resultados
+            document.querySelectorAll('.result-item').forEach(item => {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = this.getAttribute('href');
+                    searchForm.classList.remove('active');
+                    ocultarResultados();
+                });
+            });
         }
     }
 
