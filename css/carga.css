@@ -15,7 +15,7 @@
 
 .loader-container img{
     width: 35rem;
-    animation: bounce 2s;
+    animation: bounce 2s infinite;
 }
 
 .loader-container.fade-out{
