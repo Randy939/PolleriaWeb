@@ -38,19 +38,19 @@ document.addEventListener('DOMContentLoaded', async function() {
             }
         }
         // Para la página de promociones
-        else if (cleanCurrentPath.includes('menu.html') && currentUrl.includes('categoria-card=promociones')) {
+        else if (cleanCurrentPath === 'app/Views/pages/menu.html' && currentUrl.includes('categoria-card=promociones')) {
             if (href.includes('promociones')) {
                 link.classList.add('active');
             }
         }
         // Para la página de menú general
-        else if (cleanCurrentPath.includes('menu.html') && !currentUrl.includes('categoria-card=promociones')) {
-            if (cleanHref.endsWith('menu.html') && !href.includes('promociones')) {
+        else if (cleanCurrentPath === 'app/Views/pages/menu.html' && !currentUrl.includes('categoria-card=promociones')) {
+            if (cleanHref === 'app/Views/pages/menu.html' && !href.includes('promociones')) {
                 link.classList.add('active');
             }
         }
         // Para la página de reserva
-        else if (cleanCurrentPath.includes('reserva.html')) {
+        else if (cleanCurrentPath === 'app/Views/pages/reserva.html') {
             if (href.includes('reserva.html')) {
                 link.classList.add('active');
             }
