@@ -5,7 +5,7 @@ ini_set('display_errors', 1);
 header("Access-Control-Allow-Origin: https://gentle-arithmetic-98eb61.netlify.app");
 header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET, OPTIONS, POST, PUT, DELETE");
+header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Max-Age: 3600");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
@@ -98,7 +98,7 @@ try {
         }
     }
 
-    if ($_SERVER["REQUEST_METHOD"] === 'DELETE') {
+    if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
         if (!isset($_GET['id']) || !isset($_GET['usuario_id'])) {
             throw new Exception("ID de dirección o usuario no proporcionado");
         }
@@ -108,7 +108,7 @@ try {
         if ($usuario->eliminarDireccion($_GET['id'])) {
             http_response_code(200);
             echo json_encode(array(
-                "status" => "success", 
+                "status" => "success",
                 "message" => "Dirección eliminada correctamente"
             ));
         } else {
@@ -119,7 +119,7 @@ try {
     error_log("Error en direcciones.php: " . $e->getMessage());
     http_response_code(500);
     echo json_encode(array(
-        "status" => "error", 
+        "status" => "error",
         "message" => $e->getMessage()
     ));
 }

@@ -285,15 +285,9 @@ async function cambiarPassword() {
 async function cargarDirecciones() {
     try {
         const usuario = JSON.parse(localStorage.getItem('usuario'));
-        const response = await fetch(`${API_BASE_URL}/app/Models/direcciones.php?usuario_id=${usuario.id}`, {
-            method: 'GET',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        });
-
+        const response = await fetch(`${API_BASE_URL}/app/Models/direcciones.php?usuario_id=${usuario.id}`);
         const data = await response.json();
+        
         const direccionesLista = document.querySelector('.direcciones-lista');
         direccionesLista.innerHTML = '';
         
@@ -304,13 +298,13 @@ async function cargarDirecciones() {
                 direccionElement.innerHTML = `
                     <div class="direccion-info">
                         <p class="direccion-principal">${direccion.direccion}</p>
-                        <p class="direccion-referencia">${direccion.referencia || ''}</p>
+                        ${direccion.referencia ? `<p class="direccion-referencia">${direccion.referencia}</p>` : ''}
                     </div>
                     <div class="direccion-acciones">
-                        <button class="btn-editar" onclick="mostrarFormularioDireccion(${JSON.stringify(direccion)})">
+                        <button onclick="mostrarFormularioDireccion(${JSON.stringify(direccion).replace(/"/g, '&quot;')})" class="btn-editar">
                             <i class="fas fa-edit"></i>
                         </button>
-                        <button class="btn-eliminar" onclick="eliminarDireccion(${direccion.id})">
+                        <button onclick="eliminarDireccion(${direccion.id})" class="btn-eliminar">
                             <i class="fas fa-trash"></i>
                         </button>
                     </div>
@@ -319,6 +313,12 @@ async function cargarDirecciones() {
             });
         } else {
             direccionesLista.innerHTML = '<p class="no-direcciones">No hay direcciones registradas</p>';
+        }
+
+        // Agregar evento al botón de agregar dirección
+        const btnAgregar = document.querySelector('.btn-agregar');
+        if (btnAgregar) {
+            btnAgregar.onclick = () => mostrarFormularioDireccion();
         }
     } catch (error) {
         console.error('Error:', error);
@@ -443,8 +443,16 @@ async function eliminarDireccion(direccionId) {
     try {
         const usuario = JSON.parse(localStorage.getItem('usuario'));
         const response = await fetch(`${API_BASE_URL}/app/Models/direcciones.php?id=${direccionId}&usuario_id=${usuario.id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
         });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
         const data = await response.json();
         
@@ -452,7 +460,7 @@ async function eliminarDireccion(direccionId) {
             mostrarMensaje('Dirección eliminada correctamente', 'success');
             await cargarDirecciones();
         } else {
-            throw new Error(data.message);
+            throw new Error(data.message || 'Error al eliminar la dirección');
         }
     } catch (error) {
         console.error('Error:', error);
