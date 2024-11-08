@@ -18,6 +18,11 @@ document.addEventListener('DOMContentLoaded', async function() {
 
         // Insertamos el contenido
         document.getElementById('header-placeholder').innerHTML = headerData;
+        document.getElementById('header-placeholder').innerHTML = headerData;
+        // Inicializamos el carrito después de cargar el header
+if (window.carrito) {
+    carrito.init();
+}
         document.getElementById('footer-placeholder').innerHTML = footerData;
 
         // Inicializamos eventos

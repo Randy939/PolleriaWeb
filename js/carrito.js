@@ -2,7 +2,6 @@ class Carrito {
     constructor() {
         this.items = [];
         this.total = 0;
-        this.init();
     }
 
     init() {
@@ -138,5 +137,16 @@ class Carrito {
     }
 }
 
-// Inicializar el carrito
+// Crear la instancia del carrito
 const carrito = new Carrito();
+
+// Inicializar después de que el header se cargue
+document.addEventListener('DOMContentLoaded', function() {
+    // Esperar a que el header se cargue completamente
+    const checkHeader = setInterval(() => {
+        if (document.querySelector('#carrito-btn')) {
+            clearInterval(checkHeader);
+            carrito.init();
+        }
+    }, 100);
+});
