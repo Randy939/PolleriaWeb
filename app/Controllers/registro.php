@@ -30,28 +30,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $usuario->nombre = htmlspecialchars(strip_tags($_POST['nombre']));
         $usuario->apellido = htmlspecialchars(strip_tags($_POST['apellido']));
         $usuario->email = htmlspecialchars(strip_tags($_POST['email']));
-        $usuario->password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        
+        // Guardar la contraseña sin hashear para el login posterior
+        $password_original = $_POST['password'];
+        // Hashear la contraseña para el almacenamiento
+        $usuario->password = password_hash($password_original, PASSWORD_DEFAULT);
+        
         $usuario->direccion = !empty($_POST['direccion']) ? htmlspecialchars(strip_tags($_POST['direccion'])) : "";
         $usuario->telefono = !empty($_POST['telefono']) ? htmlspecialchars(strip_tags($_POST['telefono'])) : "";
 
         try {
             if($usuario->crear()) {
-                echo json_encode(array(
-                    "status" => "success",
-                    "message" => "Usuario creado exitosamente",
-                    "data" => array(
-                        "id" => $usuario->id,
-                        "nombre" => $usuario->nombre,
-                        "email" => $usuario->email
-                    )
-                ));
+                // Intentar hacer login inmediatamente
+                $query = "SELECT id, nombre, email, password FROM usuarios WHERE email = :email LIMIT 1";
+                $stmt = $db->prepare($query);
+                $stmt->bindParam(":email", $usuario->email);
+                $stmt->execute();
+                
+                if($stmt->rowCount() > 0) {
+                    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                    if (password_verify($password_original, $user['password'])) {
+                        echo json_encode(array(
+                            "status" => "success",
+                            "message" => "Usuario creado exitosamente",
+                            "data" => array(
+                                "id" => $user['id'],
+                                "nombre" => $user['nombre'],
+                                "email" => $user['email']
+                            )
+                        ));
+                    } else {
+                        throw new Exception("Error en la verificación de la contraseña");
+                    }
+                } else {
+                    throw new Exception("Error al recuperar el usuario creado");
+                }
             } else {
-                echo json_encode(array(
-                    "status" => "error",
-                    "message" => "No se pudo crear el usuario"
-                ));
+                throw new Exception("No se pudo crear el usuario");
             }
         } catch(Exception $e) {
+            error_log("Error en registro.php: " . $e->getMessage());
             echo json_encode(array(
                 "status" => "error",
                 "message" => $e->getMessage()
