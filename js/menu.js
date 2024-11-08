@@ -36,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const categoriaId = categoriaMapping[categoriaSlug].id;
             const response = await fetch(`${API_URL}?categoria_id=${categoriaId}`);
             const data = await response.json();
+            const favoritos = obtenerFavoritos();
 
             // Actualizar el título con el nombre de la categoría
             tituloPrincipal.textContent = categoriaMapping[categoriaSlug].nombre;
@@ -51,10 +52,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 mensajeNoProductos.style.display = 'none';
                 cajaContenedora.innerHTML = data.productos.map(producto => `
-                    <div class="box" data-categoria="${producto.categoria_id}">
+                    <div class="box" data-id="${producto.id}" data-categoria="${producto.categoria_id}">
                         <div class="image">
                             <img src="${producto.imagen}" alt="${producto.nombre}">
-                            <a href="#" class="fas fa-heart"></a>
+                            <a href="#" class="fas fa-heart ${favoritos.includes(producto.id.toString()) ? 'active' : ''}"></a>
                         </div>
                         <div class="content">
                             <div class="stars">
@@ -86,6 +87,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 `).join('');
 
                 activarControlesCantidad();
+                activarControlFavoritos();
             }
         } catch (error) {
             console.error('Error al cargar productos:', error);
@@ -128,6 +130,59 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     }
+
+    // Funciones para manejar favoritos
+    function obtenerFavoritos() {
+        return JSON.parse(localStorage.getItem('favoritos')) || [];
+    }
+
+    function guardarFavoritos(favoritos) {
+        localStorage.setItem('favoritos', JSON.stringify(favoritos));
+    }
+
+    function actualizarIconosFavoritos() {
+        const favoritos = obtenerFavoritos();
+        document.querySelectorAll('.fa-heart').forEach(heart => {
+            const productoId = heart.closest('.box').dataset.id;
+            if (favoritos.includes(productoId)) {
+                heart.classList.add('active');
+            } else {
+                heart.classList.remove('active');
+            }
+        });
+    }
+
+    // Función para activar el control de favoritos
+    function activarControlFavoritos() {
+        document.querySelectorAll('.fa-heart').forEach(heart => {
+            heart.addEventListener('click', function(e) {
+                e.preventDefault();
+                const usuario = JSON.parse(localStorage.getItem('usuario'));
+                if (!usuario) {
+                    window.location.href = '/app/Views/auth/login.html';
+                    return;
+                }
+
+                const box = this.closest('.box');
+                const productoId = box.dataset.id;
+                const favoritos = obtenerFavoritos();
+                
+                if (favoritos.includes(productoId)) {
+                    const index = favoritos.indexOf(productoId);
+                    favoritos.splice(index, 1);
+                    this.classList.remove('active');
+                } else {
+                    favoritos.push(productoId);
+                    this.classList.add('active');
+                }
+                
+                guardarFavoritos(favoritos);
+                this.classList.add('heartbeat');
+                setTimeout(() => this.classList.remove('heartbeat'), 300);
+            });
+        });
+    }
+
     // Activar event listeners para las categorías
     const categoriaCards = document.querySelectorAll('.categoria-card');
     categoriaCards.forEach(card => {

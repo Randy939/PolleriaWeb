@@ -6,6 +6,37 @@
 .favoritos-header {
     text-align: center;
     margin-bottom: 4rem;
+    padding: 2rem;
+    background: linear-gradient(to right, rgba(44, 85, 48, 0.1), rgba(255, 193, 7, 0.1));
+    border-radius: 1rem;
+}
+
+.favoritos-header .sub-titulo {
+    font-size: 2.4rem;
+    color: var(--green);
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.favoritos-header .titulo {
+    font-size: 3.6rem;
+    color: var(--black);
+    font-weight: 700;
+    text-transform: capitalize;
+    position: relative;
+    display: inline-block;
+}
+
+.favoritos-header .titulo::after {
+    content: '';
+    position: absolute;
+    bottom: -1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 0.3rem;
+    background: var(--yellow);
+    border-radius: 1rem;
 }
 
 .favoritos-container {
