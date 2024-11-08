@@ -1,11 +1,11 @@
 document.addEventListener('DOMContentLoaded', async function() {
     const loader = document.querySelector('.loader-container');
-    const MINIMUM_LOADING_TIME = 1000; // Reducimos a 1 segundo para una carga más rápida
+    const MINIMUM_LOADING_TIME = 1000;
 
     try {
         const startTime = Date.now();
 
-        // Cargar header y footer en paralelo para optimizar
+        // Cargar header y footer en paralelo
         const [headerResponse, footerResponse] = await Promise.all([
             fetch('/app/Views/layouts/header.html'),
             fetch('/app/Views/layouts/footer.html')
@@ -23,6 +23,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         // Inicializamos eventos
         initializeHeaderEvents();
 
+        // Cargar carrito
+        await fetch('/app/Views/layouts/carrito.html')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('carrito-placeholder').innerHTML = data;
+            });
+
         // Calcular tiempo transcurrido
         const elapsedTime = Date.now() - startTime;
         
@@ -33,15 +40,23 @@ document.addEventListener('DOMContentLoaded', async function() {
             );
         }
 
-        // Agregar carrito
-        fetch('/app/Views/layouts/carrito.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('carrito-placeholder').innerHTML = data;
-            });
+        // Ocultar loader después de cargar todo
+        if (loader) {
+            loader.classList.add('fade-out');
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 500);
+        }
 
     } catch (error) {
         console.error('Error cargando los componentes:', error);
+        // Ocultar loader incluso si hay error
+        if (loader) {
+            loader.classList.add('fade-out');
+            setTimeout(() => {
+                loader.style.display = 'none';
+            }, 500);
+        }
     }
 });
 
