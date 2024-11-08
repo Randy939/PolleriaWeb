@@ -41,6 +41,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         try {
             if($usuario->crear()) {
+                // Logging para debug
+                error_log("Usuario creado exitosamente. Email: " . $usuario->email);
+                
                 // Intentar hacer login inmediatamente
                 $query = "SELECT id, nombre, email, password FROM usuarios WHERE email = :email LIMIT 1";
                 $stmt = $db->prepare($query);
@@ -49,7 +52,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 if($stmt->rowCount() > 0) {
                     $user = $stmt->fetch(PDO::FETCH_ASSOC);
+                    error_log("Usuario recuperado. Verificando contraseña...");
+                    
+                    // Debug de verificación de contraseña
+                    error_log("Contraseña original: " . substr($password_original, 0, 3) . "***");
+                    error_log("Hash almacenado: " . substr($user['password'], 0, 20) . "...");
+                    
                     if (password_verify($password_original, $user['password'])) {
+                        error_log("Verificación de contraseña exitosa");
                         echo json_encode(array(
                             "status" => "success",
                             "message" => "Usuario creado exitosamente",
@@ -60,6 +70,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             )
                         ));
                     } else {
+                        error_log("Fallo en la verificación de la contraseña");
                         throw new Exception("Error en la verificación de la contraseña");
                     }
                 } else {
@@ -69,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 throw new Exception("No se pudo crear el usuario");
             }
         } catch(Exception $e) {
-            error_log("Error en registro.php: " . $e->getMessage());
+            error_log("Error completo en registro.php: " . $e->getMessage());
             echo json_encode(array(
                 "status" => "error",
                 "message" => $e->getMessage()
