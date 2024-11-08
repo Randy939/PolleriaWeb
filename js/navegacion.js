@@ -38,13 +38,13 @@ document.addEventListener('DOMContentLoaded', async function() {
             }
         }
         // Para la página de promociones
-        else if (cleanCurrentPath.includes('menu.html') && currentUrl.includes('promociones')) {
+        else if (cleanCurrentPath.includes('menu.html') && currentUrl.includes('categoria-card=promociones')) {
             if (href.includes('promociones')) {
                 link.classList.add('active');
             }
         }
         // Para la página de menú general
-        else if (cleanCurrentPath.includes('menu.html') && !currentUrl.includes('promociones')) {
+        else if (cleanCurrentPath.includes('menu.html') && !currentUrl.includes('categoria-card=promociones')) {
             if (cleanHref.endsWith('menu.html') && !href.includes('promociones')) {
                 link.classList.add('active');
             }
