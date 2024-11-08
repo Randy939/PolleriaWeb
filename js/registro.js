@@ -20,19 +20,37 @@ document.getElementById('registroForm').addEventListener('submit', async functio
         console.log('Respuesta del servidor:', data);
         
         if (data.status === 'success') {
-            localStorage.setItem('usuario', JSON.stringify({
-                nombre: document.getElementById('nombre').value,
-                email: document.getElementById('email').value
-            }));
+            const loginResponse = await fetch('https://randy939-001-site1.qtempurl.com/app/Controllers/login.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({ 
+                    email: document.getElementById('email').value,
+                    password: document.getElementById('password').value 
+                })
+            });
             
-            const mensajeExito = document.createElement('div');
-            mensajeExito.className = 'mensaje-exito';
-            mensajeExito.textContent = 'Registro exitoso';
-            document.getElementById('registroForm').insertBefore(mensajeExito, document.querySelector('.btn-registro'));
+            const loginData = await loginResponse.json();
             
-            setTimeout(() => {
-                window.location.href = '/index.html';
-            }, 1500);
+            if (loginData.status === 'success') {
+                localStorage.setItem('usuario', JSON.stringify({
+                    id: loginData.data.id,
+                    nombre: document.getElementById('nombre').value,
+                    email: document.getElementById('email').value
+                }));
+                
+                const mensajeExito = document.createElement('div');
+                mensajeExito.className = 'mensaje-exito';
+                mensajeExito.textContent = 'Registro exitoso';
+                document.getElementById('registroForm').insertBefore(mensajeExito, document.querySelector('.btn-registro'));
+                
+                setTimeout(() => {
+                    window.location.href = '/index.html';
+                }, 1500);
+            }
         } else {
             const mensajeError = document.createElement('div');
             mensajeError.className = 'mensaje-error';

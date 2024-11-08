@@ -24,20 +24,33 @@ try {
     $db = $database->getConnection();
 
     // Verificar credenciales
-    $stmt = $db->prepare("SELECT id, nombre, password FROM usuarios WHERE email = :email LIMIT 1");
+    $query = "SELECT id, nombre, apellido, email, password FROM usuarios WHERE email = :email LIMIT 1";
+    $stmt = $db->prepare($query);
     $stmt->bindParam(":email", $data['email']);
     $stmt->execute();
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    if ($user && password_verify($data['password'], $user['password'])) {
-        echo json_encode([
-            "status" => "success",
-            "message" => "Login exitoso",
-            "data" => [
-                "id" => $user['id'],
-                "nombre" => $user['nombre']
-            ]
-        ]);
+    if ($stmt->rowCount() > 0) {
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (password_verify($data['password'], $user['password'])) {
+            http_response_code(200);
+            echo json_encode([
+                "status" => "success",
+                "message" => "Login exitoso",
+                "data" => [
+                    "id" => $user['id'],
+                    "nombre" => $user['nombre'],
+                    "email" => $user['email']
+                ]
+            ]);
+        } else {
+            error_log("Contraseña incorrecta para el email: " . $data['email']);
+            http_response_code(401);
+            echo json_encode([
+                "status" => "error",
+                "message" => "Credenciales inválidas"
+            ]);
+        }
     } else {
         http_response_code(401);
         echo json_encode([

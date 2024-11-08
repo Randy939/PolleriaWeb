@@ -38,7 +38,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if($usuario->crear()) {
                 echo json_encode(array(
                     "status" => "success",
-                    "message" => "Usuario creado exitosamente"
+                    "message" => "Usuario creado exitosamente",
+                    "data" => array(
+                        "id" => $usuario->id,
+                        "nombre" => $usuario->nombre,
+                        "email" => $usuario->email
+                    )
                 ));
             } else {
                 echo json_encode(array(

@@ -204,6 +204,79 @@ class Usuario {
         }
     }
 
+    public function actualizarDireccion($direccionId, $direccion) {
+        try {
+            // Verificar que la dirección pertenezca al usuario
+            $query = "SELECT id FROM " . $this->table_direcciones . " 
+                     WHERE id = :direccion_id AND usuario_id = :usuario_id 
+                     LIMIT 1";
+            
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":direccion_id", $direccionId);
+            $stmt->bindParam(":usuario_id", $this->id);
+            $stmt->execute();
+            
+            if($stmt->rowCount() === 0) {
+                throw new Exception("Dirección no encontrada o sin permisos");
+            }
+
+            $query = "UPDATE " . $this->table_direcciones . "
+                    SET direccion = :direccion,
+                        referencia = :referencia
+                    WHERE id = :direccion_id AND usuario_id = :usuario_id";
+            
+            $stmt = $this->conn->prepare($query);
+            
+            // Sanitizar datos
+            $direccion['direccion'] = htmlspecialchars(strip_tags($direccion['direccion']));
+            $direccion['referencia'] = htmlspecialchars(strip_tags($direccion['referencia']));
+            
+            $stmt->bindParam(":direccion", $direccion['direccion']);
+            $stmt->bindParam(":referencia", $direccion['referencia']);
+            $stmt->bindParam(":direccion_id", $direccionId);
+            $stmt->bindParam(":usuario_id", $this->id);
+            
+            return $stmt->execute();
+        } catch(PDOException $e) {
+            throw new Exception("Error al actualizar dirección: " . $e->getMessage());
+        }
+    }
+
+    public function eliminarDireccion($direccionId) {
+        try {
+            // Primero verificar que la dirección pertenezca al usuario
+            $queryVerificar = "SELECT id FROM " . $this->table_direcciones . " 
+                              WHERE id = :direccion_id AND usuario_id = :usuario_id 
+                              LIMIT 1";
+            
+            $stmtVerificar = $this->conn->prepare($queryVerificar);
+            $stmtVerificar->bindParam(":direccion_id", $direccionId);
+            $stmtVerificar->bindParam(":usuario_id", $this->id);
+            $stmtVerificar->execute();
+            
+            if ($stmtVerificar->rowCount() === 0) {
+                throw new Exception("La dirección no existe o no pertenece al usuario");
+            }
+
+            // Proceder con la eliminación
+            $queryEliminar = "DELETE FROM " . $this->table_direcciones . "
+                             WHERE id = :direccion_id AND usuario_id = :usuario_id";
+            
+            $stmtEliminar = $this->conn->prepare($queryEliminar);
+            $stmtEliminar->bindParam(":direccion_id", $direccionId);
+            $stmtEliminar->bindParam(":usuario_id", $this->id);
+            
+            if (!$stmtEliminar->execute()) {
+                throw new Exception("Error al ejecutar la eliminación");
+            }
+            
+            return true;
+        } catch(PDOException $e) {
+            error_log("Error en eliminarDireccion: " . $e->getMessage());
+            throw new Exception("Error al eliminar la dirección");
+        }
+    }
+
     private function emailExiste() {
         $query = "SELECT id FROM " . $this->table_name . " WHERE email = :email LIMIT 1";
         $stmt = $this->conn->prepare($query);

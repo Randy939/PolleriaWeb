@@ -1,6 +1,6 @@
 <?php
-error_reporting(0); // Desactivar la salida de errores PHP
-ini_set('display_errors', 0);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 header("Access-Control-Allow-Origin: https://gentle-arithmetic-98eb61.netlify.app");
 header("Access-Control-Allow-Credentials: true");
@@ -23,35 +23,33 @@ try {
     $usuario = new Usuario($db);
 
     if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-        error_log("DELETE request recibido");
-        error_log("GET params: " . print_r($_GET, true));
+        error_log("Procesando solicitud DELETE");
         
         if (!isset($_GET['id']) || !isset($_GET['usuario_id'])) {
-            error_log("Faltan parámetros requeridos");
             throw new Exception("ID de dirección o usuario no proporcionado");
         }
 
-        $usuario->id = $_GET['usuario_id'];
-        error_log("Intentando eliminar dirección ID: {$_GET['id']} para usuario ID: {$_GET['usuario_id']}");
+        $direccionId = filter_var($_GET['id'], FILTER_VALIDATE_INT);
+        $usuarioId = filter_var($_GET['usuario_id'], FILTER_VALIDATE_INT);
+
+        if ($direccionId === false || $usuarioId === false) {
+            throw new Exception("IDs inválidos");
+        }
+
+        error_log("Intentando eliminar dirección ID: $direccionId para usuario ID: $usuarioId");
         
-        try {
-            $resultado = $usuario->eliminarDireccion($_GET['id']);
-            error_log("Resultado de eliminación: " . ($resultado ? "true" : "false"));
-            
-            if ($resultado) {
-                http_response_code(200);
-                $response = array(
-                    "status" => "success",
-                    "message" => "Dirección eliminada correctamente"
-                );
-                error_log("Respuesta de éxito: " . json_encode($response));
-                echo json_encode($response);
-            } else {
-                throw new Exception("No se pudo eliminar la dirección");
-            }
-        } catch (Exception $e) {
-            error_log("Error en eliminación: " . $e->getMessage());
-            throw $e;
+        $usuario->id = $usuarioId;
+        
+        if ($usuario->eliminarDireccion($direccionId)) {
+            $response = array(
+                "status" => "success",
+                "message" => "Dirección eliminada correctamente"
+            );
+            error_log("Dirección eliminada correctamente");
+            http_response_code(200);
+            echo json_encode($response);
+        } else {
+            throw new Exception("No se pudo eliminar la dirección");
         }
         exit();
     }
@@ -133,10 +131,11 @@ try {
 } catch(Exception $e) {
     error_log("Error en direcciones.php: " . $e->getMessage());
     http_response_code(500);
-    echo json_encode(array(
+    $response = array(
         "status" => "error",
         "message" => $e->getMessage()
-    ));
+    );
+    echo json_encode($response);
     exit();
 }
 ?> 
