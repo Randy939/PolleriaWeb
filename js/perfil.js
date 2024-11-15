@@ -1,28 +1,27 @@
 const API_BASE_URL = 'https://randy939-001-site1.qtempurl.com';
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', async function() {
     const usuarioStr = localStorage.getItem('usuario');
-    console.log('Usuario en localStorage:', usuarioStr);
     
     if (!usuarioStr) {
-        console.log('No hay usuario en localStorage');
         window.location.href = '/app/Views/auth/login.html';
         return;
     }
 
     try {
         const usuario = JSON.parse(usuarioStr);
-        console.log('Usuario parseado:', usuario);
         
         if (!usuario || !usuario.id) {
-            console.log('Usuario inválido o sin ID');
             localStorage.removeItem('usuario');
             window.location.href = '/app/Views/auth/login.html';
             return;
         }
 
-        cargarDatosUsuario(usuario);
-        cargarDirecciones();
+        // Cargar datos del usuario primero
+        await cargarDatosUsuario(usuario);
+        
+        // Luego cargar direcciones
+        await cargarDirecciones();
         
         // Manejar navegación del menú
         document.querySelectorAll('.menu-item').forEach(item => {
@@ -86,9 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
             mostrarFormularioDireccion();
         });
     } catch (error) {
-        console.error('Error al parsear usuario:', error);
-        localStorage.removeItem('usuario');
-        window.location.href = '/app/Views/auth/login.html';
+        console.error('Error al cargar la página:', error);
     }
 });
 
