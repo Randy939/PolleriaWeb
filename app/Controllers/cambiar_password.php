@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 }
 
 require_once '../config/database.php';
-require_once 'usuario.php';
+require_once '../Models/Usuario.php';
 
 try {
     // Obtener el contenido de la solicitud

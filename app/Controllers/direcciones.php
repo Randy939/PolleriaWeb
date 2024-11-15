@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 try {
     require_once '../config/database.php';
-    require_once 'usuario.php';
+    require_once '../Models/Usuario.php';
 
     $database = new Database();
     $db = $database->getConnection();
