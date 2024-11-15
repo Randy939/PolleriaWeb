@@ -305,7 +305,7 @@ async function cargarDirecciones() {
         const direccionesLista = document.querySelector('.direcciones-lista');
         direccionesLista.innerHTML = '';
         
-        if (data.direcciones && data.direcciones.length > 0) {
+        if (data.status === 'success' && Array.isArray(data.direcciones) && data.direcciones.length > 0) {
             data.direcciones.forEach(direccion => {
                 const direccionElement = document.createElement('div');
                 direccionElement.className = 'direccion-item';
@@ -327,12 +327,6 @@ async function cargarDirecciones() {
             });
         } else {
             direccionesLista.innerHTML = '<p class="no-direcciones">No hay direcciones registradas</p>';
-        }
-
-        // Agregar evento al botón de agregar dirección
-        const btnAgregar = document.querySelector('.btn-agregar');
-        if (btnAgregar) {
-            btnAgregar.onclick = () => mostrarFormularioDireccion();
         }
     } catch (error) {
         console.error('Error:', error);
