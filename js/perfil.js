@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 async function cargarDatosUsuario(usuario) {
     try {
-        const response = await fetch(`${API_BASE_URL}/app/Models/obtener_usuario.php?id=${usuario.id}`);
+        const response = await fetch(`${API_BASE_URL}/app/Controllers/obtener_usuario.php?id=${usuario.id}`);
         const data = await response.json();
         
         if (data.status === 'success') {
@@ -183,7 +183,7 @@ async function actualizarDatosPersonales() {
             telefono: campos.telefono.value.trim()
         };
 
-        const response = await fetch(`${API_BASE_URL}/app/Models/actualizar_usuario.php`, {
+        const response = await fetch(`${API_BASE_URL}/app/Controllers/actualizar_usuario.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -267,7 +267,7 @@ async function cambiarPassword() {
             password_nueva: passwordNueva
         };
 
-        const response = await fetch(`${API_BASE_URL}/app/Models/cambiar_password.php`, {
+        const response = await fetch(`${API_BASE_URL}/app/Controllers/cambiar_password.php`, {
             method: 'POST',
             mode: 'cors',
             credentials: 'include',
@@ -299,7 +299,7 @@ async function cambiarPassword() {
 async function cargarDirecciones() {
     try {
         const usuario = JSON.parse(localStorage.getItem('usuario'));
-        const response = await fetch(`${API_BASE_URL}/app/Models/direcciones.php?usuario_id=${usuario.id}`);
+        const response = await fetch(`${API_BASE_URL}/app/Controllers/direcciones.php?usuario_id=${usuario.id}`);
         const data = await response.json();
         
         const direccionesLista = document.querySelector('.direcciones-lista');
@@ -360,7 +360,7 @@ async function guardarDireccion(form, direccionId = null) {
 
         console.log('Enviando datos:', formData);
 
-        const response = await fetch(`${API_BASE_URL}/app/Models/direcciones.php`, {
+        const response = await fetch(`${API_BASE_URL}/app/Controllers/direcciones.php`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -456,7 +456,7 @@ async function eliminarDireccion(direccionId) {
 
     try {
         const usuario = JSON.parse(localStorage.getItem('usuario'));
-        const url = `${API_BASE_URL}/app/Models/direcciones.php?id=${direccionId}&usuario_id=${usuario.id}`;
+        const url = `${API_BASE_URL}/app/Controllers/direcciones.php?id=${direccionId}&usuario_id=${usuario.id}`;
         console.log('URL de eliminación:', url);
 
         const response = await fetch(url, {
@@ -512,7 +512,7 @@ async function guardarDireccion(form, direccionId = null) {
             formData.direccion_id = direccionId;
         }
 
-        const response = await fetch(`${API_BASE_URL}/app/Models/direcciones.php`, {
+        const response = await fetch(`${API_BASE_URL}/app/Controllers/direcciones.php`, {
             method: direccionId ? 'PUT' : 'POST',
             headers: {
                 'Content-Type': 'application/json'
