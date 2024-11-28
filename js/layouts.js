@@ -280,3 +280,18 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
+
+    // Verificar si el usuario está logueado y es administrador
+    if (usuario && usuario.rol === 'administrador') {
+        const dashboardIcon = document.getElementById('dashboard-icon');
+        if (dashboardIcon) {
+            dashboardIcon.style.display = 'block'; // Mostrar el icono del dashboard
+            dashboardIcon.addEventListener('click', function() {
+                window.location.href = '/ruta/al/dashboard'; // Cambia esto a la ruta real del dashboard
+            });
+        }
+    }
+});
