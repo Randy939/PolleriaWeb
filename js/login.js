@@ -20,6 +20,12 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             body: JSON.stringify({ email, password })
         });
         
+        if (!response.ok) {
+            const errorText = await response.text(); // Obtener el texto de la respuesta
+            console.error('Error de respuesta:', errorText); // Imprimir el error
+            throw new Error('Error en la autenticación');
+        }
+        
         const data = await response.json();
         
         if (data.status === "success") {
