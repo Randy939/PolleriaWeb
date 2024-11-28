@@ -27,7 +27,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             localStorage.setItem('usuario', JSON.stringify({
                 id: data.data.id,
                 nombre: data.data.nombre,
-                email: email
+                email: email,
+                rol: data.data.rol
             }));
             
             // Redirigir directamente al index
