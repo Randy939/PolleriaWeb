@@ -1,9 +1,17 @@
-document.addEventListener('DOMContentLoaded', async function() {
+// Variables globales
+let usuario = null;
+
+// Función principal de inicialización
+async function inicializarAplicacion() {
     const loader = document.querySelector('.loader-container');
     const MINIMUM_LOADING_TIME = 1000;
 
     try {
         const startTime = Date.now();
+        
+        // Cargar datos del usuario
+        usuario = JSON.parse(localStorage.getItem('usuario'));
+        console.log('Usuario cargado:', usuario); // Debug
 
         // Cargar header y footer en paralelo
         const [headerResponse, footerResponse] = await Promise.all([
@@ -17,53 +25,46 @@ document.addEventListener('DOMContentLoaded', async function() {
         ]);
 
         // Insertamos el contenido
-        document.getElementById('header-placeholder').innerHTML = headerData;
-        document.getElementById('header-placeholder').innerHTML = headerData;
-        // Inicializamos el carrito después de cargar el header
-if (window.carrito) {
-    carrito.init();
-}
-        document.getElementById('footer-placeholder').innerHTML = footerData;
-
-        // Inicializamos eventos
-        initializeHeaderEvents();
-
-        // Cargar carrito
-        await fetch('/app/Views/layouts/carrito.html')
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById('carrito-placeholder').innerHTML = data;
-            });
-
-        // Calcular tiempo transcurrido
-        const elapsedTime = Date.now() - startTime;
+        const headerPlaceholder = document.getElementById('header-placeholder');
+        const footerPlaceholder = document.getElementById('footer-placeholder');
         
-        // Si el tiempo transcurrido es menor que el mínimo, esperar la diferencia
-        if (elapsedTime < MINIMUM_LOADING_TIME) {
-            await new Promise(resolve => 
-                setTimeout(resolve, MINIMUM_LOADING_TIME - elapsedTime)
-            );
+        if (headerPlaceholder) headerPlaceholder.innerHTML = headerData;
+        if (footerPlaceholder) footerPlaceholder.innerHTML = footerData;
+
+        // Inicializamos componentes después de insertar el contenido
+        setTimeout(() => {
+            initializeHeaderEvents();
+            actualizarIconosDashboard();
+            actualizarIconosUsuario();
+        }, 100);
+        
+        // Inicializar carrito si existe
+        if (window.carrito) {
+            carrito.init();
         }
 
-        // Ocultar loader después de cargar todo
-        if (loader) {
-            loader.classList.add('fade-out');
-            setTimeout(() => {
-                loader.style.display = 'none';
-            }, 500);
+        // Cargar carrito si existe el placeholder
+        const carritoPlaceholder = document.getElementById('carrito-placeholder');
+        if (carritoPlaceholder) {
+            const carritoResponse = await fetch('/app/Views/layouts/carrito.html');
+            carritoPlaceholder.innerHTML = await carritoResponse.text();
+        }
+
+        // Gestionar tiempo de carga mínimo
+        const elapsedTime = Date.now() - startTime;
+        if (elapsedTime < MINIMUM_LOADING_TIME) {
+            await new Promise(resolve => setTimeout(resolve, MINIMUM_LOADING_TIME - elapsedTime));
         }
 
     } catch (error) {
-        console.error('Error cargando los componentes:', error);
-        // Ocultar loader incluso si hay error
+        console.error('Error inicializando la aplicación:', error);
+    } finally {
         if (loader) {
             loader.classList.add('fade-out');
-            setTimeout(() => {
-                loader.style.display = 'none';
-            }, 500);
+            setTimeout(() => loader.style.display = 'none', 500);
         }
     }
-});
+}
 
 function initializeHeaderEvents() {
     const menuBars = document.getElementById('menu-bars');
@@ -72,47 +73,59 @@ function initializeHeaderEvents() {
     const searchForm = document.getElementById('search-form');
     const closeSearch = document.getElementById('close');
 
-    // Cerrar menú al hacer clic en un enlace
-    const navLinks = document.querySelectorAll('.navbar a');
-    navLinks.forEach(link => {
-        link.addEventListener('click', () => {
-            menuBars.classList.remove('fa-times');
-            navbar.classList.remove('active');
-        });
-    });
-
-    if (menuBars) {
-        menuBars.onclick = () => {
+    if (menuBars && navbar) {
+        menuBars.addEventListener('click', () => {
             menuBars.classList.toggle('fa-times');
             navbar.classList.toggle('active');
-        }
+        });
     }
 
-    if (searchIcon) {
-        searchIcon.onclick = () => {
-            searchForm.classList.toggle('active');
-        }
+    if (searchIcon && searchForm) {
+        searchIcon.addEventListener('click', () => searchForm.classList.toggle('active'));
     }
 
-    if (closeSearch) {
-        closeSearch.onclick = () => {
-            searchForm.classList.remove('active');
-        }
+    if (closeSearch && searchForm) {
+        closeSearch.addEventListener('click', () => searchForm.classList.remove('active'));
     }
 
-    // Manejar clic en iconos protegidos
-    const iconosProtegidos = {
-        'user-icon': '/app/Views/pages/perfil.html',
-        'favorites-icon': '/app/Views/pages/favoritos.html'
+    // Configurar eventos para iconos protegidos
+    configurarIconosProtegidos();
+}
+
+function actualizarIconosUsuario() {
+    if (usuario) {
+        const userIcon = document.querySelector('.fa-user');
+        if (userIcon) {
+            userIcon.classList.remove('fa-user');
+            userIcon.classList.add('fa-user-check');
+        }
+    }
+}
+
+function actualizarIconosDashboard() {
+    const dashboardIcon = document.getElementById('dashboard-icon');
+    if (dashboardIcon) {
+        console.log('Estado del rol:', usuario?.rol_id); // Debug
+        if (usuario && usuario.rol_id === 1) {
+            dashboardIcon.style.display = 'block';
+            dashboardIcon.href = '/app/Views/admin/dashboard.html';
+        } else {
+            dashboardIcon.style.display = 'none';
+        }
+    }
+}
+
+function configurarIconosProtegidos() {
+    const rutasProtegidas = {
+        'perfil': '/app/Views/pages/perfil.html',
+        'favoritos': '/app/Views/pages/favoritos.html'
     };
 
-    Object.entries(iconosProtegidos).forEach(([iconId, ruta]) => {
-        const icono = document.querySelector(`#${iconId}, a[href*="${ruta}"]`);
-        if (icono) {
-            icono.addEventListener('click', (e) => {
+    Object.entries(rutasProtegidas).forEach(([nombre, ruta]) => {
+        const enlaces = document.querySelectorAll(`a[href*="${ruta}"]`);
+        enlaces.forEach(enlace => {
+            enlace.addEventListener('click', (e) => {
                 e.preventDefault();
-                const usuario = JSON.parse(localStorage.getItem('usuario'));
-                
                 if (usuario) {
                     window.location.href = ruta;
                 } else {
@@ -122,86 +135,9 @@ function initializeHeaderEvents() {
                     }, 1500);
                 }
             });
-        }
+        });
     });
-
-    // Obtener usuario una sola vez
-    const usuario = JSON.parse(localStorage.getItem('usuario'));
-
-    // Actualizar ícono si el usuario está logueado
-    if (usuario) {
-        const userIcon = document.querySelector('.fa-user');
-        if (userIcon) {
-            userIcon.classList.remove('fa-user');
-            userIcon.classList.add('fa-user-check');
-        }
-    }
-
-    // Ocultar menu-bars en desktop
-    if (menuBars) {
-        menuBars.style.display = window.innerWidth <= 768 ? 'block' : 'none';
-        
-        window.addEventListener('resize', () => {
-            menuBars.style.display = window.innerWidth <= 768 ? 'block' : 'none';
-        });
-    }
-
-    // Manejar autenticación para favoritos y perfil
-    const favoritesBtn = document.getElementById('favorites-btn');
-    const profileBtn = document.getElementById('profile-btn');
-
-    if (favoritesBtn) {
-        favoritesBtn.addEventListener('click', (e) => {
-            if (!usuario) {
-                e.preventDefault();
-                mostrarMensajeLogin();
-                setTimeout(() => {
-                    window.location.href = '/app/Views/auth/login.html';
-                }, 1500);
-            }
-        });
-    }
-
-    if (profileBtn) {
-        profileBtn.addEventListener('click', (e) => {
-            if (!usuario) {
-                e.preventDefault();
-                mostrarMensajeLogin();
-                setTimeout(() => {
-                    window.location.href = '/app/Views/auth/login.html';
-                }, 1500);
-            }
-        });
-
-        // Actualizar ícono si está logueado
-        if (usuario) {
-            const userIcon = profileBtn.querySelector('i');
-            if (userIcon) {
-                userIcon.classList.remove('fa-user');
-                userIcon.classList.add('fa-user-check');
-            }
-        }
-    }
 }
-
-function actualizarHeader() {
-    const usuario = JSON.parse(localStorage.getItem('usuario'));
-    const favoritosLink = document.querySelector('a[href="favoritos.html"]');
-    
-    if (favoritosLink) {
-        if (!usuario) {
-            // Si no hay usuario logueado, el enlace de favoritos redirige al login
-            favoritosLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                window.location.href = '/app/Views/auth/login.html';
-            });
-        }
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    actualizarHeader();
-});
 
 function mostrarMensajeLogin() {
     const mensaje = document.createElement('div');
@@ -225,7 +161,7 @@ function mostrarMensajeLogin() {
     }, 2000);
 }
 
-// Agregar estilos para las animaciones
+// Estilos para animaciones
 const style = document.createElement('style');
 style.textContent = `
     @keyframes fadeIn {
@@ -237,87 +173,13 @@ style.textContent = `
         to { opacity: 0; transform: translateY(-20px); }
     }
     @media (max-width: 768px) {
-        #menu-bars {
-            display: block !important;
-        }
+        #menu-bars { display: block !important; }
     }
     @media (min-width: 769px) {
-        #menu-bars {
-            display: none !important;
-        }
+        #menu-bars { display: none !important; }
     }
 `;
 document.head.appendChild(style);
 
-document.addEventListener('DOMContentLoaded', async function() {
-    // ... código existente ...
-    
-    // Agregar verificación de autenticación para links protegidos
-    const favoritosBtn = document.querySelector('a[href*="favoritos.html"]');
-    const perfilBtn = document.querySelector('a[href*="perfil.html"]');
-    
-    if (favoritosBtn) {
-        favoritosBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const usuario = JSON.parse(localStorage.getItem('usuario'));
-            if (usuario) {
-                window.location.href = this.href;
-            } else {
-                window.location.href = '/app/Views/auth/login.html';
-            }
-        });
-    }
-    
-    if (perfilBtn) {
-        perfilBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            const usuario = JSON.parse(localStorage.getItem('usuario'));
-            if (usuario) {
-                window.location.href = this.href;
-            } else {
-                window.location.href = '/app/Views/auth/login.html';
-            }
-        });
-    }
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    const usuario = JSON.parse(localStorage.getItem('usuario'));
-
-    // Verificar si el usuario está logueado y es administrador
-    if (usuario && usuario.rol_id === 1) {
-        const dashboardIcon = document.getElementById('dashboard-icon');
-        if (dashboardIcon) {
-            dashboardIcon.style.display = 'block'; // Mostrar el icono del dashboard
-            dashboardIcon.addEventListener('click', function() {
-                window.location.href = '/ruta/al/dashboard'; // Cambia esto a la ruta real del dashboard
-            });
-        }
-    }
-});
-
-function actualizarIconosDashboard() {
-    const usuario = JSON.parse(localStorage.getItem('usuario'));
-    const dashboardIcon = document.getElementById('dashboard-icon');
-    
-    if (dashboardIcon) {
-        if (usuario && usuario.rol_id === 1) {
-            dashboardIcon.style.display = 'block';
-            dashboardIcon.href = '/app/Views/pages/dashboard.html'; // Ajusta esta ruta según tu estructura
-        } else {
-            dashboardIcon.style.display = 'none';
-        }
-    }
-}
-
-// Agregar la llamada a la función cuando se carga el DOM
-document.addEventListener('DOMContentLoaded', function() {
-    actualizarIconosDashboard();
-    // ... resto del código existente
-});
-
-// También llamar a la función después de un login exitoso
-function actualizarInterfazPostLogin() {
-    actualizarIconosDashboard();
-    // ... cualquier otra actualización necesaria
-}
+// Inicializar la aplicación cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', inicializarAplicacion);
