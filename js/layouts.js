@@ -285,7 +285,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const usuario = JSON.parse(localStorage.getItem('usuario'));
 
     // Verificar si el usuario está logueado y es administrador
-    if (usuario && usuario.rol === 'administrador') {
+    if (usuario && usuario.rol_id === 1) {
         const dashboardIcon = document.getElementById('dashboard-icon');
         if (dashboardIcon) {
             dashboardIcon.style.display = 'block'; // Mostrar el icono del dashboard

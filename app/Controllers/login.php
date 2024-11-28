@@ -24,9 +24,8 @@ try {
     $db = $database->getConnection();
 
     // Verificar credenciales
-    $query = "SELECT u.id, u.nombre, u.apellido, u.email, u.password, r.nombre AS rol 
+    $query = "SELECT u.id, u.nombre, u.apellido, u.email, u.password, u.rol_id 
               FROM usuarios u 
-              JOIN roles r ON u.rol_id = r.id 
               WHERE u.email = :email LIMIT 1";
     $stmt = $db->prepare($query);
     $stmt->bindParam(":email", $data['email']);
@@ -44,7 +43,7 @@ try {
                     "id" => $user['id'],
                     "nombre" => $user['nombre'],
                     "email" => $user['email'],
-                    "rol" => $user['rol']
+                    "rol" => $user['rol_id']
                 ]
             ]);
         } else {

@@ -33,7 +33,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
                 id: data.data.id,
                 nombre: data.data.nombre,
                 email: email,
-                rol: data.data.rol
+                rol_id: data.data.rol_id
             }));
             
             window.location.href = '/index.html';
