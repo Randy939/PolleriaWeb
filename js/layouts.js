@@ -295,3 +295,29 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+function actualizarIconosDashboard() {
+    const usuario = JSON.parse(localStorage.getItem('usuario'));
+    const dashboardIcon = document.getElementById('dashboard-icon');
+    
+    if (dashboardIcon) {
+        if (usuario && usuario.rol_id === 1) {
+            dashboardIcon.style.display = 'block';
+            dashboardIcon.href = '/app/Views/pages/dashboard.html'; // Ajusta esta ruta según tu estructura
+        } else {
+            dashboardIcon.style.display = 'none';
+        }
+    }
+}
+
+// Agregar la llamada a la función cuando se carga el DOM
+document.addEventListener('DOMContentLoaded', function() {
+    actualizarIconosDashboard();
+    // ... resto del código existente
+});
+
+// También llamar a la función después de un login exitoso
+function actualizarInterfazPostLogin() {
+    actualizarIconosDashboard();
+    // ... cualquier otra actualización necesaria
+}
