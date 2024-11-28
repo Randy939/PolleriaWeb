@@ -24,7 +24,7 @@ try {
     $db = $database->getConnection();
 
     // Verificar credenciales
-    $query = "SELECT u.id, u.nombre, u.apellido, u.email, r.nombre AS rol 
+    $query = "SELECT u.id, u.nombre, u.apellido, u.email, u.password, r.nombre AS rol 
               FROM usuarios u 
               JOIN roles r ON u.rol_id = r.id 
               WHERE u.email = :email LIMIT 1";

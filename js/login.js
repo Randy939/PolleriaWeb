@@ -21,15 +21,14 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         });
         
         if (!response.ok) {
-            const errorText = await response.text(); // Obtener el texto de la respuesta
-            console.error('Error de respuesta:', errorText); // Imprimir el error
+            const errorText = await response.text();
+            console.error('Error de respuesta:', errorText);
             throw new Error('Error en la autenticación');
         }
         
         const data = await response.json();
         
         if (data.status === "success") {
-            // Guardar los datos del usuario en localStorage
             localStorage.setItem('usuario', JSON.stringify({
                 id: data.data.id,
                 nombre: data.data.nombre,
@@ -37,7 +36,6 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
                 rol: data.data.rol
             }));
             
-            // Redirigir directamente al index
             window.location.href = '/index.html';
         } else {
             errorDiv.textContent = data.message || "Error al iniciar sesión";
