@@ -1,7 +1,3 @@
-// Variables globales
-let usuario = null;
-
-// Función principal de inicialización
 async function inicializarAplicacion() {
     const loader = document.querySelector('.loader-container');
     const MINIMUM_LOADING_TIME = 1000;
@@ -11,7 +7,7 @@ async function inicializarAplicacion() {
         
         // Cargar datos del usuario
         usuario = JSON.parse(localStorage.getItem('usuario'));
-        console.log('Usuario cargado:', usuario); // Debug
+        console.log('Usuario cargado:', usuario);
 
         // Cargar header y footer en paralelo
         const [headerResponse, footerResponse] = await Promise.all([
@@ -31,13 +27,14 @@ async function inicializarAplicacion() {
         if (headerPlaceholder) headerPlaceholder.innerHTML = headerData;
         if (footerPlaceholder) footerPlaceholder.innerHTML = footerData;
 
-        // Inicializamos componentes después de insertar el contenido
-        setTimeout(() => {
-            initializeHeaderEvents();
-            actualizarIconosDashboard();
-            actualizarIconosUsuario();
-        }, 100);
-        
+        // Esperar a que el DOM se actualice
+        await new Promise(resolve => setTimeout(resolve, 100));
+
+        // Inicializamos componentes
+        initializeHeaderEvents();
+        actualizarIconosDashboard();
+        actualizarIconosUsuario();
+
         // Inicializar carrito si existe
         if (window.carrito) {
             carrito.init();
@@ -103,18 +100,25 @@ function actualizarIconosUsuario() {
 }
 
 function actualizarIconosDashboard() {
-    const dashboardIcon = document.getElementById('dashboard-icon');
-    if (dashboardIcon) {
-        console.log('Usuario completo:', usuario); // Agregar este log
-        console.log('Estado del rol:', usuario?.rol_id);
-        
-        if (usuario && usuario.rol_id === 1) {
-            dashboardIcon.style.display = 'block';
-            dashboardIcon.href = '/app/Views/admin/dashboard.html';
-        } else {
-            dashboardIcon.style.display = 'none';
+    // Esperar a que el elemento exista
+    const checkDashboardIcon = setInterval(() => {
+        const dashboardIcon = document.getElementById('dashboard-icon');
+        if (dashboardIcon) {
+            clearInterval(checkDashboardIcon);
+            console.log('Usuario completo:', usuario);
+            console.log('Estado del rol:', usuario?.rol_id);
+            
+            if (usuario && usuario.rol_id === '1') { // Nota: comparamos con '1' como string
+                dashboardIcon.style.display = 'block';
+                dashboardIcon.href = '/app/Views/admin/dashboard.html';
+            } else {
+                dashboardIcon.style.display = 'none';
+            }
         }
-    }
+    }, 100);
+
+    // Limpiar el intervalo después de 5 segundos por seguridad
+    setTimeout(() => clearInterval(checkDashboardIcon), 5000);
 }
 function configurarIconosProtegidos() {
     const rutasProtegidas = {
