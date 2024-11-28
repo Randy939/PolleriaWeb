@@ -110,7 +110,7 @@ function actualizarIconosDashboard() {
             
             if (usuario && usuario.rol_id === '1') { // Nota: comparamos con '1' como string
                 dashboardIcon.style.display = 'block';
-                dashboardIcon.href = '/app/Views/admin/dashboard.html';
+                dashboardIcon.href = '/app/Views/pages/dashboard.html';
             } else {
                 dashboardIcon.style.display = 'none';
             }
