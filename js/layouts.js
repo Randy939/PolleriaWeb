@@ -105,7 +105,9 @@ function actualizarIconosUsuario() {
 function actualizarIconosDashboard() {
     const dashboardIcon = document.getElementById('dashboard-icon');
     if (dashboardIcon) {
-        console.log('Estado del rol:', usuario?.rol_id); // Debug
+        console.log('Usuario completo:', usuario); // Agregar este log
+        console.log('Estado del rol:', usuario?.rol_id);
+        
         if (usuario && usuario.rol_id === 1) {
             dashboardIcon.style.display = 'block';
             dashboardIcon.href = '/app/Views/admin/dashboard.html';
@@ -114,7 +116,6 @@ function actualizarIconosDashboard() {
         }
     }
 }
-
 function configurarIconosProtegidos() {
     const rutasProtegidas = {
         'perfil': '/app/Views/pages/perfil.html',

@@ -68,7 +68,8 @@ document.getElementById('registroForm').addEventListener('submit', async functio
                 localStorage.setItem('usuario', JSON.stringify({
                     id: loginData.data.id,
                     nombre: registroData.data.nombre,
-                    email: email
+                    email: email,
+                    rol_id: loginData.data.rol
                 }));
                 
                 // Redireccionar después de un breve delay

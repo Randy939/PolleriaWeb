@@ -32,8 +32,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             localStorage.setItem('usuario', JSON.stringify({
                 id: data.data.id,
                 nombre: data.data.nombre,
-                email: email,
-                rol_id: data.data.rol_id
+                email: data.data.email,
+                rol_id: data.data.rol
             }));
             
             window.location.href = '/index.html';
