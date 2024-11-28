@@ -1,80 +1,67 @@
 document.addEventListener('DOMContentLoaded', async function() {
-    // Esperar a que el header esté cargado completamente
+    // Esperar a que el header esté cargado
     await new Promise(resolve => {
         const checkHeader = setInterval(() => {
-            const navbar = document.querySelector('.navbar');
-            if (navbar && navbar.children.length > 0) {
+            if (document.querySelector('.navbar')) {
                 clearInterval(checkHeader);
                 resolve();
             }
         }, 100);
     });
 
-    // Obtener elementos necesarios
-    const navbar = document.querySelector('.navbar');
-    const menuBars = document.querySelector('#menu-bars');
+    let menu = document.querySelector('#menu-bars');
+    let navbar = document.querySelector('.navbar');
 
-    // Función para limpiar la URL
-    const cleanPath = (path) => {
-        return path.replace(/^\/+|\/+$/g, '').toLowerCase();
-    };
+    // Obtener la ruta actual y la URL completa
+    const currentPath = window.location.pathname;
+    const currentUrl = window.location.href;
 
-    // Obtener la ruta actual
-    const currentPath = cleanPath(window.location.pathname);
-    const currentUrl = window.location.href.toLowerCase();
+    // Obtener todos los enlaces de navegación
+    const navLinks = document.querySelectorAll('.navbar a');
 
-    // Función para actualizar el enlace activo
-    function actualizarEnlaceActivo() {
-        if (!navbar) return;
+    // Función para obtener la ruta limpia
+    const cleanPath = (path) => path.replace(/^\/+|\/+$/g, '');
 
-        const links = navbar.querySelectorAll('a');
-        links.forEach(link => {
-            link.classList.remove('active');
-            const href = cleanPath(link.getAttribute('href'));
+    // Remover clase active de todos los enlaces
+    navLinks.forEach(link => link.classList.remove('active'));
 
-            // Página de inicio
-            if (currentPath === '' || currentPath === 'index.html') {
-                if (href === '') {
-                    link.classList.add('active');
-                }
+    // Asignar clase active según la página actual
+    navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        const cleanCurrentPath = cleanPath(currentPath);
+        const cleanHref = cleanPath(href);
+
+        // Para la página de inicio
+        if (cleanCurrentPath === '' || cleanCurrentPath === 'index.html') {
+            if (cleanHref === '') {
+                link.classList.add('active');
             }
-            // Página de promociones
-            else if (currentPath.includes('menu.html') && currentUrl.includes('promociones')) {
-                if (href.includes('promociones')) {
-                    link.classList.add('active');
-                }
+        }
+        // Para la página de promociones
+        else if (cleanCurrentPath === 'app/Views/pages/menu.html' && currentUrl.includes('categoria-card=promociones')) {
+            if (href.includes('promociones')) {
+                link.classList.add('active');
             }
-            // Página de menú general
-            else if (currentPath.includes('menu.html') && !currentUrl.includes('promociones')) {
-                if (href.includes('menu.html') && !href.includes('promociones')) {
-                    link.classList.add('active');
-                }
+        }
+        // Para la página de menú general
+        else if (cleanCurrentPath === 'app/Views/pages/menu.html' && !currentUrl.includes('categoria-card=promociones')) {
+            if (cleanHref === 'app/Views/pages/menu.html' && !href.includes('promociones')) {
+                link.classList.add('active');
             }
-            // Página de reserva
-            else if (currentPath.includes('reserva.html')) {
-                if (href.includes('reserva.html')) {
-                    link.classList.add('active');
-                }
+        }
+        // Para la página de reserva
+        else if (cleanCurrentPath === 'app/Views/pages/reserva.html') {
+            if (href.includes('reserva.html')) {
+                link.classList.add('active');
             }
-        });
-    }
-
-    // Inicializar la navegación activa
-    actualizarEnlaceActivo();
-
-    // Manejar el menú móvil
-    if (menuBars && navbar) {
-        menuBars.addEventListener('click', () => {
-            menuBars.classList.toggle('fa-times');
-            navbar.classList.toggle('active');
-        });
-    }
-
-    // Cerrar menú móvil al hacer clic en un enlace
-    navbar.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            menuBars.classList.remove('fa-times');
-            navbar.classList.remove('active');
-        });
+        }
     });
+
+    // Funcionalidad del menú móvil
+    if (menu) {
+        menu.onclick = () => {
+            menu.classList.toggle('fa-times');
+            navbar.classList.toggle('active');
+        }
+    }
 }); 
