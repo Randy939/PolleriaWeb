@@ -224,31 +224,6 @@
     width: 100%;
 }
 
-.btn-volver {
-    display: none;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.2rem 2.5rem;
-    background: #2c5530;
-    color: #fff;
-    border: none;
-    border-radius: 50px;
-    font-size: 1.6rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: absolute;
-    left: 0;
-    opacity: 0;
-    visibility: hidden;
-}
-
-.btn-volver.visible {
-    display: flex;
-    opacity: 1;
-    visibility: visible;
-}
-
 .btn-volver i {
     font-size: 1.8rem;
 }
