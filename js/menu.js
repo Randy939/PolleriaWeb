@@ -120,7 +120,9 @@ function generarEstrellas(calificacion) {
                         <div class="image">
                             <img src="${producto.imagen}" alt="${producto.nombre}">
                             <a href="#" class="fas fa-heart ${favoritos.includes(producto.id.toString()) ? 'active' : ''}"></a>
-                            <a href="/app/Views/pages/comentario.html?id=PRODUCTO_ID" class="fa-comment"></a>
+                            <a href="/app/Views/pages/comentario.html?id=${producto.id}" class="fa-comment">
+                                <i class="fas fa-comment"></i>
+                            </a>
                         </div>
                         <div class="content">
                             <div class="stars">

@@ -44,28 +44,9 @@
     transform: scale(1.1);
 }
 
-.box .image .fa-heart {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    padding: 1.3rem;
-    font-size: 2rem;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.9);
-    color: #666;
-    transition: all 0.3s ease;
-}
-
-.box .image .fa-heart:hover {
-    background: #ffc107;
-    color: #fff;
-    transform: scale(1.1);
-}
-
+.box .image .fa-heart,
 .box .image .fa-comment {
     position: absolute;
-    top: 1.5rem;
-    left: 1.5rem;
     padding: 1.3rem;
     font-size: 2rem;
     border-radius: 50%;
@@ -76,6 +57,17 @@
     z-index: 1;
 }
 
+.box .image .fa-heart {
+    top: 1.5rem;
+    right: 1.5rem;
+}
+
+.box .image .fa-comment {
+    top: 1.5rem;
+    left: 1.5rem;
+}
+
+.box .image .fa-heart:hover,
 .box .image .fa-comment:hover {
     background: var(--green);
     color: #fff;

@@ -7,49 +7,68 @@
     <title>Comentar Producto - Gran Appetit</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/comentario.css">
 </head>
 <body>
     <div id="header-placeholder"></div>
 
     <section class="comentario-container">
-        <div class="producto-info">
-            <div class="producto-imagen">
-                <img src="" alt="Producto" id="producto-img">
-            </div>
-            <div class="producto-detalles">
-                <h2 id="producto-nombre"></h2>
-                <p id="producto-descripcion"></p>
-            </div>
+        <div class="titulo-container">
+            <button class="btn-volver" onclick="window.history.back()">
+                <i class="fas fa-arrow-left"></i>
+                <span>Volver al Menú</span>
+            </button>
+            <h1 class="titulo-principal">Comentar Producto</h1>
         </div>
 
-        <div class="comentario-form">
-            <h3>Deja tu opinión</h3>
-            <div class="rating-container">
-                <div class="stars">
-                    <i class="fas fa-star" data-rating="1"></i>
-                    <i class="fas fa-star" data-rating="2"></i>
-                    <i class="fas fa-star" data-rating="3"></i>
-                    <i class="fas fa-star" data-rating="4"></i>
-                    <i class="fas fa-star" data-rating="5"></i>
+        <div class="comentario-grid">
+            <!-- Columna 1: Información del producto -->
+            <div class="producto-info">
+                <div class="producto-imagen">
+                    <img src="/images/categoria-pollos.png" alt="Producto">
                 </div>
-                <span class="rating-text">Selecciona tu calificación</span>
+                <div class="producto-detalles">
+                    <h2 class="producto-titulo">Pollo a la Brasa</h2>
+                    <p class="producto-descripcion">Delicioso pollo a la brasa con papas fritas y ensalada</p>
+                    <div class="producto-precio">
+                        <span class="precio-texto">Precio:</span>
+                        <span class="precio-valor">S/. 45.90</span>
+                    </div>
+                </div>
             </div>
 
-            <div class="comentario-input">
-                <textarea placeholder="Comparte tu experiencia con este producto..." maxlength="500"></textarea>
-                <span class="caracteres-contador">0/500</span>
+            <!-- Columna 2: Formulario de comentarios -->
+            <div class="comentario-form">
+                <h3>Deja tu opinión</h3>
+                <div class="rating-container">
+                    <div class="stars">
+                        <i class="fas fa-star" data-rating="1"></i>
+                        <i class="fas fa-star" data-rating="2"></i>
+                        <i class="fas fa-star" data-rating="3"></i>
+                        <i class="fas fa-star" data-rating="4"></i>
+                        <i class="fas fa-star" data-rating="5"></i>
+                    </div>
+                    <span class="rating-text">Selecciona tu calificación</span>
+                </div>
+
+                <div class="comentario-input">
+                    <textarea placeholder="Comparte tu experiencia con este producto..." maxlength="500"></textarea>
+                    <span class="caracteres-contador">0/500</span>
+                </div>
             </div>
 
-            <button type="submit" class="btn-comentar">
-                <i class="fas fa-paper-plane"></i>
-                <span>Publicar comentario</span>
-            </button>
+            <!-- Botón de enviar (ancho completo) -->
+            <div class="comentario-submit">
+                <button type="submit" class="btn-comentar">
+                    <i class="fas fa-paper-plane"></i>
+                    <span>Publicar comentario</span>
+                </button>
+            </div>
         </div>
     </section>
 
     <div id="footer-placeholder"></div>
 
     <script src="/js/layouts.js"></script>
-    <script src="/js/comentario.js"></script>
 </body>
 </html> 
