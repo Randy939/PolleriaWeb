@@ -39,7 +39,7 @@
 
 .Reserva form .inputBox .input input:focus,
 .Reserva form .inputBox .input textarea:focus{
-    border: .1rem soli var(--green);
+    border: 0.1rem soli var(--green);
 }
 
 .Reserva form .inputBox .input textarea{
