@@ -161,6 +161,34 @@
     font-size: 1.8rem;
 }
 
+.btn-volver-comentario {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 2.5rem;
+    background: #2c5530;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: absolute;
+    left: 0;
+    transition: visibility 0s, opacity 0.3s ease;
+}
+
+.btn-volver-comentario:hover {
+    background: #ffc107;
+    color: #2c5530;
+    transform: translateX(-5px);
+}
+
+.btn-volver-comentario i {
+    font-size: 1.8rem;
+}
+
 @keyframes slideDown {
     from {
         opacity: 0;
@@ -222,30 +250,6 @@
     margin-bottom: 3rem;
     position: relative;
     width: 100%;
-}
-
-.btn-volver {
-    display: none;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.2rem 2.5rem;
-    background: #2c5530;
-    color: #fff;
-    border: none;
-    border-radius: 50px;
-    font-size: 1.6rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: absolute;
-    left: 0;
-    visibility: hidden;
-}
-
-.btn-volver.visible {
-    display: flex;
-    opacity: 1;
-    visibility: visible;
 }
 
 .btn-volver:hover {
@@ -434,7 +438,7 @@
         gap: 1rem;
     }
 
-    .btn-volver {
+    .btn-volver-comentario {
         align-self: flex-start;
     }
 

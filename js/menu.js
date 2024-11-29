@@ -1,36 +1,19 @@
 document.addEventListener('DOMContentLoaded', function() {
     const categoriasContainer = document.querySelector('.categorias-container');
     const productosContainer = document.querySelector('.productos-container');
-    const btnVolver = document.querySelector('.btn-volver');
+    const btnVolver = document.querySelector('.btn-volver-menu');
     const mensajeNoProductos = document.querySelector('.mensaje-no-productos');
     const tituloPrincipal = document.querySelector('.titulo-principal');
     const API_URL = 'https://randy939-001-site1.qtempurl.com/app/Controllers/productos.php';
 
-    // Mapeo de data-categoria a IDs y nombres de la base de datos
     const categoriaMapping = {
-        'pollos': {
-            id: 1,
-            nombre: 'Pollos a la Brasa'
-        },
-        'criollos': {
-            id: 2,
-            nombre: 'Platos Criollos'
-        },
-        'bebidas': {
-            id: 3,
-            nombre: 'Bebidas'
-        },
-        'promociones': {
-            id: 4,
-            nombre: 'Promociones'
-        },
-        'menu-dia': {
-            id: 5,
-            nombre: 'Menú del Día'
-        }
+        'pollos': { id: 1, nombre: 'Pollos a la Brasa' },
+        'criollos': { id: 2, nombre: 'Platos Criollos' },
+        'bebidas': { id: 3, nombre: 'Bebidas' },
+        'promociones': { id: 4, nombre: 'Promociones' },
+        'menu-dia': { id: 5, nombre: 'Menú del Día' }
     };
 
-    // Agregar después de la línea 31
 function cargarProductos(categoriaId) {
     fetch(`${API_URL}?categoria_id=${categoriaId}`)
         .then(response => response.json())

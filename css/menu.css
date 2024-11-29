@@ -77,5 +77,39 @@
     padding: 7rem 10%;
 }
 
+.btn-volver-menu {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.2rem 2.5rem;
+    background: #2c5530;
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.6rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: absolute;
+    left: 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s, opacity 0.3s ease;
+}
+
+.btn-volver-menu.visible {
+    visibility: visible;
+    opacity: 1;
+}
+
+.btn-volver-menu:hover {
+    background: #ffc107;
+    color: #2c5530;
+    transform: translateX(-5px);
+}
+
+.btn-volver-menu i {
+    font-size: 1.8rem;
+}
 
 
