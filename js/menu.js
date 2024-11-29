@@ -174,10 +174,14 @@ function generarEstrellas(calificacion) {
     function volverACategorias() {
         categoriasContainer.style.display = 'grid';
         productosContainer.style.display = 'none';
-        btnVolver.style.display = 'none';
         btnVolver.classList.remove('visible');
         mensajeNoProductos.style.display = 'none';
         tituloPrincipal.textContent = 'Explora nuestras categorías';
+        
+        // Mostrar el botón volver si se accede a una categoría
+        if (searchParams.get('categoria-card') || searchParams.has('promociones')) {
+            btnVolver.classList.add('visible');
+        }
     }
 
     // Función para activar controles de cantidad
@@ -261,7 +265,10 @@ function generarEstrellas(calificacion) {
     });
 
     // Evento para el botón de volver
-    btnVolver.addEventListener('click', volverACategorias);
+    btnVolver.addEventListener('click', function() {
+        volverACategorias();
+        btnVolver.classList.remove('visible');
+    });
 
     // Manejar categoría desde URL
     const urlParams = new URLSearchParams(window.location.search);
@@ -297,12 +304,12 @@ function generarEstrellas(calificacion) {
         btnVolver.classList.remove('visible');
         if (searchParams.get('categoria-card')) {
             mostrarProductos(searchParams.get('categoria-card'));
+            btnVolver.classList.add('visible');
         } else if (searchParams.has('promociones')) {
             mostrarProductos('promociones');
+            btnVolver.classList.add('visible');
         } else {
             volverACategorias();
-            btnVolver.style.display = 'none';
-            btnVolver.classList.remove('visible');
         }
     }
 });
