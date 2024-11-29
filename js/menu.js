@@ -162,17 +162,22 @@ function generarEstrellas(calificacion) {
 
     // Función para mostrar productos de una categoría
     function mostrarProductos(categoriaSlug) {
+        const categoria = categoriaMapping[categoriaSlug];
+        if (!categoria) return;
+
         categoriasContainer.style.display = 'none';
         productosContainer.style.display = 'block';
-        btnVolver.classList.add('visible');
-        cargarProductos(categoriaSlug);
+        btnVolver.style.display = 'flex';
+        tituloPrincipal.textContent = categoria.nombre;
+
+        cargarProductos(categoria.id);
     }
 
     // Función para volver a la vista de categorías
     function volverACategorias() {
         categoriasContainer.style.display = 'grid';
         productosContainer.style.display = 'none';
-        btnVolver.classList.remove('visible');
+        btnVolver.style.display = 'none';
         mensajeNoProductos.style.display = 'none';
         tituloPrincipal.textContent = 'Explora nuestras categorías';
     }
