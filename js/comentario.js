@@ -23,3 +23,34 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 });
+
+document.querySelector('.btn-comentar').addEventListener('click', async function() {
+    const comentario = document.querySelector('textarea').value;
+    const calificacion = document.querySelector('.stars i.active').dataset.rating;
+    const usuarioId = JSON.parse(localStorage.getItem('usuario')).id;
+
+    try {
+        const response = await fetch('https://randy939-001-site1.qtempurl.com/app/Controllers/opiniones.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                usuario_id: usuarioId,
+                producto_id: productoId,
+                calificacion: calificacion,
+                comentario: comentario
+            })
+        });
+
+        const data = await response.json();
+        if (data.status === 'success') {
+            alert('Comentario publicado exitosamente.');
+        } else {
+            throw new Error(data.message);
+        }
+    } catch (error) {
+        console.error('Error al publicar el comentario:', error);
+        alert('No se pudo publicar el comentario.');
+    }
+});
