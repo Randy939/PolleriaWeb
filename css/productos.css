@@ -207,10 +207,14 @@
     transition: all 0.3s ease;
     position: absolute;
     left: 0;
+    opacity: 0;
+    visibility: hidden;
 }
 
 .btn-volver.visible {
     display: flex;
+    opacity: 1;
+    visibility: visible;
 }
 
 .btn-volver:hover {

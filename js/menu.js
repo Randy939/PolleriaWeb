@@ -174,6 +174,7 @@ function generarEstrellas(calificacion) {
     function volverACategorias() {
         categoriasContainer.style.display = 'grid';
         productosContainer.style.display = 'none';
+        btnVolver.style.display = 'none';
         btnVolver.classList.remove('visible');
         mensajeNoProductos.style.display = 'none';
         tituloPrincipal.textContent = 'Explora nuestras categorías';
@@ -300,6 +301,7 @@ function generarEstrellas(calificacion) {
             mostrarProductos('promociones');
         } else {
             volverACategorias();
+            btnVolver.style.display = 'none';
             btnVolver.classList.remove('visible');
         }
     }
