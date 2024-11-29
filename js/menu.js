@@ -273,8 +273,13 @@ function generarEstrellas(calificacion) {
     // Manejar categoría desde URL
     const urlParams = new URLSearchParams(window.location.search);
     const categoriaFromUrl = urlParams.get('categoria-card');
+    const comentarioFromUrl = urlParams.get('id'); // Obtener el ID del comentario
+
     if (categoriaFromUrl) {
         mostrarProductos(categoriaFromUrl);
+    } else if (comentarioFromUrl) {
+        // Si se accede a la página de comentarios, mostrar el botón volver
+        btnVolver.classList.add('visible');
     }
 
     // Mantener el evento para agregar al carrito
