@@ -14,7 +14,7 @@
 
     <section class="comentario-container">
         <div class="titulo-container">
-            <button class="btn-volver-comentario" onclick="window.history.back()">
+            <button class="btn-volverc" onclick="window.history.back()">
                 <i class="fas fa-arrow-left"></i>
                 <span>Volver</span>
             </button>
@@ -25,14 +25,14 @@
             <!-- Columna 1: Información del producto -->
             <div class="producto-info">
                 <div class="producto-imagen">
-                    <img src="/images/categoria-pollos.png" alt="Producto">
+                    <img id="producto-imagen" src="" alt="Producto">
                 </div>
                 <div class="producto-detalles">
-                    <h2 class="producto-titulo">Pollo a la Brasa</h2>
-                    <p class="producto-descripcion">Delicioso pollo a la brasa con papas fritas y ensalada</p>
+                    <h2 id="producto-titulo" class="producto-titulo"></h2>
+                    <p id="producto-descripcion" class="producto-descripcion"></p>
                     <div class="producto-precio">
                         <span class="precio-texto">Precio:</span>
-                        <span class="precio-valor">S/. 45.90</span>
+                        <span id="producto-precio" class="precio-valor"></span>
                     </div>
                 </div>
             </div>
@@ -70,5 +70,6 @@
     <div id="footer-placeholder"></div>
 
     <script src="/js/layouts.js"></script>
+    <script src="/js/comentario.js"></script>
 </body>
 </html> 
