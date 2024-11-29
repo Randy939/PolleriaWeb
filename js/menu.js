@@ -286,6 +286,24 @@ function generarEstrellas(calificacion) {
         }
     });
 
-    // Cuando se carga el documento, ocultar el botón volver inicialmente
-    btnVolver.style.display = 'none'; // Ocultar el botón al inicio
+    // Ocultar el botón volver inmediatamente al inicio del script
+    if (btnVolver) {
+        btnVolver.style.display = 'none';
+    }
+
+    // Verificar si llegamos desde una promoción en el navbar
+    const path = window.location.pathname;
+    const searchParams = new URLSearchParams(window.location.search);
+
+    if (path.includes('/menu.html')) {
+        if (searchParams.get('categoria-card')) {
+            mostrarProductos(searchParams.get('categoria-card'));
+        } else if (searchParams.has('promociones')) {
+            mostrarProductos('promociones');
+        } else {
+            btnVolver.style.display = 'none';
+            categoriasContainer.style.display = 'grid';
+            productosContainer.style.display = 'none';
+        }
+    }
 });
