@@ -193,7 +193,7 @@
 }
 
 .btn-volver {
-    display: flex;
+    display: none;
     align-items: center;
     gap: 1rem;
     padding: 1.2rem 2.5rem;
@@ -205,7 +205,8 @@
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
-    display: none;
+    position: absolute;
+    left: 0;
 }
 
 .btn-volver.visible {
@@ -216,9 +217,6 @@
     background: #ffc107;
     color: #2c5530;
     transform: translateX(-5px);
-}
-.btn-volver span {
-    margin-left: 10px; /* Ajusta el margen según necesites */
 }
 
 .btn-volver i {

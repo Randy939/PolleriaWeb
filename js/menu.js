@@ -120,7 +120,7 @@ function generarEstrellas(calificacion) {
                         <div class="image">
                             <img src="${producto.imagen}" alt="${producto.nombre}">
                             <a href="#" class="fas fa-heart ${favoritos.includes(producto.id.toString()) ? 'active' : ''}"></a>
-                            <a href="/app/Views/pages/comentario.html?id=${producto.id}" class="fa-comment">
+                            <a href="/app/Views/pages/comentario.html?id=${producto.id}" class="fas fa-comment">
                             </a>
                         </div>
                         <div class="content">
@@ -164,7 +164,7 @@ function generarEstrellas(calificacion) {
     function mostrarProductos(categoriaSlug) {
         categoriasContainer.style.display = 'none';
         productosContainer.style.display = 'block';
-        btnVolver.classList.add('visible'); // Añadir clase visible
+        btnVolver.classList.add('visible');
         cargarProductos(categoriaSlug);
     }
 
@@ -172,9 +172,8 @@ function generarEstrellas(calificacion) {
     function volverACategorias() {
         categoriasContainer.style.display = 'grid';
         productosContainer.style.display = 'none';
-        btnVolver.classList.remove('visible'); // Remover clase visible
+        btnVolver.classList.remove('visible');
         mensajeNoProductos.style.display = 'none';
-        // Restaurar el título original
         tituloPrincipal.textContent = 'Explora nuestras categorías';
     }
 
@@ -286,4 +285,7 @@ function generarEstrellas(calificacion) {
             carrito.agregarItem(producto);
         }
     });
+
+    // Cuando se carga el documento, ocultar el botón volver inicialmente
+    btnVolver.style.display = 'none'; // Ocultar el botón al inicio
 });
