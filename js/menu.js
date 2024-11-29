@@ -164,7 +164,7 @@ function generarEstrellas(calificacion) {
     function mostrarProductos(categoriaSlug) {
         categoriasContainer.style.display = 'none';
         productosContainer.style.display = 'block';
-        btnVolver.style.display = 'flex'; 
+        btnVolver.classList.add('visible');
         cargarProductos(categoriaSlug);
     }
 
@@ -172,7 +172,7 @@ function generarEstrellas(calificacion) {
     function volverACategorias() {
         categoriasContainer.style.display = 'grid';
         productosContainer.style.display = 'none';
-        btnVolver.style.display = 'none'; 
+        btnVolver.classList.remove('visible');
         mensajeNoProductos.style.display = 'none';
         tituloPrincipal.textContent = 'Explora nuestras categorías';
     }
@@ -296,14 +296,11 @@ function generarEstrellas(calificacion) {
     const searchParams = new URLSearchParams(window.location.search);
 
     if (path.includes('/menu.html')) {
+        btnVolver.classList.remove('visible');
         if (searchParams.get('categoria-card')) {
             mostrarProductos(searchParams.get('categoria-card'));
-        } else if (searchParams.has('promociones')) {
-            mostrarProductos('promociones');
         } else {
-            btnVolver.style.display = 'none';
-            categoriasContainer.style.display = 'grid';
-            productosContainer.style.display = 'none';
+            volverACategorias();
         }
     }
 });
