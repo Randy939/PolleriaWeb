@@ -121,7 +121,6 @@ function generarEstrellas(calificacion) {
                             <img src="${producto.imagen}" alt="${producto.nombre}">
                             <a href="#" class="fas fa-heart ${favoritos.includes(producto.id.toString()) ? 'active' : ''}"></a>
                             <a href="/app/Views/pages/comentario.html?id=${producto.id}" class="fa-comment">
-                                <i class="fas fa-comment"></i>
                             </a>
                         </div>
                         <div class="content">
@@ -163,20 +162,24 @@ function generarEstrellas(calificacion) {
 
     // Función para mostrar productos de una categoría
     function mostrarProductos(categoriaSlug) {
+        const categoria = categoriaMapping[categoriaSlug];
+        if (!categoria) return;
+
         categoriasContainer.style.display = 'none';
         productosContainer.style.display = 'block';
-        btnVolver.style.display = 'flex';
-        cargarProductos(categoriaSlug);
+        btnVolver.classList.add('visible');
+        tituloPrincipal.textContent = categoria.nombre;
+
+        cargarProductos(categoria.id);
     }
 
     // Función para volver a la vista de categorías
     function volverACategorias() {
-        categoriasContainer.style.display = 'grid';
         productosContainer.style.display = 'none';
-        btnVolver.style.display = 'none';
-        mensajeNoProductos.style.display = 'none';
-        // Restaurar el título original
+        categoriasContainer.style.display = 'grid';
+        btnVolver.classList.remove('visible');
         tituloPrincipal.textContent = 'Explora nuestras categorías';
+        mensajeNoProductos.style.display = 'none';
     }
 
     // Función para activar controles de cantidad
