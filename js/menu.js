@@ -30,6 +30,70 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     };
 
+    // Agregar después de la línea 31
+function cargarProductos(categoriaId) {
+    fetch(`${API_URL}?categoria_id=${categoriaId}`)
+        .then(response => response.json())
+        .then(productos => {
+            const cajaContenedora = document.querySelector('.caja-contenedora');
+            cajaContenedora.innerHTML = '';
+
+            productos.forEach(producto => {
+                const productoHTML = `
+                    <div class="box">
+                        <div class="image">
+                            <img src="${producto.imagen}" alt="${producto.nombre}">
+                            <a href="/app/Views/pages/comentario.html?id=${producto.id}" class="fa-comment">
+                                <i class="fas fa-comment"></i>
+                            </a>
+                            <a class="fa-heart" data-id="${producto.id}">
+                                <i class="fas fa-heart"></i>
+                            </a>
+                        </div>
+                        <div class="content">
+                            <div class="stars">
+                                ${generarEstrellas(producto.calificacion_promedio || 0)}
+                            </div>
+                            <h3>${producto.nombre}</h3>
+                            <p>${producto.descripcion}</p>
+                            <div class="precio-cantidad">
+                                <span class="precio">S/. ${producto.precio}</span>
+                                <div class="controles">
+                                    <button class="btn-cantidad" data-accion="restar">-</button>
+                                    <span class="cantidad">1</span>
+                                    <button class="btn-cantidad" data-accion="sumar">+</button>
+                                </div>
+                            </div>
+                            <button class="btn-agregar" data-id="${producto.id}">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span>Agregar al Carrito</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                cajaContenedora.innerHTML += productoHTML;
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            mensajeNoProductos.style.display = 'block';
+        });
+}
+
+function generarEstrellas(calificacion) {
+    let estrellas = '';
+    for (let i = 1; i <= 5; i++) {
+        if (i <= calificacion) {
+            estrellas += '<i class="fas fa-star"></i>';
+        } else if (i - 0.5 <= calificacion) {
+            estrellas += '<i class="fas fa-star-half-alt"></i>';
+        } else {
+            estrellas += '<i class="far fa-star"></i>';
+        }
+    }
+    return estrellas;
+}
+
     // Función para cargar productos por categoría
     async function cargarProductos(categoriaSlug) {
         try {

@@ -104,6 +104,27 @@ class ProductosController {
             ];
         }
     }
+
+    // Obtener producto con calificación promedio
+    public function obtenerProductoConCalificacion($id) {
+        try {
+            $query = "SELECT p.*, 
+                             COALESCE(AVG(o.calificacion), 0) as calificacion_promedio,
+                             COUNT(o.id) as total_opiniones
+                      FROM " . $this->tabla_productos . " p
+                      LEFT JOIN opiniones o ON p.id = o.producto_id
+                      WHERE p.id = :id
+                      GROUP BY p.id";
+            
+            $stmt = $this->conn->prepare($query);
+            $stmt->bindParam(":id", $id);
+            $stmt->execute();
+            
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch(PDOException $e) {
+            throw new Exception("Error al obtener el producto: " . $e->getMessage());
+        }
+    }
 }
 
 // Manejo de la solicitud

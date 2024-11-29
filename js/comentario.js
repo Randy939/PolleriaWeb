@@ -1,4 +1,28 @@
 document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.stars i');
+    const textarea = document.querySelector('textarea');
+    const caracteresContador = document.querySelector('.caracteres-contador');
+    
+    // Manejo de estrellas
+    stars.forEach(star => {
+        star.addEventListener('click', function() {
+            const rating = this.dataset.rating;
+            stars.forEach(s => {
+                if (s.dataset.rating <= rating) {
+                    s.classList.add('active');
+                } else {
+                    s.classList.remove('active');
+                }
+            });
+        });
+    });
+
+    // Contador de caracteres
+    textarea.addEventListener('input', function() {
+        const caracteresRestantes = this.value.length;
+        caracteresContador.textContent = `${caracteresRestantes}/500`;
+    });
+
     const urlParams = new URLSearchParams(window.location.search);
     const productoId = urlParams.get('id');
 

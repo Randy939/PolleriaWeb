@@ -45,13 +45,6 @@
     box-shadow: 0 8px 25px rgba(0,0,0,0.1);
 }
 
-.comentario-form h3 {
-    color: var(--green);
-    font-size: 2.2rem;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
 .rating-container {
     text-align: center;
     margin-bottom: 2rem;
@@ -77,11 +70,6 @@
     transform: scale(1.2);
 }
 
-.rating-text {
-    color: var(--light-color);
-    font-size: 1.4rem;
-}
-
 .comentario-input {
     position: relative;
     margin-bottom: 2rem;
@@ -95,11 +83,6 @@
     border-radius: 15px;
     font-size: 1.6rem;
     resize: none;
-    transition: all 0.3s ease;
-}
-
-.comentario-input textarea:focus {
-    border-color: var(--green);
 }
 
 .caracteres-contador {
@@ -146,4 +129,24 @@
         width: 150px;
         height: 150px;
     }
+}
+
+.box .image .fa-comment {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    padding: 1.3rem;
+    font-size: 2rem;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    color: #666;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.box .image .fa-comment:hover {
+    background: var(--green);
+    color: #fff;
+    transform: scale(1.1);
 }
