@@ -162,6 +162,8 @@ function generarEstrellas(calificacion) {
 
     // Función para mostrar productos de una categoría
     function mostrarProductos(categoriaSlug) {
+        if (!categoriaMapping[categoriaSlug]) return;
+        
         categoriasContainer.style.display = 'none';
         productosContainer.style.display = 'block';
         btnVolver.classList.add('visible');
@@ -286,19 +288,15 @@ function generarEstrellas(calificacion) {
         }
     });
 
-    // Ocultar el botón volver inmediatamente al inicio del script
-    if (btnVolver) {
-        btnVolver.style.display = 'none';
-    }
-
     // Verificar si llegamos desde una promoción en el navbar
     const path = window.location.pathname;
     const searchParams = new URLSearchParams(window.location.search);
 
     if (path.includes('/menu.html')) {
-        btnVolver.classList.remove('visible');
         if (searchParams.get('categoria-card')) {
             mostrarProductos(searchParams.get('categoria-card'));
+        } else if (searchParams.has('promociones')) {
+            mostrarProductos('promociones');
         } else {
             volverACategorias();
         }
