@@ -177,6 +177,14 @@ function generarEstrellas(calificacion) {
         btnVolver.classList.remove('visible');
         mensajeNoProductos.style.display = 'none';
         tituloPrincipal.textContent = 'Explora nuestras categorías';
+        
+        // Verificar si estamos en la página de menú principal
+        const path = window.location.pathname;
+        const searchParams = new URLSearchParams(window.location.search);
+        
+        if (path.includes('/app/Views/pages/menu.html') && !searchParams.has('categoria-card') && !searchParams.has('promociones')) {
+            btnVolver.classList.remove('visible');
+        }
     }
 
     // Función para activar controles de cantidad
