@@ -11,26 +11,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 include_once '../config/database.php';
-include_once '../Models/Opinion.php';
 
-$database = new Database();
-$db = $database->getConnection();
-$opinion = new Opinion($db);
+class OpinionesController {
+    private $conn;
+    private $tabla_opiniones = "opiniones";
 
-$data = json_decode(file_get_contents("php://input"));
-
-if (!empty($data->usuario_id) && !empty($data->producto_id) && !empty($data->calificacion) && !empty($data->comentario)) {
-    $opinion->usuario_id = $data->usuario_id;
-    $opinion->producto_id = $data->producto_id;
-    $opinion->calificacion = $data->calificacion;
-    $opinion->comentario = $data->comentario;
-
-    if ($opinion->crear()) {
-        echo json_encode(["status" => "success", "message" => "Opinión guardada exitosamente."]);
-    } else {
-        echo json_encode(["status" => "error", "message" => "No se pudo guardar la opinión."]);
+    public function __construct() {
+        $database = new Database();
+        $this->conn = $database->getConnection();
     }
-} else {
-    echo json_encode(["status" => "error", "message" => "Datos incompletos."]);
+
+    public function crearOpinion($data) {
+        try {
+            $query = "INSERT INTO " . $this->tabla_opiniones . " (usuario_id, producto_id, calificacion, comentario) VALUES (:usuario_id, :producto_id, :calificacion, :comentario)";
+            $stmt = $this->conn->prepare($query);
+
+            $stmt->bindParam(":usuario_id", $data->usuario_id);
+            $stmt->bindParam(":producto_id", $data->producto_id);
+            $stmt->bindParam(":calificacion", $data->calificacion);
+            $stmt->bindParam(":comentario", $data->comentario);
+
+            if ($stmt->execute()) {
+                return ["status" => "success"];
+            }
+            return ["status" => "error", "message" => "No se pudo crear la opinión"];
+        } catch (PDOException $e) {
+            return ["status" => "error", "message" => "Error al crear la opinión: " . $e->getMessage()];
+        }
+    }
+}
+
+try {
+    $controller = new OpinionesController();
+    $data = json_decode(file_get_contents("php://input"));
+
+    if (!empty($data->usuario_id) && !empty($data->producto_id) && !empty($data->calificacion) && !empty($data->comentario)) {
+        $resultado = $controller->crearOpinion($data);
+        echo json_encode($resultado);
+    } else {
+        echo json_encode(["status" => "error", "message" => "Datos incompletos"]);
+    }
+} catch (Exception $e) {
+    echo json_encode(["status" => "error", "message" => $e->getMessage()]);
+    http_response_code(500);
 }
 ?>
