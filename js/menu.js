@@ -280,6 +280,8 @@ function generarEstrellas(calificacion) {
     } else if (comentarioFromUrl) {
         // Si se accede a la página de comentarios, mostrar el botón volver
         btnVolver.classList.add('visible');
+    } else {
+        btnVolver.classList.remove('visible'); // Asegúrate de que esté oculto si no hay ID
     }
 
     // Mantener el evento para agregar al carrito
