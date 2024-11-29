@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="image">
                             <img src="${producto.imagen}" alt="${producto.nombre}">
                             <a href="#" class="fas fa-heart ${favoritos.includes(producto.id.toString()) ? 'active' : ''}"></a>
+                            <a href="/app/Views/pages/comentario.html?id=${producto.id}" class="fas fa-comment"></a>
                         </div>
                         <div class="content">
                             <div class="stars">
