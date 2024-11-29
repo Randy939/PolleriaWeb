@@ -162,24 +162,20 @@ function generarEstrellas(calificacion) {
 
     // Función para mostrar productos de una categoría
     function mostrarProductos(categoriaSlug) {
-        const categoria = categoriaMapping[categoriaSlug];
-        if (!categoria) return;
-
         categoriasContainer.style.display = 'none';
         productosContainer.style.display = 'block';
-        btnVolver.classList.add('visible');
-        tituloPrincipal.textContent = categoria.nombre;
-
-        cargarProductos(categoria.id);
+        btnVolver.classList.add('visible'); // Añadir clase visible
+        cargarProductos(categoriaSlug);
     }
 
     // Función para volver a la vista de categorías
     function volverACategorias() {
-        productosContainer.style.display = 'none';
         categoriasContainer.style.display = 'grid';
-        btnVolver.classList.remove('visible');
-        tituloPrincipal.textContent = 'Explora nuestras categorías';
+        productosContainer.style.display = 'none';
+        btnVolver.classList.remove('visible'); // Remover clase visible
         mensajeNoProductos.style.display = 'none';
+        // Restaurar el título original
+        tituloPrincipal.textContent = 'Explora nuestras categorías';
     }
 
     // Función para activar controles de cantidad
