@@ -177,14 +177,6 @@ function generarEstrellas(calificacion) {
         btnVolver.classList.remove('visible');
         mensajeNoProductos.style.display = 'none';
         tituloPrincipal.textContent = 'Explora nuestras categorías';
-        
-        // Verificar si estamos en la página de menú principal
-        const path = window.location.pathname;
-        const searchParams = new URLSearchParams(window.location.search);
-        
-        if (path.includes('/app/Views/pages/menu.html') && !searchParams.has('categoria-card') && !searchParams.has('promociones')) {
-            btnVolver.classList.remove('visible');
-        }
     }
 
     // Función para activar controles de cantidad
@@ -301,12 +293,14 @@ function generarEstrellas(calificacion) {
     const searchParams = new URLSearchParams(window.location.search);
 
     if (path.includes('/menu.html')) {
+        btnVolver.classList.remove('visible');
         if (searchParams.get('categoria-card')) {
             mostrarProductos(searchParams.get('categoria-card'));
         } else if (searchParams.has('promociones')) {
             mostrarProductos('promociones');
         } else {
             volverACategorias();
+            btnVolver.classList.remove('visible');
         }
     }
 });
