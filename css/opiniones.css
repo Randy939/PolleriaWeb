@@ -11,14 +11,6 @@
     box-shadow: 0 8px 25px rgba(0,0,0,0.1);
     transition: all 0.4s ease;
     border: 1px solid rgba(0,0,0,0.05);
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.opinion-card.show {
-    opacity: 1;
-    transform: translateY(0);
 }
 
 .Opiniones h3{
