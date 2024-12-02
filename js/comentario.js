@@ -31,6 +31,7 @@ document.addEventListener('DOMContentLoaded', function() {
             for (let i = 0; i < rating; i++) {
                 estrellas[i].classList.add('active');
             }
+            console.log('Calificación seleccionada:', rating);
         });
     });
 
@@ -53,6 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
             calificacion: calificacion,
             comentario: comentario
         };
+
+        console.log('Datos enviados al servidor:', data);
 
         fetch('https://randy939-001-site1.qtempurl.com/app/Controllers/crear_opinion.php', {
             method: 'POST',
