@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     fetch('https://randy939-001-site1.qtempurl.com/app/Controllers/obtener_opiniones.php')
         .then(response => response.json())
         .then(data => {
-            if (data.status === 'success' && data.opiniones) {
+            if (data.status === 'success' && data.opiniones.length > 0) {
                 data.opiniones.forEach(opinion => {
                     const opinionHTML = `
                         <div class="swiper-slide slide">
@@ -27,12 +27,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                         <i class="fas fa-utensils"></i>
                                         <span>${opinion.producto_nombre}</span>
                                     </div>
-                                    <div class="opinion-acciones">
-                                        <button class="util-btn">
-                                            <i class="fas fa-thumbs-up"></i>
-                                            <span>${opinion.likes || 0}</span>
-                                        </button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -48,7 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 opinionesWrapper.innerHTML = '<p>No hay opiniones disponibles.</p>';
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => console.error('Error al cargar las opiniones:', error));
 });
 
 function generarEstrellas(calificacion) {
