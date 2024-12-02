@@ -20,37 +20,45 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => console.error('Error al cargar las opiniones:', error));
 
     function mostrarOpinion(index) {
-        opinionesContainer.innerHTML = ''; // Limpiar el contenedor
-        const opinion = opiniones[index];
-        const opinionHTML = `
-            <div class="opinion-card active">
-                <div class="opinion-header">
-                    <img src="/images/carlos.png" alt="Usuario">
-                    <div class="user-info">
-                        <h3>${opinion.usuario_nombre || ''} ${opinion.usuario_apellido || ''}</h3>
-                        <div class="rating">
-                            ${generarEstrellas(opinion.calificacion)}
-                            <span class="fecha">${opinion.fecha}</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="opinion-content">
-                    <p>${opinion.comentario}</p>
-                </div>
-                <div class="opinion-footer">
-                    <div class="plato-pedido">
-                        <i class="fas fa-utensils"></i>
-                        <span>${opinion.producto_nombre}</span>
+        const totalOpiniones = opiniones.length;
+        const previousIndex = (index - 1 + totalOpiniones) % totalOpiniones;
+        const nextIndex = (index + 1) % totalOpiniones;
+
+        opinionesContainer.innerHTML = `
+            <div class="opinion-card previous">${crearOpinionHTML(opiniones[previousIndex])}</div>
+            <div class="opinion-card active">${crearOpinionHTML(opiniones[index])}</div>
+            <div class="opinion-card next">${crearOpinionHTML(opiniones[nextIndex])}</div>
+        `;
+
+        setTimeout(() => {
+            const cards = document.querySelectorAll('.opinion-card');
+            cards.forEach(card => card.classList.remove('active', 'previous', 'next'));
+            cards[1].classList.add('active'); // Asegúrate de que la tarjeta activa tenga la clase 'active'
+        }, 50);
+    }
+
+    function crearOpinionHTML(opinion) {
+        return `
+            <div class="opinion-header">
+                <img src="/images/carlos.png" alt="Usuario">
+                <div class="user-info">
+                    <h3>${opinion.usuario_nombre || ''} ${opinion.usuario_apellido || ''}</h3>
+                    <div class="rating">
+                        ${generarEstrellas(opinion.calificacion)}
+                        <span class="fecha">${opinion.fecha}</span>
                     </div>
                 </div>
             </div>
+            <div class="opinion-content">
+                <p>${opinion.comentario}</p>
+            </div>
+            <div class="opinion-footer">
+                <div class="plato-pedido">
+                    <i class="fas fa-utensils"></i>
+                    <span>${opinion.producto_nombre}</span>
+                </div>
+            </div>
         `;
-        opinionesContainer.innerHTML = opinionHTML;
-        setTimeout(() => {
-            const cards = document.querySelectorAll('.opinion-card');
-            cards.forEach(card => card.classList.remove('active'));
-            cards[index].classList.add('active');
-        }, 50); // Pequeño retraso para permitir la transición
     }
 
     function generarEstrellas(calificacion) {
