@@ -21,6 +21,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Manejo de las estrellas
     const estrellas = document.querySelectorAll('.stars i');
+    let calificacionSeleccionada = 0; // Variable para almacenar la calificación seleccionada
+
     estrellas.forEach(star => {
         star.addEventListener('click', function() {
             // Desmarcar todas las estrellas
@@ -28,23 +30,22 @@ document.addEventListener('DOMContentLoaded', function() {
             // Marcar la estrella actual y todas las anteriores
             this.classList.add('active');
             let rating = this.getAttribute('data-rating');
-            for (let i = 0; i < rating; i++) {
+            calificacionSeleccionada = parseInt(rating); // Actualiza la calificación seleccionada
+            for (let i = 0; i < calificacionSeleccionada; i++) {
                 estrellas[i].classList.add('active');
             }
-            console.log('Calificación seleccionada:', rating);
+            console.log('Calificación seleccionada:', calificacionSeleccionada);
         });
     });
 
-
+    // Enviar comentario
     document.querySelector('.btn-comentar').addEventListener('click', function() {
         // Captura la calificación justo antes de enviar
-        const calificacionElement = document.querySelector('.stars .active');
-        const calificacion = calificacionElement ? parseInt(calificacionElement.getAttribute('data-rating')) : null;
         const comentario = document.querySelector('textarea').value;
         const usuario = JSON.parse(localStorage.getItem('usuario'));
         const usuarioId = usuario ? usuario.id : null;
 
-        if (!calificacion || !comentario || !usuarioId) {
+        if (!calificacionSeleccionada || !comentario || !usuarioId) {
             alert('Por favor, completa todos los campos antes de enviar.');
             return;
         }
@@ -52,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const data = {
             usuario_id: usuarioId,
             producto_id: productoId,
-            calificacion: calificacion,
+            calificacion: calificacionSeleccionada, // Usa la calificación seleccionada
             comentario: comentario
         };
 
