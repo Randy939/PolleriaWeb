@@ -37,6 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     document.querySelector('.btn-comentar').addEventListener('click', function() {
+        // Captura la calificación justo antes de enviar
         const calificacionElement = document.querySelector('.stars .active');
         const calificacion = calificacionElement ? parseInt(calificacionElement.getAttribute('data-rating')) : null;
         const comentario = document.querySelector('textarea').value;
