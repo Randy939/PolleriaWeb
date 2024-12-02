@@ -12,6 +12,13 @@
 
 <body>
     <!-- =============== Navigation ================ -->
+    <div class="clientes-section perfil-section" id="clientes" style="display: none;">
+        <h2>Clientes</h2>
+        <div class="clientes-container">
+            <!-- Aquí se llenarán los datos de los clientes -->
+        </div>
+    </div>
+
     <div class="container">
         <div class="navigation">
             <ul>
@@ -34,7 +41,7 @@
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="#" data-section="clientes">
                         <span class="icon">
                             <ion-icon name="people-outline"></ion-icon>
                         </span>
@@ -316,25 +323,6 @@
                 
             </div>
         </div>
-    </div>
-
-    <div class="clientes-section" style="display: none;">
-        <h2>Clientes Registrados</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Correo</th>
-                    <th>Dirección</th>
-                    <th>Teléfono</th>
-                    <th>Fecha de Registro</th>
-                </tr>
-            </thead>
-            <tbody id="clientes-body">
-                <!-- Los datos de los clientes se insertarán aquí -->
-            </tbody>
-        </table>
     </div>
     <!-- =========== Scripts =========  -->
     <script src="/js/dashboard.js"></script>

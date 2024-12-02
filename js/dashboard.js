@@ -20,54 +20,48 @@ toggle.onclick = function () {
   main.classList.toggle("active");
 };
 
-// Función para cargar clientes
+// Agregar evento de clic para mostrar la sección de clientes
+list.forEach((item) => {
+    item.addEventListener("click", function() {
+        const sectionId = this.querySelector('a').getAttribute('data-section');
+        
+        // Verificar si sectionId no es nulo
+        if (sectionId) {
+            document.querySelectorAll('.perfil-section').forEach(section => {
+                section.style.display = 'none'; // Ocultar todas las secciones
+            });
+            const selectedSection = document.getElementById(sectionId);
+            if (selectedSection) {
+                selectedSection.style.display = 'block'; // Mostrar la sección seleccionada
+            } else {
+                console.error(`No se encontró la sección con ID: ${sectionId}`);
+            }
+        }
+    });
+});
+
 async function cargarClientes() {
-    const response = await fetch('https://gentle-arithmetic-98eb61.netlify.app/app/Controllers/obtener_clientes.php');
+    const response = await fetch('https://randy939-001-site1.qtempurl.com/app/Controllers/obtener_clientes.php');
     const data = await response.json();
 
-    if (data.status === 'success') {
-        const clientesBody = document.getElementById('clientes-body');
-        clientesBody.innerHTML = ''; // Limpiar el contenido anterior
+    if (data.status === "success") {
+        const clientesContainer = document.querySelector('.clientes-container');
+        clientesContainer.innerHTML = ''; // Limpiar el contenedor
 
         data.clientes.forEach(cliente => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${cliente.nombre}</td>
-                <td>${cliente.apellido}</td>
-                <td>${cliente.email}</td>
-                <td>${cliente.direccion || 'No disponible'}</td>
-                <td>${cliente.telefono}</td>
-                <td>${cliente.fecha_registro}</td>
+            const clienteCard = document.createElement('div');
+            clienteCard.classList.add('cliente-card');
+            clienteCard.innerHTML = `
+                <h4>${cliente.nombre} ${cliente.apellido}</h4>
+                <p>Email: ${cliente.email}</p>
+                <p>Teléfono: ${cliente.telefono}</p>
+                <p>Direcciones: ${cliente.direccion}</p>
+                <p>Fecha de Registro: ${cliente.fecha_registro}</p>
             `;
-            clientesBody.appendChild(row);
+            clientesContainer.appendChild(clienteCard);
         });
-
-        document.querySelector('.clientes-section').style.display = 'block'; // Mostrar la sección
-    } else {
-        console.error(data.message);
     }
 }
 
-// Función para mostrar la sección de clientes
-function mostrarClientes() {
-    // Ocultar otras secciones
-    const secciones = document.querySelectorAll('.clientes-section, .recentCustomers');
-    secciones.forEach(seccion => {
-        seccion.style.display = 'none'; // Ocultar todas las secciones
-    });
-
-    // Mostrar la sección de clientes
-    const clientesSection = document.querySelector('.clientes-section');
-    if (clientesSection) {
-        clientesSection.style.display = 'block'; // Mostrar la sección de clientes
-    }
-
-    // Llamar a la función para cargar los clientes
-    cargarClientes();
-}
-
-// Manejar el clic en el menú de clientes
-document.querySelector('.navigation a[href="#"]').addEventListener('click', function(e) {
-    e.preventDefault(); // Prevenir el comportamiento por defecto del enlace
-    mostrarClientes(); // Mostrar la sección de clientes
-});
+// Llamar a la función al cargar la sección de clientes
+document.querySelector('.menu-item[data-section="clientes"]').addEventListener('click', cargarClientes);
