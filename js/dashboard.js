@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Tu código aquí
     const list = document.querySelectorAll(".navigation li");
 
     list.forEach((item) => {
@@ -21,8 +20,13 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Llamar a la función para cargar clientes
-    document.querySelector('.menu-item[data-section="clientes"]').addEventListener('click', cargarClientes);
+    // Asegúrate de que el elemento existe antes de agregar el evento
+    const clientesMenuItem = document.querySelector('.menu-item[data-section="clientes"]');
+    if (clientesMenuItem) {
+        clientesMenuItem.addEventListener('click', cargarClientes);
+    } else {
+        console.error('El elemento de menú para clientes no se encontró.');
+    }
 });
 
 // add hovered class to selected list item
