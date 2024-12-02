@@ -20,6 +20,7 @@ try {
     $opinion = new Opinion($db);
 
     $data = json_decode(file_get_contents("php://input"));
+    var_dump($data);
 
     if (!empty($data->usuario_id) && !empty($data->producto_id) && !empty($data->calificacion) && !empty($data->comentario)) {
         $opinion->usuario_id = $data->usuario_id;
