@@ -34,10 +34,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+
     document.querySelector('.btn-comentar').addEventListener('click', function() {
         const calificacionElement = document.querySelector('.stars .active');
         const calificacion = calificacionElement ? calificacionElement.getAttribute('data-rating') : null;
-        console.log('Calificación seleccionada:', calificacion);
         const comentario = document.querySelector('textarea').value;
         const usuario = JSON.parse(localStorage.getItem('usuario'));
         const usuarioId = usuario ? usuario.id : null;
@@ -61,10 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify(data)
         })
-        .then(response => {
-            console.log('Respuesta del servidor:', response);
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             if (data.status === 'success') {
                 alert('Comentario publicado exitosamente');
