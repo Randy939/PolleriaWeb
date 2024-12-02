@@ -8,6 +8,7 @@
 .opiniones-swiper {
     width: 100%;
     height: auto; /* Ajusta la altura según sea necesario */
+    overflow: auto; /* Cambia a auto para permitir desplazamiento */
 }
 
 /* Tarjetas de opinión */
@@ -21,6 +22,7 @@
     border-radius: 20px; /* Bordes redondeados */
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Sombra suave */
     transition: transform 0.3s ease; /* Añade una transición */
+    min-width: 300px; /* Asegúrate de que las tarjetas tengan un ancho mínimo */
 }
 
 .swiper-slide:hover {
