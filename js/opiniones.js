@@ -53,11 +53,11 @@ document.addEventListener('DOMContentLoaded', function() {
         let estrellas = '';
         for (let i = 1; i <= 5; i++) {
             if (i <= calificacion) {
-                estrellas += '<i class="fas fa-star"></i>';
+                estrellas += '<i class="fas fa-star"></i>'; // Estrella llena
             } else if (i - 0.5 <= calificacion) {
-                estrellas += '<i class="fas fa-star-half-alt"></i>';
+                estrellas += '<i class="fas fa-star-half-alt"></i>'; // Estrella media
             } else {
-                estrellas += '<i class="far fa-star"></i>';
+                estrellas += '<i class="far fa-star"></i>'; // Estrella vacía
             }
         }
         return estrellas;
