@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     const selectedSection = document.getElementById(sectionId);
                     if (selectedSection) {
                         selectedSection.style.display = 'block'; // Mostrar la sección de Clientes
+                        cargarClientes(); // Cargar clientes al mostrar la sección
                     }
                 } else if (sectionId === 'dashboard') {
                     // Mostrar secciones de Recent Orders y Recent Customers
@@ -33,7 +34,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Asegúrate de que el elemento existe antes de agregar el evento
     const clientesMenuItem = document.querySelector('.menu-item[data-section="clientes"]');
     if (clientesMenuItem) {
-        clientesMenuItem.addEventListener('click', cargarClientes);
+        clientesMenuItem.addEventListener('click', function() {
+            cargarClientes(); // Cargar clientes al hacer clic en el menú
+        });
     } else {
         console.error('El elemento de menú para clientes no se encontró.');
     }
