@@ -151,3 +151,21 @@
         align-items: flex-start;
     }
 }
+
+.swiper {
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    list-style: none;
+    padding: 0;
+    z-index: 1;
+    display: block;
+    overflow: visible; /* Cambia a visible para evitar recortes */
+}
+
+/* Ocultar las flechas y los puntitos */
+.opiniones-swiper .swiper-button-prev,
+.opiniones-swiper .swiper-button-next,
+.opiniones-swiper .swiper-pagination {
+    display: none; /* Esto oculta las flechas y los puntitos */
+}

@@ -75,6 +75,11 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             pagination: {
                 el: '.swiper-pagination',
+                clickable: false,
+            },
+            navigation: {
+                nextEl: null,
+                prevEl: null,
             },
         });
     }
