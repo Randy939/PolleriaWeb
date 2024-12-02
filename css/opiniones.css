@@ -8,7 +8,7 @@
 .opiniones-swiper {
     width: 100%;
     height: auto; /* Ajusta la altura según sea necesario */
-    overflow: auto; /* Cambia a auto para permitir desplazamiento */
+    overflow: visible; /* Permite que el contenido se muestre sin recortes */
 }
 
 /* Tarjetas de opinión */
@@ -23,6 +23,7 @@
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Sombra suave */
     transition: transform 0.3s ease; /* Añade una transición */
     min-width: 300px; /* Asegúrate de que las tarjetas tengan un ancho mínimo */
+    max-width: 300px; /* Limita el ancho máximo para evitar desbordes */
 }
 
 .swiper-slide:hover {
