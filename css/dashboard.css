@@ -267,13 +267,10 @@ body {
   padding: 20px;
   display: grid;
   grid-template-columns: 2fr 1fr;
-  grid-gap: 30px;
-  /* margin-top: 10px; */
 }
 
 .details .recentOrders {
   position: relative;
-  display: grid;
   min-height: 500px;
   background: var(--white);
   padding: 20px;
@@ -414,7 +411,6 @@ body {
 }
 
 .clientes-container {
-    display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
 }
