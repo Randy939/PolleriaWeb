@@ -19,12 +19,28 @@ document.addEventListener('DOMContentLoaded', function() {
             .catch(error => console.error('Error:', error));
     }
 
+    // Manejo de las estrellas
+    const estrellas = document.querySelectorAll('.stars i');
+    estrellas.forEach(star => {
+        star.addEventListener('click', function() {
+            // Desmarcar todas las estrellas
+            estrellas.forEach(s => s.classList.remove('active'));
+            // Marcar la estrella actual y todas las anteriores
+            this.classList.add('active');
+            let rating = this.getAttribute('data-rating');
+            for (let i = 0; i < rating; i++) {
+                estrellas[i].classList.add('active');
+            }
+        });
+    });
+
     document.querySelector('.btn-comentar').addEventListener('click', function() {
-        const calificacion = document.querySelector('.stars .active').getAttribute('data-rating');
+        const calificacionElement = document.querySelector('.stars .active');
+        const calificacion = calificacionElement ? calificacionElement.getAttribute('data-rating') : null;
         const comentario = document.querySelector('textarea').value;
         const usuario = JSON.parse(localStorage.getItem('usuario'));
         const usuarioId = usuario ? usuario.id : null;
-        
+
         if (!calificacion || !comentario || !usuarioId) {
             alert('Por favor, completa todos los campos antes de enviar.');
             return;
@@ -49,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (data.status === 'success') {
                 alert('Comentario publicado exitosamente');
                 document.querySelector('textarea').value = '';
-                document.querySelector('.stars .active').classList.remove('active');
+                estrellas.forEach(s => s.classList.remove('active')); // Limpiar estrellas
             } else {
                 alert('Error al publicar el comentario: ' + data.message);
             }
