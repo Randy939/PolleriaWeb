@@ -30,16 +30,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
-    // Asegúrate de que el elemento existe antes de agregar el evento
-    const clientesMenuItem = document.querySelector('.menu-item[data-section="clientes"]');
-    if (clientesMenuItem) {
-        clientesMenuItem.addEventListener('click', function() {
-            cargarClientes(); // Cargar clientes al hacer clic en el menú
-        });
-    } else {
-        console.error('El elemento de menú para clientes no se encontró.');
-    }
 });
 
 // add hovered class to selected list item
