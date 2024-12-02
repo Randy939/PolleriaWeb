@@ -12,12 +12,6 @@
 
 <body>
     <!-- =============== Navigation ================ -->
-    <div class="clientes-section perfil-section" id="clientes" style="display: none;">
-        <h2>Clientes</h2>
-        <div class="clientes-container">
-            <!-- Aquí se llenarán los datos de los clientes -->
-        </div>
-    </div>
 
     <div class="container">
         <div class="navigation">
@@ -32,7 +26,7 @@
                 </li>
 
                 <li>
-                    <a href="#">
+                    <a href="#" data-section="dashboard">
                         <span class="icon">
                             <ion-icon name="home-outline"></ion-icon>
                         </span>
@@ -164,7 +158,7 @@
 
             <!-- ================ Order Details List ================= -->
             <div class="details">
-                <div class="recentOrders">
+                <div class="recentOrders" style="display: none;">
                     <div class="cardHeader">
                         <h2>Recent Orders</h2>
                         <a href="#" class="btn">View All</a>
@@ -241,7 +235,7 @@
                 </div>
 
                 <!-- ================= New Customers ================ -->
-                <div class="recentCustomers">
+                <div class="recentCustomers" style="display: none;">
                     <div class="cardHeader">
                         <h2>Recent Customers</h2>
                     </div>
@@ -321,6 +315,12 @@
                     </table>
                 </div>
                 
+                <div class="clientes-section perfil-section" id="clientes" style="display: block;">
+                    <h2>Clientes</h2>
+                    <div class="clientes-container">
+                        <!-- Aquí se llenarán los datos de los clientes -->
+                    </div>
+                </div>
             </div>
         </div>
     </div>

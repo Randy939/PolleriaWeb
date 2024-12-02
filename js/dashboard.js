@@ -10,11 +10,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.querySelectorAll('.perfil-section').forEach(section => {
                     section.style.display = 'none'; // Ocultar todas las secciones
                 });
-                const selectedSection = document.getElementById(sectionId);
-                if (selectedSection) {
-                    selectedSection.style.display = 'block'; // Mostrar la sección seleccionada
-                } else {
-                    console.error(`No se encontró la sección con ID: ${sectionId}`);
+                
+                // Ocultar secciones adicionales
+                document.querySelector('.recentOrders').style.display = 'none';
+                document.querySelector('.recentCustomers').style.display = 'none';
+
+                // Mostrar secciones según el botón clicado
+                if (sectionId === 'clientes') {
+                    const selectedSection = document.getElementById(sectionId);
+                    if (selectedSection) {
+                        selectedSection.style.display = 'block'; // Mostrar la sección de Clientes
+                    }
+                } else if (sectionId === 'dashboard') {
+                    // Mostrar secciones de Recent Orders y Recent Customers
+                    document.querySelector('.recentOrders').style.display = 'block';
+                    document.querySelector('.recentCustomers').style.display = 'block';
                 }
             }
         });
@@ -66,7 +76,7 @@ async function cargarClientes() {
                 <h4>${cliente.nombre} ${cliente.apellido}</h4>
                 <p>Email: ${cliente.email}</p>
                 <p>Teléfono: ${cliente.telefono}</p>
-                <p>Direcciones: ${cliente.direccion}</p>
+                <p>Dirección: ${cliente.direccion}</p>
                 <p>Fecha de Registro: ${cliente.fecha_registro}</p>
             `;
             clientesContainer.appendChild(clienteCard);
