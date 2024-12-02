@@ -1,15 +1,17 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - Gran Appetit</title>
+    <title>Responsive Admin Dashboard</title>
+    <!-- ======= Styles ====== -->
     <link rel="stylesheet" href="/css/main.css">
 </head>
 
 <body>
+    <!-- =============== Navigation ================ -->
     <div class="container">
         <div class="navigation">
             <ul>
@@ -21,6 +23,7 @@
                         <span class="title">EL GRAN APPETIT</span>
                     </a>
                 </li>
+
                 <li>
                     <a href="#">
                         <span class="icon">
@@ -29,174 +32,302 @@
                         <span class="title">Dashboard</span>
                     </a>
                 </li>
+
                 <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="people-outline"></ion-icon>
                         </span>
-                        <span class="title">Clientes</span>
+                        <span class="title">Customers</span>
                     </a>
                 </li>
+
                 <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="list-sharp"></ion-icon>
                         </span>
-                        <span class="title">Órdenes</span>
+                        <span class="title">Ordes</span>
                     </a>
                 </li>
+
                 <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="chatbubble-outline"></ion-icon>
                         </span>
-                        <span class="title">Opiniones</span>
+                        <span class="title">Opinions</span>
                     </a>
                 </li>
+
                 <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="bookmarks-outline"></ion-icon>
                         </span>
-                        <span class="title">Reservas</span>
+                        <span class="title">Reservations</span>
                     </a>
                 </li>
+
                 <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="star-outline"></ion-icon>
                         </span>
-                        <span class="title">Calificaciones</span>
+                        <span class="title">Rating</span>
                     </a>
                 </li>
+
                 <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="settings-outline"></ion-icon>
                         </span>
-                        <span class="title">Configuración</span>
+                        <span class="title">Settings</span>
                     </a>
                 </li>
+
                 <li>
                     <a href="#">
                         <span class="icon">
                             <ion-icon name="log-out-outline"></ion-icon>
                         </span>
-                        <span class="title">Cerrar Sesión</span>
+                        <span class="title">Sign Out</span>
                     </a>
                 </li>
             </ul>
         </div>
 
+        <!-- ========================= Main ==================== -->
         <div class="main">
             <div class="topbar">
                 <div class="toggle">
                     <ion-icon name="menu-outline"></ion-icon>
                 </div>
+
+                <div class="search">
+                    <label>
+                        <input type="text" placeholder="Search here">
+                        <ion-icon name="search-outline"></ion-icon>
+                    </label>
+                </div>
+
+                <li>
+                    <a href="#">
+                        <span class="icon">
+                            <ion-icon name="sunny-sharp"></ion-icon>
+                        </span>
+                        <span class="title">Dark</span>
+                    </a>
+                </li>
+
+                <div class="user">
+                    <img src="assets/imgs/customer01.jpg" alt="">
+                </div>
             </div>
 
+
+            <!-- ======================= Cards ================== -->
             <div class="cardBox">
                 <div class="card">
                     <div>
                         <div class="numbers">1,120</div>
-                        <div class="cardName">Visitas Diarias</div>
+                        <div class="cardName">Daily Views</div>
                     </div>
+
                     <div class="iconBx">
                         <ion-icon name="eye-outline"></ion-icon>
                     </div>
                 </div>
+
                 <div class="card">
                     <div>
                         <div class="numbers">8</div>
-                        <div class="cardName">Órdenes Totales</div>
+                        <div class="cardName">Total Orders</div>
                     </div>
+
                     <div class="iconBx">
                         <ion-icon name="cart-outline"></ion-icon>
                     </div>
                 </div>
+
                 <div class="card">
                     <div>
                         <div class="numbers">28</div>
-                        <div class="cardName">Comentarios</div>
+                        <div class="cardName">Comments</div>
                     </div>
+
                     <div class="iconBx">
                         <ion-icon name="chatbubbles-outline"></ion-icon>
                     </div>
                 </div>
+
                 <div class="card">
                     <div>
                         <div class="numbers">$150</div>
-                        <div class="cardName">Ingresos</div>
+                        <div class="cardName">Revenue</div>
                     </div>
+
                     <div class="iconBx">
                         <ion-icon name="cash-outline"></ion-icon>
                     </div>
                 </div>
             </div>
 
+            <!-- ================ Order Details List ================= -->
             <div class="details">
                 <div class="recentOrders">
                     <div class="cardHeader">
-                        <h2>Órdenes Recientes</h2>
-                        <a href="#" class="btn">Ver Todas</a>
+                        <h2>Recent Orders</h2>
+                        <a href="#" class="btn">View All</a>
                     </div>
+
                     <table>
                         <thead>
                             <tr>
-                                <td>Nombre</td>
-                                <td>Precio</td>
-                                <td>Pago</td>
-                                <td>Estado</td>
+                                <td>Name</td>
+                                <td>Price</td>
+                                <td>Payment</td>
+                                <td>Status</td>
                             </tr>
                         </thead>
+
                         <tbody>
                             <tr>
-                                <td>1 pollo a la brasa</td>
+                                <td>1 grilled chicken</td>
                                 <td>$55</td>
-                                <td>Pagado</td>
-                                <td><span class="status delivered">Entregado</span></td>
+                                <td>Paid</td>
+                                <td><span class="status delivered">Delivered</span></td>
                             </tr>
+
                             <tr>
-                                <td>1/2 pollo a la brasa</td>
+                                <td>1/2 grilled chicken</td>
                                 <td>$30</td>
-                                <td>Debido</td>
-                                <td><span class="status pending">Pendiente</span></td>
+                                <td>Due</td>
+                                <td><span class="status pending">Pending</span></td>
                             </tr>
+
                             <tr>
-                                <td>1/4 pollo a la brasa</td>
+                                <td>1/4 grilled chicken</td>
                                 <td>$17</td>
-                                <td>Pagado</td>
-                                <td><span class="status return">Devolución</span></td>
+                                <td>Paid</td>
+                                <td><span class="status return">Return</span></td>
                             </tr>
+
                             <tr>
-                                <td>salchicha</td>
+                                <td>sausage</td>
                                 <td>$10</td>
-                                <td>Debido</td>
-                                <td><span class="status inProgress">En Progreso</span></td>
+                                <td>Due</td>
+                                <td><span class="status inProgress">In Progress</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>Chicha 1ltr</td>
+                                <td>$12</td>
+                                <td>Paid</td>
+                                <td><span class="status delivered">Delivered</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>Lemonade 1 Lt</td>
+                                <td>$10</td>
+                                <td>Due</td>
+                                <td><span class="status pending">Pending</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>Inka Kola 1ltr</td>
+                                <td>$8</td>
+                                <td>Paid</td>
+                                <td><span class="status return">Return</span></td>
+                            </tr>
+
+                            <tr>
+                                <td>Coca Cola 1 Lt</td>
+                                <td>$8</td>
+                                <td>Due</td>
+                                <td><span class="status inProgress">In Progress</span></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
 
+                <!-- ================= New Customers ================ -->
                 <div class="recentCustomers">
                     <div class="cardHeader">
-                        <h2>Clientes Recientes</h2>
+                        <h2>Recent Customers</h2>
                     </div>
+
                     <table>
                         <tr>
                             <td width="60px">
-                                <div class="imgBx"><img src="/images/customer02.jpg" alt=""></div>
+                                <div class="imgBx"><img src="assets/imgs/customer02.jpg" alt=""></div>
                             </td>
                             <td>
-                                <h4>David <br> <span>Chosica - Perú</span></h4>
+                                <h4>David <br> <span>Chosica - Peru</span></h4>
                             </td>
                         </tr>
+
                         <tr>
                             <td width="60px">
-                                <div class="imgBx"><img src="/images/customer01.jpg" alt=""></div>
+                                <div class="imgBx"><img src="assets/imgs/customer01.jpg" alt=""></div>
                             </td>
                             <td>
                                 <h4>Pedro <br> <span>Ate - Perú</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                                <div class="imgBx"><img src="assets/imgs/customer02.jpg" alt=""></div>
+                            </td>
+                            <td>
+                                <h4>Luis <br> <span>Ate - Perú</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                                <div class="imgBx"><img src="assets/imgs/customer01.jpg" alt=""></div>
+                            </td>
+                            <td>
+                                <h4>Amit <br> <span>Santa Anita - Perú</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                                <div class="imgBx"><img src="assets/imgs/customer02.jpg" alt=""></div>
+                            </td>
+                            <td>
+                                <h4>Hugo <br> <span>Ate - Perú</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                                <div class="imgBx"><img src="assets/imgs/customer01.jpg" alt=""></div>
+                            </td>
+                            <td>
+                                <h4>Maykol <br> <span>Ate - Perú</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                                <div class="imgBx"><img src="assets/imgs/customer01.jpg" alt=""></div>
+                            </td>
+                            <td>
+                                <h4>Miguel <br> <span>Santa Clara - Perú</span></h4>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td width="60px">
+                                <div class="imgBx"><img src="assets/imgs/customer02.jpg" alt=""></div>
+                            </td>
+                            <td>
+                                <h4>Fiorella <br> <span>Chosica - Perú</span></h4>
                             </td>
                         </tr>
                     </table>
@@ -205,7 +336,10 @@
         </div>
     </div>
 
-    <script src="/js/dashboard.js"></script>
+    <!-- =========== Scripts =========  -->
+    <script src="/js/dasboard.js"></script>
+
+    <!-- ====== ionicons ======= -->
     <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>

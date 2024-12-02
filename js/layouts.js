@@ -12,7 +12,7 @@ async function inicializarAplicacion() {
         // Cargar header y footer en paralelo
         const [headerResponse, footerResponse] = await Promise.all([
             fetch('/app/Views/layouts/header.html'),
-            fetch('/app/Views/layouts/footer.html')
+            fetch('/app/Views/layouts/footer.html'),
         ]);
 
         const [headerData, footerData] = await Promise.all([
