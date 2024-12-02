@@ -65,25 +65,29 @@ toggle.onclick = function () {
 };
 
 async function cargarClientes() {
-    const response = await fetch('https://randy939-001-site1.qtempurl.com/app/Controllers/obtener_clientes.php');
-    const data = await response.json();
+    try {
+        const response = await fetch('https://randy939-001-site1.qtempurl.com/app/Controllers/obtener_clientes.php');
+        const data = await response.json();
 
-    if (data.status === "success") {
-        const clientesContainer = document.querySelector('.clientes-container');
-        clientesContainer.innerHTML = ''; // Limpiar el contenedor
+        if (data.status === "success") {
+            const clientesContainer = document.querySelector('.clientes-container');
+            clientesContainer.innerHTML = ''; // Limpiar el contenedor
 
-        data.clientes.forEach(cliente => {
-            const clienteRow = document.createElement('tr');
-            clienteRow.innerHTML = `
-                <td>${cliente.nombre}</td>
-                <td>${cliente.apellido}</td>
-                <td>${cliente.email}</td>
-                <td>${cliente.direccion}</td>
-                <td>${cliente.fecha_registro}</td>
-            `;
-            clientesContainer.appendChild(clienteRow);
-        });
-    } else {
-        console.error("Error al cargar los clientes:", data.message);
+            data.clientes.forEach(cliente => {
+                const clienteRow = document.createElement('tr');
+                clienteRow.innerHTML = `
+                    <td>${cliente.nombre}</td>
+                    <td>${cliente.apellido}</td>
+                    <td>${cliente.email}</td>
+                    <td>${cliente.direccion}</td>
+                    <td>${cliente.fecha_registro}</td>
+                `;
+                clientesContainer.appendChild(clienteRow);
+            });
+        } else {
+            console.error("Error al cargar los clientes:", data.message);
+        }
+    } catch (error) {
+        console.error("Error en la solicitud:", error);
     }
 }

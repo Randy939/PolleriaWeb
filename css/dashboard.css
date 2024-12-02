@@ -440,7 +440,6 @@ body {
 .clientes-table th, .clientes-table td {
     border: 1px solid #ddd;
     padding: 8px;
-    text-align: left;
 }
 
 .clientes-table th {
