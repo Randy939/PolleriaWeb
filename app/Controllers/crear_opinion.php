@@ -21,6 +21,9 @@ try {
 
     $data = json_decode(file_get_contents("php://input"));
 
+    // Usar error_log para depuración
+    error_log(print_r($data, true)); // Esto enviará los datos al registro de errores
+
     if (!empty($data->usuario_id) && !empty($data->producto_id) && !empty($data->calificacion) && !empty($data->comentario)) {
         $opinion->usuario_id = $data->usuario_id;
         $opinion->producto_id = $data->producto_id;
