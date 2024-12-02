@@ -61,7 +61,10 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             body: JSON.stringify(data)
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log('Respuesta del servidor:', response);
+            return response.json();
+        })
         .then(data => {
             if (data.status === 'success') {
                 alert('Comentario publicado exitosamente');
