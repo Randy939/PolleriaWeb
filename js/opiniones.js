@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const swiper = new Swiper('.opiniones-swiper', {
             direction: 'horizontal',
             loop: true,
-            slidesPerView: 'auto',
+            slidesPerView: 3,
             spaceBetween: 30,
             autoplay: {
                 delay: 5000,
