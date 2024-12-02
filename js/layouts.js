@@ -66,7 +66,6 @@ async function inicializarAplicacion() {
 function initializeHeaderEvents() {
     const menuBars = document.getElementById('menu-bars');
     const navbar = document.querySelector('.navbar');
-    const searchForm = document.getElementById('search-form');
     const closeSearch = document.getElementById('close');
 
     if (menuBars && navbar) {
@@ -75,15 +74,6 @@ function initializeHeaderEvents() {
             navbar.classList.toggle('active');
         });
     }
-
-    if (searchIcon && searchForm) {
-        searchIcon.addEventListener('click', () => searchForm.classList.toggle('active'));
-    }
-
-    if (closeSearch && searchForm) {
-        closeSearch.addEventListener('click', () => searchForm.classList.remove('active'));
-    }
-
     // Configurar eventos para iconos protegidos
     configurarIconosProtegidos();
 }
