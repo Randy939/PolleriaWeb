@@ -432,6 +432,30 @@ body {
     transform: scale(1.05);
 }
 
+.clientes-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.clientes-table th, .clientes-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.clientes-table th {
+    background-color: var(--blue);
+    color: white;
+}
+
+.clientes-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.clientes-table tr:hover {
+    background-color: #ddd;
+}
+
 /* ====================== Responsive Design ========================== */
 @media (max-width: 991px) {
   .navigation {

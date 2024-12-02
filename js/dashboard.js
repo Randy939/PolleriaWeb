@@ -73,16 +73,15 @@ async function cargarClientes() {
         clientesContainer.innerHTML = ''; // Limpiar el contenedor
 
         data.clientes.forEach(cliente => {
-            const clienteCard = document.createElement('div');
-            clienteCard.classList.add('cliente-card');
-            clienteCard.innerHTML = `
-                <h4>${cliente.nombre} ${cliente.apellido}</h4>
-                <p>Email: ${cliente.email}</p>
-                <p>Teléfono: ${cliente.telefono}</p>
-                <p>Dirección: ${cliente.direccion}</p>
-                <p>Fecha de Registro: ${cliente.fecha_registro}</p>
+            const clienteRow = document.createElement('tr');
+            clienteRow.innerHTML = `
+                <td>${cliente.nombre}</td>
+                <td>${cliente.apellido}</td>
+                <td>${cliente.email}</td>
+                <td>${cliente.direccion}</td>
+                <td>${cliente.fecha_registro}</td>
             `;
-            clientesContainer.appendChild(clienteCard);
+            clientesContainer.appendChild(clienteRow);
         });
     } else {
         console.error("Error al cargar los clientes:", data.message);
