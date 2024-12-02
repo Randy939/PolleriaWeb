@@ -32,11 +32,16 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     `;
                     opinionesWrapper.innerHTML += opinionHTML;
+                });
 
-                    const lastOpinionCard = opinionesWrapper.lastElementChild;
-                    setTimeout(() => {
-                        lastOpinionCard.classList.add('show');
-                    }, 100);
+                // Inicializar Swiper después de agregar las opiniones
+                const swiper = new Swiper('.Opiniones-slider', {
+                    // Configuración de Swiper
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    // Otras configuraciones que necesites
                 });
             } else {
                 opinionesWrapper.innerHTML = '<p>No hay opiniones disponibles.</p>';
