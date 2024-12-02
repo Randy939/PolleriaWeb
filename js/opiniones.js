@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <div class="opinion-header">
                                     <img src="/images/carlos.png" alt="Usuario">
                                     <div class="user-info">
-                                        <h3>${opinion.usuario_nombre}</h3>
+                                        <h3>${opinion.usuario_nombre} ${opinion.usuario_apellido}</h3>
                                         <div class="rating">
                                             ${generarEstrellas(opinion.calificacion)}
                                             <span class="fecha">${opinion.fecha}</span>

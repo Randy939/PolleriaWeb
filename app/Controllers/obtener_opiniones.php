@@ -21,7 +21,7 @@ try {
     $opinion = new Opinion($db);
 
     // Obtener todas las opiniones
-    $query = "SELECT o.*, u.nombre AS usuario_nombre, p.nombre AS producto_nombre 
+    $query = "SELECT o.*, u.nombre AS usuario_nombre, u.apellido AS usuario_apellido, p.nombre AS producto_nombre 
               FROM opiniones o 
               JOIN usuarios u ON o.usuario_id = u.id 
               JOIN productos p ON o.producto_id = p.id";
