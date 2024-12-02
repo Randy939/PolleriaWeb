@@ -25,6 +25,7 @@ body {
 .container {
   position: relative;
   width: 100%;
+  display: flex;
 }
 
 /* =============== Navigation ================ */
@@ -404,6 +405,12 @@ body {
 }
 .recentCustomers table tr:hover td h4 span {
   color: var(--white);
+}
+
+.clientes-section {
+    flex-grow: 1;
+    padding: 20px;
+    display: none;
 }
 
 .clientes-container {
