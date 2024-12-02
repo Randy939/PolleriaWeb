@@ -36,6 +36,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
                 rol_id: data.data.rol
             }));
             
+            actualizarIconosUsuario();
+            
             window.location.href = '/index.html';
         } else {
             errorDiv.textContent = data.message || "Error al iniciar sesión";
