@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function crearOpinionHTML(opinion) {
         return `
             <div class="opinion-header">
-                <img src="/images/carlos.png" alt="Usuario">
+                <i class="fas fa-user" style="color: green; font-size: 6rem;"></i>
                 <div class="user-info">
                     <h3>${opinion.usuario_nombre || ''} ${opinion.usuario_apellido || ''}</h3>
                     <div class="rating">
