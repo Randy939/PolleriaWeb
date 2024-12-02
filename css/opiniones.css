@@ -1,49 +1,53 @@
-/* Bloque principal de Opiniones */
+/* Estilos generales para la sección de Opiniones */
 .Opiniones {
-    padding: 1rem 10%;
+    padding: 2rem 5%;
     background: #f8f9fa;
     position: relative;
     overflow: hidden;
 }
 
+/* Contenedor de opiniones */
 .opiniones-container {
-    position: relative;
-    height: 300px; /* Ajusta la altura según sea necesario */
     display: flex;
-    transition: transform 0.5s ease-in-out;
+    transition: transform 0.5s ease-in-out; /* Animación suave para el deslizamiento */
+    will-change: transform; /* Mejora el rendimiento de la animación */
 }
 
+/* Tarjetas de opinión */
 .opinion-card {
     min-width: 100%; /* Cada tarjeta ocupa el 100% del contenedor */
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
 
+/* Tarjeta activa */
 .opinion-card.active {
     opacity: 1;
 }
 
+/* Previsualización de las tarjetas anterior y posterior */
 .opinion-card.previous,
 .opinion-card.next {
-    opacity: 0.5; /* Previsualización de los comentarios anterior y posterior */
+    opacity: 0.5; 
 }
 
+/* Títulos */
 .Opiniones h3 {
     text-align: center;
-    color: var(--green);
+    color: #2c5530; /* Verde oscuro */
     font-size: 2.5rem;
-    padding-top: 1.8rem;
-    padding-bottom: 0.5rem;
+    padding-top: 1.5rem;
 }
 
 .Opiniones h1 {
     text-align: center;
-    color: var(--black);
+    color: #ffc107; /* Amarillo */
     font-size: 3rem;
     padding: 0rem 5% 2rem;
     text-transform: uppercase;
 }
 
+/* Estilos para el encabezado de la opinión */
 .opinion-header {
     display: flex;
     align-items: center;
@@ -51,23 +55,25 @@
     margin-bottom: 2rem;
 }
 
+/* Imagen del usuario */
 .opinion-header img {
-    width: 6.5rem;
-    height: 6.5rem;
+    width: 6rem;
+    height: 6rem;
     border-radius: 50%;
     object-fit: cover;
     border: 3px solid #2c5530;
     padding: 3px;
 }
 
+/* Información del usuario */
 .user-info h3 {
     font-size: 2rem;
     color: #2c5530;
     font-weight: 700;
     margin-bottom: 0.5rem;
-    font-family: 'Poppins', sans-serif;
 }
 
+/* Estrellas de calificación */
 .rating {
     display: flex;
     align-items: center;
@@ -75,16 +81,18 @@
 }
 
 .rating i {
-    color: #ffc107;
+    color: #ffc107; /* Amarillo */
     font-size: 1.4rem;
 }
 
+/* Fecha de la opinión */
 .fecha {
     color: #666;
     font-size: 1.3rem;
     margin-left: 1rem;
 }
 
+/* Contenido de la opinión */
 .opinion-content {
     margin-bottom: 2rem;
 }
@@ -93,9 +101,9 @@
     color: #666;
     font-size: 1.5rem;
     line-height: 1.8;
-    font-family: 'Open Sans', sans-serif;
 }
 
+/* Pie de la opinión */
 .opinion-footer {
     display: flex;
     justify-content: space-between;
@@ -104,6 +112,7 @@
     border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+/* Plato pedido */
 .plato-pedido {
     display: flex;
     align-items: center;
@@ -112,27 +121,9 @@
     font-size: 1.4rem;
 }
 
+/* Icono del plato */
 .plato-pedido i {
-    color: #ffc107;
-}
-
-/* Estilos del Swiper */
-.Opiniones .swiper-pagination {
-    position: relative;
-    margin-top: 3rem;
-}
-
-.Opiniones .swiper-pagination-bullet {
-    width: 12px;
-    height: 12px;
-    background: #2c5530;
-    opacity: 0.5;
-}
-
-.Opiniones .swiper-pagination-bullet-active {
-    opacity: 1;
-    background: #ffc107;
-    transform: scale(1.2);
+    color: #ffc107; /* Amarillo */
 }
 
 /* Media Queries */
