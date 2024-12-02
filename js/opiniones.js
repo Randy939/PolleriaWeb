@@ -80,6 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
             navigation: {
                 nextEl: null,
                 prevEl: null,
+                
             },
         });
     }
