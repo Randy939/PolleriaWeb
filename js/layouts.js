@@ -119,6 +119,7 @@ function actualizarIconosDashboard() {
     // Limpiar el intervalo después de 5 segundos por seguridad
     setTimeout(() => clearInterval(checkDashboardIcon), 5000);
 }
+
 function configurarIconosProtegidos() {
     const rutasProtegidas = {
         'perfil': '/app/Views/pages/perfil.html',
