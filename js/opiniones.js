@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function crearOpinionHTML(opinion) {
         return `
             <div class="opinion-header">
-                <img src="/images/carlos.png" alt="Usuario">
+                <img src="/images/usuario.png" alt="Usuario">
                 <div class="user-info">
                     <h3>${opinion.usuario_nombre || ''} ${opinion.usuario_apellido || ''}</h3>
                     <div class="rating">
