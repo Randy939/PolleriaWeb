@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <div class="opinion-header">
                                     <img src="/images/carlos.png" alt="Usuario">
                                     <div class="user-info">
-                                        <h3>${opinion.usuario_nombre} ${opinion.usuario_apellido}</h3>
+                                        <h3>${opinion.usuario_nombre || ''} ${opinion.usuario_apellido || ''}</h3>
                                         <div class="rating">
                                             ${generarEstrellas(opinion.calificacion)}
                                             <span class="fecha">${opinion.fecha}</span>
@@ -38,6 +38,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         </div>
                     `;
                     opinionesWrapper.innerHTML += opinionHTML;
+
+                    const lastOpinionCard = opinionesWrapper.lastElementChild;
+                    setTimeout(() => {
+                        lastOpinionCard.classList.add('show');
+                    }, 100);
                 });
             } else {
                 opinionesWrapper.innerHTML = '<p>No hay opiniones disponibles.</p>';
