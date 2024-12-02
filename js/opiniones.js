@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     const opinionesContainer = document.getElementById('opiniones-container');
-    let currentIndex = 0;
     let opiniones = [];
 
     fetch('https://randy939-001-site1.qtempurl.com/app/Controllers/obtener_opiniones.php')
@@ -8,33 +7,22 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(data => {
             if (data.status === 'success' && data.opiniones.length > 0) {
                 opiniones = data.opiniones;
-                mostrarOpinion(currentIndex);
-                setInterval(() => {
-                    currentIndex = (currentIndex + 1) % opiniones.length;
-                    mostrarOpinion(currentIndex);
-                }, 5000); // Cambia de opinión cada 5 segundos
+                cargarOpiniones();
+                inicializarSwiper();
             } else {
                 opinionesContainer.innerHTML = '<p>No hay opiniones disponibles.</p>';
             }
         })
         .catch(error => console.error('Error al cargar las opiniones:', error));
 
-    function mostrarOpinion(index) {
-        const totalOpiniones = opiniones.length;
-        const previousIndex = (index - 1 + totalOpiniones) % totalOpiniones;
-        const nextIndex = (index + 1) % totalOpiniones;
-
-        opinionesContainer.innerHTML = `
-            <div class="opinion-card previous">${crearOpinionHTML(opiniones[previousIndex])}</div>
-            <div class="opinion-card active">${crearOpinionHTML(opiniones[index])}</div>
-            <div class="opinion-card next">${crearOpinionHTML(opiniones[nextIndex])}</div>
-        `;
-
-        setTimeout(() => {
-            const cards = document.querySelectorAll('.opinion-card');
-            cards.forEach(card => card.classList.remove('active', 'previous', 'next'));
-            cards[1].classList.add('active'); // Asegúrate de que la tarjeta activa tenga la clase 'active'
-        }, 50);
+    function cargarOpiniones() {
+        opiniones.forEach(opinion => {
+            const opinionHTML = crearOpinionHTML(opinion);
+            const slide = document.createElement('div');
+            slide.classList.add('swiper-slide');
+            slide.innerHTML = opinionHTML;
+            opinionesContainer.appendChild(slide);
+        });
     }
 
     function crearOpinionHTML(opinion) {
@@ -73,5 +61,20 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
         return estrellas;
+    }
+
+    function inicializarSwiper() {
+        const swiper = new Swiper('.opiniones-swiper', {
+            direction: 'horizontal',
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+        });
     }
 }); 
