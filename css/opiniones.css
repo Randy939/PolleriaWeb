@@ -185,3 +185,29 @@
         justify-content: center;
     }
 }
+
+.opiniones-container {
+    position: relative;
+    overflow: hidden;
+    height: 300px; /* Ajusta la altura según sea necesario */
+}
+
+.opinion-card {
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.opinion-card.active {
+    opacity: 1;
+}
+
+/* Estilos adicionales para la estética */
+.opinion-card {
+    background: #fff;
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    border: 1px solid rgba(0,0,0,0.05);
+}
