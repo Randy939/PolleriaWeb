@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     const opinionesWrapper = document.getElementById('opiniones-wrapper');
 
-    fetch('https://randy939-001-site1.qtempurl.com/app/Controllers/obtener_opiniones.php') // Cambia esta URL por la correcta
+    fetch('https://randy939-001-site1.qtempurl.com/app/Controllers/obtener_opiniones.php')
         .then(response => response.json())
         .then(data => {
             if (data.status === 'success' && data.opiniones) {
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <div class="opinion-header">
                                     <img src="/images/carlos.png" alt="Usuario">
                                     <div class="user-info">
-                                        <h3>${opinion.nombre}</h3>
+                                        <h3>${opinion.usuario_nombre}</h3>
                                         <div class="rating">
                                             ${generarEstrellas(opinion.calificacion)}
                                             <span class="fecha">${opinion.fecha}</span>
@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <div class="opinion-footer">
                                     <div class="plato-pedido">
                                         <i class="fas fa-utensils"></i>
-                                        <span>${opinion.producto}</span>
+                                        <span>${opinion.producto_nombre}</span>
                                     </div>
                                     <div class="opinion-acciones">
                                         <button class="util-btn">
@@ -43,10 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 opinionesWrapper.innerHTML = '<p>No hay opiniones disponibles.</p>';
             }
         })
-        .catch(error => {
-            console.error('Error al cargar opiniones:', error);
-            opinionesWrapper.innerHTML = '<p>Error al cargar opiniones.</p>';
-        });
+        .catch(error => console.error('Error:', error));
 });
 
 function generarEstrellas(calificacion) {
