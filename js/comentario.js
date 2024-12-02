@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     document.querySelector('.btn-comentar').addEventListener('click', function() {
         const calificacionElement = document.querySelector('.stars .active');
-        const calificacion = calificacionElement ? calificacionElement.getAttribute('data-rating') : null;
+        const calificacion = calificacionElement ? parseInt(calificacionElement.getAttribute('data-rating')) : null;
         const comentario = document.querySelector('textarea').value;
         const usuario = JSON.parse(localStorage.getItem('usuario'));
         const usuarioId = usuario ? usuario.id : null;
