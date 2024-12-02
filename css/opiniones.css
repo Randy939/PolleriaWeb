@@ -1,9 +1,7 @@
 /* Estilos generales para la sección de Opiniones */
 .Opiniones {
-    padding: 2rem 5%;
+    padding: 2rem 10%;
     background: #f8f9fa;
-    position: relative;
-    overflow: hidden;
 }
 
 /* Contenedor de Swiper */
@@ -18,10 +16,10 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    padding: 2rem; /* Aumenta el padding para mayor espacio */
+    padding: 3rem; /* Aumenta el padding para mayor espacio */
     background: #fff; /* Fondo blanco para las tarjetas */
     border-radius: 20px; /* Bordes redondeados */
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Sombra suave */
     transition: transform 0.3s ease; /* Añade una transición */
 }
 
@@ -32,14 +30,14 @@
 /* Títulos */
 .Opiniones h3 {
     text-align: center;
-    color: #2c5530; /* Verde oscuro */
+    color: var(--green); /* Color verde */
     font-size: 2.5rem;
-    padding-top: 1.5rem;
+    padding-top: 1rem;
 }
 
 .Opiniones h1 {
     text-align: center;
-    color: #ffc107; /* Amarillo */
+    color: var(--black); /* Color negro */
     font-size: 3rem;
     padding: 0rem 5% 2rem;
     text-transform: uppercase;
@@ -59,14 +57,14 @@
     height: 6rem;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #2c5530;
+    border: 3px solid var(--green);
     padding: 3px;
 }
 
 /* Información del usuario */
 .user-info h3 {
     font-size: 2rem;
-    color: #2c5530;
+    color: var(--green);
     font-weight: 700;
     margin-bottom: 0.5rem;
 }
@@ -115,7 +113,7 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    color: #2c5530;
+    color: var(--green);
     font-size: 1.4rem;
 }
 
@@ -130,7 +128,7 @@
         padding: 3rem 5%;
     }
 
-    .opinion-card {
+    .swiper-slide {
         padding: 2rem;
     }
 
