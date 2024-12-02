@@ -75,11 +75,11 @@ document.addEventListener('DOMContentLoaded', function() {
             },
             pagination: {
                 el: '.swiper-pagination',
-                clickable: true,
+                clickable: false,
             },
             navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
+                nextEl: null,
+                prevEl: null,
             },
         });
     }
