@@ -439,7 +439,9 @@ body {
 
 .clientes-table th, .clientes-table td {
     border: 1px solid #ddd;
-    padding: 8px;
+    padding: 12px;
+    text-align: left;
+    font-size: 16px;
 }
 
 .clientes-table th {
