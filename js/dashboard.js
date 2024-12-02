@@ -1,3 +1,30 @@
+document.addEventListener('DOMContentLoaded', function() {
+    // Tu código aquí
+    const list = document.querySelectorAll(".navigation li");
+
+    list.forEach((item) => {
+        item.addEventListener("click", function() {
+            const sectionId = this.querySelector('a').getAttribute('data-section');
+            
+            // Verificar si sectionId no es nulo
+            if (sectionId) {
+                document.querySelectorAll('.perfil-section').forEach(section => {
+                    section.style.display = 'none'; // Ocultar todas las secciones
+                });
+                const selectedSection = document.getElementById(sectionId);
+                if (selectedSection) {
+                    selectedSection.style.display = 'block'; // Mostrar la sección seleccionada
+                } else {
+                    console.error(`No se encontró la sección con ID: ${sectionId}`);
+                }
+            }
+        });
+    });
+
+    // Llamar a la función para cargar clientes
+    document.querySelector('.menu-item[data-section="clientes"]').addEventListener('click', cargarClientes);
+});
+
 // add hovered class to selected list item
 let list = document.querySelectorAll(".navigation li");
 
@@ -20,26 +47,6 @@ toggle.onclick = function () {
   main.classList.toggle("active");
 };
 
-// Agregar evento de clic para mostrar la sección de clientes
-list.forEach((item) => {
-    item.addEventListener("click", function() {
-        const sectionId = this.querySelector('a').getAttribute('data-section');
-        
-        // Verificar si sectionId no es nulo
-        if (sectionId) {
-            document.querySelectorAll('.perfil-section').forEach(section => {
-                section.style.display = 'none'; // Ocultar todas las secciones
-            });
-            const selectedSection = document.getElementById(sectionId);
-            if (selectedSection) {
-                selectedSection.style.display = 'block'; // Mostrar la sección seleccionada
-            } else {
-                console.error(`No se encontró la sección con ID: ${sectionId}`);
-            }
-        }
-    });
-});
-
 async function cargarClientes() {
     const response = await fetch('https://randy939-001-site1.qtempurl.com/app/Controllers/obtener_clientes.php');
     const data = await response.json();
@@ -60,8 +67,7 @@ async function cargarClientes() {
             `;
             clientesContainer.appendChild(clienteCard);
         });
+    } else {
+        console.error("Error al cargar los clientes:", data.message);
     }
 }
-
-// Llamar a la función al cargar la sección de clientes
-document.querySelector('.menu-item[data-section="clientes"]').addEventListener('click', cargarClientes);
