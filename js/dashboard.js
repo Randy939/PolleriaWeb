@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }  else if (sectionId === 'dashboard') {
                     document.querySelector('.recentOrders').style.display = 'block';
                     document.querySelector('.recentCustomers').style.display = 'block';
+                    
                 } else if (sectionId === 'reservaciones') {
                     const selectedSection = document.getElementById(sectionId);
                     if (selectedSection) {
