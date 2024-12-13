@@ -70,6 +70,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 }
             });
         });
+
         // Manejar formulario de datos personales
         document.getElementById('form-datos-personales').addEventListener('submit', async function(e) {
             e.preventDefault();

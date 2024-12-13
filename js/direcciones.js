@@ -10,12 +10,16 @@ async function cargarDirecciones() {
 
         const direccionesLista = document.querySelector('.direcciones-lista');
         
+        // Verificar si el contenedor existe
         if (!direccionesLista) {
             console.error('El contenedor de direcciones no se encontró en el DOM.');
             return;
         }
 
+        // Mostrar mensaje de carga
         direccionesLista.innerHTML = '<p>Cargando direcciones...</p>';
+        
+        // Limpiar el contenedor antes de agregar nuevas direcciones
         direccionesLista.innerHTML = '';
         
         if (data.status === 'success' && Array.isArray(data.direcciones) && data.direcciones.length > 0) {
@@ -82,4 +86,80 @@ async function eliminarDireccion(direccionId) {
         console.error('Error al eliminar la dirección:', error);
         mostrarMensaje('Error al eliminar la dirección: ' + error.message, 'error');
     }
+}
+
+async function guardarDireccion(form, direccionId = null) {
+    try {
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+        if (!usuario || !usuario.id) {
+            throw new Error('No se encontró información del usuario');
+        }
+
+        const formData = {
+            usuario_id: usuario.id,
+            direccion: form.querySelector('[name="direccion"]').value,
+            referencia: form.querySelector('[name="referencia"]').value || ''
+        };
+
+        console.log('Enviando datos:', formData);
+
+        const response = await fetch(`${API_BASE_URL}/app/Controllers/direcciones.php`, {
+            method: direccionId ? 'PUT' : 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        });
+
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+            mostrarMensaje(direccionId ? 'Dirección actualizada correctamente' : 'Dirección agregada correctamente', 'success');
+            await cargarDirecciones();
+        } else {
+            throw new Error(data.message);
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        mostrarMensaje(error.message, 'error');
+    }
+}
+
+function mostrarFormularioDireccion(direccion = null) {
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <h3>${direccion ? 'Editar' : 'Nueva'} Dirección</h3>
+            <form id="form-direccion">
+                <div class="form-group">
+                    <label>Dirección</label>
+                    <input type="text" name="direccion" required 
+                           value="${direccion ? direccion.direccion : ''}">
+                </div>
+                <div class="form-group">
+                    <label>Referencia</label>
+                    <input type="text" name="referencia" 
+                           value="${direccion ? direccion.referencia : ''}">
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn-cancelar">Cancelar</button>
+                    <button type="submit" class="btn-guardar">Guardar</button>
+                </div>
+            </form>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+    
+    // Manejadores de eventos para el modal
+    modal.querySelector('.btn-cancelar').addEventListener('click', () => {
+        modal.remove();
+    });
+    
+    modal.querySelector('#form-direccion').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await guardarDireccion(e.target, direccion?.id);
+        modal.remove();
+    });
 }
