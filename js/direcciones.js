@@ -1,5 +1,6 @@
 async function cargarDirecciones() {
     try {
+        console.log('Cargando direcciones...');
         const usuario = JSON.parse(localStorage.getItem('usuario'));
         const response = await fetch(`${API_BASE_URL}/app/Controllers/direcciones.php?usuario_id=${usuario.id}`);
         const data = await response.json();
@@ -8,19 +9,15 @@ async function cargarDirecciones() {
 
         const direccionesLista = document.querySelector('.direcciones-lista');
         
-        // Verificar si el contenedor existe
         if (!direccionesLista) {
             console.error('El contenedor de direcciones no se encontró en el DOM.');
             return;
         }
 
-        // Mostrar mensaje de carga
         direccionesLista.innerHTML = '<p>Cargando direcciones...</p>';
         
-        // Limpiar el contenedor antes de agregar nuevas direcciones
-        direccionesLista.innerHTML = '';
-        
         if (data.status === 'success' && Array.isArray(data.direcciones) && data.direcciones.length > 0) {
+            direccionesLista.innerHTML = '';
             data.direcciones.forEach(direccion => {
                 const direccionElement = document.createElement('div');
                 direccionElement.className = 'direccion-item';
