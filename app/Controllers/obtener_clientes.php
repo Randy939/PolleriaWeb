@@ -17,10 +17,12 @@ try {
     $db = $database->getConnection();
     $usuario = new Usuario($db);
 
-    $query = "SELECT u.nombre, u.apellido, u.email, u.telefono, u.fecha_registro, d.direccion 
+    $query = "SELECT u.nombre, u.apellido, u.email, u.telefono, u.fecha_registro, 
+                     GROUP_CONCAT(d.direccion SEPARATOR ', ') AS direcciones
               FROM usuarios u 
               LEFT JOIN direcciones d ON u.id = d.usuario_id 
-              WHERE u.rol_id = (SELECT id FROM roles WHERE nombre = 'cliente')";
+              WHERE u.rol_id = (SELECT id FROM roles WHERE nombre = 'cliente')
+              GROUP BY u.id";
 
     $stmt = $db->prepare($query);
     $stmt->execute();

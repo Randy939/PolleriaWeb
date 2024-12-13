@@ -69,7 +69,8 @@ async function cargarClientes() {
                     <td>${cliente.nombre}</td>
                     <td>${cliente.apellido}</td>
                     <td>${cliente.email}</td>
-                    <td>${cliente.direccion}</td>
+                    <td>${cliente.telefono}</td>
+                    <td>${cliente.direcciones}</td>
                     <td>${cliente.fecha_registro}</td>
                 `;
                 clientesContainer.appendChild(clienteRow);
