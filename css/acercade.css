@@ -262,14 +262,18 @@
 }
 
 .direcciones-lista {
-    list-style: none;
+    display: flex;
+    flex-direction: column;
     padding: 0;
     margin: 0;
+    border: 1px solid red;
+    background-color: #f9f9f9;
 }
 
 .direcciones-lista li {
     padding: 10px;
     cursor: pointer;
+    border-bottom: 1px solid #ddd;
 }
 
 .direcciones-lista li:hover {
