@@ -21,13 +21,48 @@ document.addEventListener('DOMContentLoaded', function() {
                         selectedSection.style.display = 'block'; // Mostrar la sección de Clientes
                         cargarClientes(); // Cargar clientes al mostrar la sección
                     }
-                }  else if (sectionId === 'dashboard') {
+                } else if (sectionId === 'reservaciones') {
+                    const selectedSection = document.getElementById(sectionId);
+                    if (selectedSection) {
+                        selectedSection.style.display = 'block'; // Mostrar la sección de Reservaciones
+                        cargarReservaciones(); // Cargar reservaciones al mostrar la sección
+                    }
+                } else if (sectionId === 'dashboard') {
                     document.querySelector('.recentOrders').style.display = 'block';
                     document.querySelector('.recentCustomers').style.display = 'block';
                 }
             }
         });
     });
+
+    async function cargarReservaciones() {
+        try {
+            const response = await fetch('https://randy939-001-site1.qtempurl.com/app/Controllers/obtener_reservaciones.php');
+            const data = await response.json();
+
+            if (data.status === "success") {
+                const reservacionesContainer = document.querySelector('.reservaciones-container');
+                reservacionesContainer.innerHTML = ''; // Limpiar el contenedor
+
+                data.reservaciones.forEach(reserva => {
+                    const reservaRow = document.createElement('tr');
+                    reservaRow.innerHTML = `
+                        <td>${reserva.nombre}</td>
+                        <td>${reserva.fecha_reserva}</td>
+                        <td>${reserva.hora_reserva}</td>
+                        <td>${reserva.num_personas}</td>
+                        <td>${reserva.ocasion}</td>
+                        <td>${reserva.comentarios}</td>
+                    `;
+                    reservacionesContainer.appendChild(reservaRow);
+                });
+            } else {
+                console.error("Error al cargar las reservaciones:", data.message);
+            }
+        } catch (error) {
+            console.error("Error en la solicitud:", error);
+        }
+    }
 });
 
 // add hovered class to selected list item
