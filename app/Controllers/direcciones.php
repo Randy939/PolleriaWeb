@@ -22,6 +22,10 @@ try {
     $db = $database->getConnection();
     $usuario = new Usuario($db);
 
+    if (!$usuario) {
+        throw new Exception("No se pudo crear el objeto Usuario");
+    }
+
     if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
         error_log("Procesando solicitud DELETE");
         
@@ -55,7 +59,7 @@ try {
     }
 
     if ($_SERVER["REQUEST_METHOD"] === 'GET') {
-        if(isset($_GET['usuario_id'])) {
+        if (isset($_GET['usuario_id'])) {
             $usuario->id = $_GET['usuario_id'];
             $direcciones = $usuario->obtenerDirecciones();
             
