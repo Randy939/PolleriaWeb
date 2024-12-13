@@ -448,6 +448,42 @@ body {
     padding: 10px;
 }
 
+.opiniones-section {
+  grid-column: 1 / -1;
+    padding: 20px;
+    display: block;
+}
+
+.opiniones-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.opiniones-table th, .opiniones-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+    font-size: 16px;
+}
+
+.opiniones-table th {
+    background-color: var(--blue);
+    color: white;
+}
+
+.opiniones-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.opiniones-table tr:hover {
+    background-color: #ddd;
+}
+
+.opiniones-table td {
+    text-align: center;
+    padding: 10px;
+}
+
 /* ====================== Responsive Design ========================== */
 @media (max-width: 991px) {
   .navigation {
