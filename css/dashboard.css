@@ -407,6 +407,11 @@ body {
     background-color: #ddd;
 }
 
+.clientes-table td {
+    text-align: center;
+    padding: 10px;
+}
+
 /* ====================== Responsive Design ========================== */
 @media (max-width: 991px) {
   .navigation {
