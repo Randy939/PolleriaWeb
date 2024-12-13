@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             return;
         }
 
-        const response = await fetch(`${API_BASE_URL}/app/Controllers/direcciones.php?usuario_id=${usuario.id}`);
+        const response = await fetch(`https://randy939-001-site1.qtempurl.com/app/Controllers/direcciones.php?usuario_id=${usuario.id}`);
         const data = await response.json();
 
         if (data.status === 'success' && Array.isArray(data.direcciones)) {
