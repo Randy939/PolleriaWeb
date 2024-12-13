@@ -1,5 +1,3 @@
-const API_BASE_URL = 'https://randy939-001-site1.qtempurl.com';
-
 async function cargarDirecciones() {
     try {
         const usuario = JSON.parse(localStorage.getItem('usuario'));
