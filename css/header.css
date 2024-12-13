@@ -27,7 +27,6 @@ header .logo i {
 header .navbar {
     flex: 1; /* Asegura que el navbar ocupe el espacio disponible */
     justify-content: center; /* Centra los elementos dentro del navbar */
-    display: none; /* Oculta el menú por defecto */
     align-items: center;
     gap: 2rem;
 }
@@ -174,7 +173,6 @@ header .icons .icon-circle.fa-times::before {
 .location-dropdown {
     position: absolute;
     right: 0;
-    top: 100%;
     background: white;
     border: 1px solid #ddd;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -201,8 +199,4 @@ header .icons .icon-circle.fa-times::before {
 
 .direcciones-pestaña li:hover {
     background: #f0f0f0;
-}
-
-header .navbar.active {
-    display: flex; /* Muestra el menú cuando está activo */
 }
