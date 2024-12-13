@@ -1,23 +1,27 @@
+const API_BASE_URL = 'https://randy939-001-site1.qtempurl.com';
+
 async function cargarDirecciones() {
     try {
-        console.log('Cargando direcciones...');
         const usuario = JSON.parse(localStorage.getItem('usuario'));
+        if (!usuario || !usuario.id) {
+            console.error('No se encontró información del usuario');
+            return;
+        }
+
         const response = await fetch(`${API_BASE_URL}/app/Controllers/direcciones.php?usuario_id=${usuario.id}`);
         const data = await response.json();
-        
-        console.log('Datos de direcciones:', data);
 
         const direccionesLista = document.querySelector('.direcciones-lista');
-        
         if (!direccionesLista) {
             console.error('El contenedor de direcciones no se encontró en el DOM.');
             return;
         }
 
         direccionesLista.innerHTML = '<p>Cargando direcciones...</p>';
-        
+
         if (data.status === 'success' && Array.isArray(data.direcciones) && data.direcciones.length > 0) {
-            direccionesLista.innerHTML = '';
+            direccionesLista.innerHTML = ''; // Limpiar la lista
+
             data.direcciones.forEach(direccion => {
                 const direccionElement = document.createElement('div');
                 direccionElement.className = 'direccion-item';
@@ -54,8 +58,6 @@ async function eliminarDireccion(direccionId) {
     try {
         const usuario = JSON.parse(localStorage.getItem('usuario'));
         const url = `${API_BASE_URL}/app/Controllers/direcciones.php?id=${direccionId}&usuario_id=${usuario.id}`;
-        console.log('URL de eliminación:', url);
-
         const response = await fetch(url, {
             method: 'DELETE',
             headers: {
@@ -65,12 +67,7 @@ async function eliminarDireccion(direccionId) {
             credentials: 'include'
         });
 
-        const responseText = await response.text();
-        if (!responseText) {
-            throw new Error('La respuesta del servidor está vacía');
-        }
-
-        const data = JSON.parse(responseText);
+        const data = await response.json();
         if (data.status === 'success') {
             mostrarMensaje('Dirección eliminada correctamente', 'success');
             await cargarDirecciones();
@@ -96,8 +93,6 @@ async function guardarDireccion(form, direccionId = null) {
             referencia: form.querySelector('[name="referencia"]').value || ''
         };
 
-        console.log('Enviando datos:', formData);
-
         const response = await fetch(`${API_BASE_URL}/app/Controllers/direcciones.php`, {
             method: direccionId ? 'PUT' : 'POST',
             headers: {
@@ -107,7 +102,6 @@ async function guardarDireccion(form, direccionId = null) {
         });
 
         const data = await response.json();
-        
         if (data.status === 'success') {
             mostrarMensaje(direccionId ? 'Dirección actualizada correctamente' : 'Dirección agregada correctamente', 'success');
             await cargarDirecciones();
@@ -129,13 +123,11 @@ function mostrarFormularioDireccion(direccion = null) {
             <form id="form-direccion">
                 <div class="form-group">
                     <label>Dirección</label>
-                    <input type="text" name="direccion" required 
-                           value="${direccion ? direccion.direccion : ''}">
+                    <input type="text" name="direccion" required value="${direccion ? direccion.direccion : ''}">
                 </div>
                 <div class="form-group">
                     <label>Referencia</label>
-                    <input type="text" name="referencia" 
-                           value="${direccion ? direccion.referencia : ''}">
+                    <input type="text" name="referencia" value="${direccion ? direccion.referencia : ''}">
                 </div>
                 <div class="modal-actions">
                     <button type="button" class="btn-cancelar">Cancelar</button>
@@ -146,15 +138,17 @@ function mostrarFormularioDireccion(direccion = null) {
     `;
 
     document.body.appendChild(modal);
-    
-    // Manejadores de eventos para el modal
+
     modal.querySelector('.btn-cancelar').addEventListener('click', () => {
         modal.remove();
     });
-    
+
     modal.querySelector('#form-direccion').addEventListener('submit', async (e) => {
         e.preventDefault();
         await guardarDireccion(e.target, direccion?.id);
         modal.remove();
     });
 }
+
+// Inicializar la carga de direcciones al cargar la página
+document.addEventListener('DOMContentLoaded', cargarDirecciones);
