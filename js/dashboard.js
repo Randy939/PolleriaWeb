@@ -21,15 +21,15 @@ document.addEventListener('DOMContentLoaded', function() {
                         selectedSection.style.display = 'block'; // Mostrar la sección de Clientes
                         cargarClientes(); // Cargar clientes al mostrar la sección
                     }
+                }  else if (sectionId === 'dashboard') {
+                    document.querySelector('.recentOrders').style.display = 'block';
+                    document.querySelector('.recentCustomers').style.display = 'block';
                 } else if (sectionId === 'reservaciones') {
                     const selectedSection = document.getElementById(sectionId);
                     if (selectedSection) {
                         selectedSection.style.display = 'block'; // Mostrar la sección de Reservaciones
                         cargarReservaciones(); // Cargar reservaciones al mostrar la sección
                     }
-                } else if (sectionId === 'dashboard') {
-                    document.querySelector('.recentOrders').style.display = 'block';
-                    document.querySelector('.recentCustomers').style.display = 'block';
                 }
             }
         });
