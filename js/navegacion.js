@@ -89,14 +89,17 @@ document.addEventListener('DOMContentLoaded', async function() {
         const data = await response.json();
 
         if (data.status === 'success' && Array.isArray(data.direcciones)) {
-            const direccionesLista = locationDropdown.querySelector('.direcciones-lista');
+            const direccionesLista = locationDropdown.querySelector('.direcciones-pestaña');
             direccionesLista.innerHTML = ''; // Limpiar la lista
 
             data.direcciones.forEach(direccion => {
                 const li = document.createElement('li');
                 li.textContent = direccion.direccion; // Ajusta según el campo que quieras mostrar
                 li.addEventListener('click', () => {
-                    // Aquí puedes manejar la selección de la dirección
+                    // Manejar la selección de la dirección
+                    const selectedItems = direccionesLista.querySelectorAll('li.selected');
+                    selectedItems.forEach(item => item.classList.remove('selected')); // Limpiar selección anterior
+                    li.classList.add('selected'); // Marcar como seleccionado
                     console.log(`Dirección seleccionada: ${direccion.direccion}`);
                     locationDropdown.style.display = 'none'; // Ocultar el dropdown después de seleccionar
                 });
