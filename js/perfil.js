@@ -296,16 +296,9 @@ async function cambiarPassword() {
 async function cargarDirecciones() {
     try {
         const usuario = JSON.parse(localStorage.getItem('usuario'));
-        if (!usuario || !usuario.id) {
-            console.error('No se encontró información del usuario');
-            return;
-        }
-
         const response = await fetch(`${API_BASE_URL}/app/Controllers/direcciones.php?usuario_id=${usuario.id}`);
         const data = await response.json();
         
-        console.log('Datos de direcciones:', data); // Verificar la respuesta de la API
-
         const direccionesLista = document.querySelector('.direcciones-lista');
         direccionesLista.innerHTML = '';
         
