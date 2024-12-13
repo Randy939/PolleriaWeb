@@ -27,6 +27,12 @@ document.addEventListener('DOMContentLoaded', function() {
                         selectedSection.style.display = 'block'; // Mostrar la sección de Reservaciones
                         cargarReservaciones(); // Cargar reservaciones al mostrar la sección
                     }
+                } else if (sectionId === 'opiniones') {
+                    const selectedSection = document.getElementById(sectionId);
+                    if (selectedSection) {
+                        selectedSection.style.display = 'block'; // Mostrar la sección de Opiniones
+                        cargarOpiniones(); // Cargar opiniones al mostrar la sección
+                    }
                 } else if (sectionId === 'dashboard') {
                     document.querySelector('.recentOrders').style.display = 'block';
                     document.querySelector('.recentCustomers').style.display = 'block';
@@ -114,6 +120,35 @@ async function cargarReservaciones() {
             });
         } else {
             console.error("Error al cargar las reservaciones:", data.message);
+        }
+    } catch (error) {
+        console.error("Error en la solicitud:", error);
+    }
+}
+
+async function cargarOpiniones() {
+    try {
+        const response = await fetch('https://randy939-001-site1.qtempurl.com/app/Controllers/obtener_opiniones.php');
+        const data = await response.json();
+
+        if (data.status === "success") {
+            const opinionesContainer = document.querySelector('.opiniones-container');
+            opinionesContainer.innerHTML = ''; // Limpiar el contenedor
+
+            data.opiniones.forEach(opinion => {
+                const opinionRow = document.createElement('tr');
+                opinionRow.innerHTML = `
+                    <td>${opinion.usuario_nombre}</td>
+                    <td>${opinion.usuario_apellido}</td>
+                    <td>${opinion.fecha}</td>
+                    <td>${opinion.producto_nombre}</td>
+                    <td>${opinion.calificacion}</td>
+                    <td>${opinion.comentario}</td>
+                `;
+                opinionesContainer.appendChild(opinionRow);
+            });
+        } else {
+            console.error("Error al cargar las opiniones:", data.message);
         }
     } catch (error) {
         console.error("Error en la solicitud:", error);
