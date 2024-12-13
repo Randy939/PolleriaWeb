@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             mostrarFormularioDireccion();
         });
     } catch (error) {
-        console.error('Error al cargar la página:', error);
+        console.error('Error al cargar el perfil:', error);
     }
 });
 
@@ -298,17 +298,26 @@ async function cambiarPassword() {
 async function cargarDirecciones() {
     try {
         const usuario = JSON.parse(localStorage.getItem('usuario'));
-        console.log('Cargando direcciones para el usuario ID:', usuario.id);
         const response = await fetch(`${API_BASE_URL}/app/Controllers/direcciones.php?usuario_id=${usuario.id}`);
         const data = await response.json();
         
         console.log('Datos de direcciones:', data);
 
         const direccionesLista = document.querySelector('.direcciones-lista');
+        
+        // Verificar si el contenedor existe
+        if (!direccionesLista) {
+            console.error('El contenedor de direcciones no se encontró en el DOM.');
+            return;
+        }
+
+        // Mostrar mensaje de carga
+        direccionesLista.innerHTML = '<p>Cargando direcciones...</p>';
+        
+        // Limpiar el contenedor antes de agregar nuevas direcciones
         direccionesLista.innerHTML = '';
         
         if (data.status === 'success' && Array.isArray(data.direcciones) && data.direcciones.length > 0) {
-            console.log('Direcciones a procesar:', data.direcciones);
             data.direcciones.forEach(direccion => {
                 const direccionElement = document.createElement('div');
                 direccionElement.className = 'direccion-item';
@@ -327,14 +336,13 @@ async function cargarDirecciones() {
                     </div>
                 `;
                 direccionesLista.appendChild(direccionElement);
-                console.log('Procesando dirección:', direccion);
             });
         } else {
             direccionesLista.innerHTML = '<p class="no-direcciones">No hay direcciones registradas</p>';
         }
     } catch (error) {
-        console.error('Error:', error);
-        mostrarMensaje('Error al cargar las direcciones', 'error');
+        console.error('Error al cargar direcciones:', error);
+        mostrarMensaje('Error al cargar las direcciones: ' + error.message, 'error');
     }
 }
 
