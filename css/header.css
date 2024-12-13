@@ -171,8 +171,8 @@ header .icons .icon-circle.fa-times::before {
 
 .location-dropdown {
     position: absolute;
-    top: 60px; /* Ajusta según sea necesario */
-    right: 20px; /* Ajusta según sea necesario */
+    top: calc(100% + 10px); /* Ajusta para que esté justo debajo del botón */
+    right: 0; /* Alinea a la derecha del botón */
     background: white;
     border: 1px solid #ddd;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);

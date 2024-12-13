@@ -98,8 +98,12 @@ document.addEventListener('DOMContentLoaded', async function() {
                 li.addEventListener('click', () => {
                     // Manejar la selección de la dirección
                     const selectedItems = direccionesLista.querySelectorAll('li.selected');
-                    selectedItems.forEach(item => item.classList.remove('selected')); // Limpiar selección anterior
+                    selectedItems.forEach(item => {
+                        item.classList.remove('selected'); // Limpiar selección anterior
+                        item.innerHTML = item.innerHTML.replace(' <i class="fas fa-check"></i>', ''); // Remover check
+                    });
                     li.classList.add('selected'); // Marcar como seleccionado
+                    li.innerHTML += ' <i class="fas fa-check"></i>'; // Agregar check al elemento seleccionado
                     console.log(`Dirección seleccionada: ${direccion.direccion}`);
                     locationDropdown.style.display = 'none'; // Ocultar el dropdown después de seleccionar
                 });
