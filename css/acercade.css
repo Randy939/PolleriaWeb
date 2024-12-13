@@ -266,8 +266,6 @@
     flex-direction: column;
     padding: 0;
     margin: 0;
-    border: 1px solid red;
-    background-color: #f9f9f9;
 }
 
 .direcciones-lista li {
