@@ -412,40 +412,6 @@ body {
     padding: 10px;
 }
 
-.reservaciones-table {
-    width: 100%;
-    border-collapse: collapse;
-}
-
-.reservaciones-table th, .reservaciones-table td {
-    border: 1px solid #ddd;
-    padding: 12px;
-    text-align: left;
-}
-
-.reservaciones-section {
-  grid-column: 1 / -1;
-  padding: 20px;
-  display: block;
-}
-
-.reservaciones-table th {
-    background-color: var(--blue);
-    color: white;
-}
-
-.reservaciones-table tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-.reservaciones-table tr:hover {
-    background-color: #ddd;
-}
-
-.reservaciones-table td {
-    text-align: center;
-    padding: 10px;
-}
 
 /* ====================== Responsive Design ========================== */
 @media (max-width: 991px) {
