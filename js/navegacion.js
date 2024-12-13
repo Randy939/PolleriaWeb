@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         locationDropdown.style.display = locationDropdown.style.display === 'block' ? 'none' : 'block';
 
         // Cargar direcciones si no están ya cargadas
-        if (locationDropdown.querySelector('.direcciones-lista').children.length === 0) {
+        if (locationDropdown.querySelector('.direcciones-pestaña').children.length === 0) {
             await cargarDirecciones();
         }
     });
