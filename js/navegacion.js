@@ -9,8 +9,16 @@ document.addEventListener('DOMContentLoaded', async function() {
         }, 100);
     });
 
-    let menu = document.querySelector('#menu-bars');
-    let navbar = document.querySelector('.navbar');
+    const menu = document.querySelector('#menu-bars');
+    const navbar = document.querySelector('.navbar');
+
+    // Funcionalidad del menú móvil
+    if (menu && navbar) {
+        menu.onclick = () => {
+            menu.classList.toggle('fa-times');
+            navbar.classList.toggle('active');
+        };
+    }
 
     // Obtener la ruta actual y la URL completa
     const currentPath = window.location.pathname;
@@ -31,39 +39,25 @@ document.addEventListener('DOMContentLoaded', async function() {
         const cleanCurrentPath = cleanPath(currentPath);
         const cleanHref = cleanPath(href);
 
-        // Para la página de inicio
+        // Lógica para asignar la clase active
         if (cleanCurrentPath === '' || cleanCurrentPath === 'index.html') {
             if (cleanHref === '') {
                 link.classList.add('active');
             }
-        }
-        // Para la página de promociones
-        else if (cleanCurrentPath === 'app/Views/pages/menu.html' && currentUrl.includes('categoria-card=promociones')) {
+        } else if (cleanCurrentPath === 'app/Views/pages/menu.html' && currentUrl.includes('categoria-card=promociones')) {
             if (href.includes('promociones')) {
                 link.classList.add('active');
             }
-        }
-        // Para la página de menú general
-        else if (cleanCurrentPath === 'app/Views/pages/menu.html' && !currentUrl.includes('categoria-card=promociones')) {
+        } else if (cleanCurrentPath === 'app/Views/pages/menu.html' && !currentUrl.includes('categoria-card=promociones')) {
             if (cleanHref === 'app/Views/pages/menu.html' && !href.includes('promociones')) {
                 link.classList.add('active');
             }
-        }
-        // Para la página de reserva
-        else if (cleanCurrentPath === 'app/Views/pages/reserva.html') {
+        } else if (cleanCurrentPath === 'app/Views/pages/reserva.html') {
             if (href.includes('reserva.html')) {
                 link.classList.add('active');
             }
         }
     });
-
-    // Funcionalidad del menú móvil
-    if (menu) {
-        menu.onclick = () => {
-            menu.classList.toggle('fa-times');
-            navbar.classList.toggle('active');
-        }
-    }
 
     const locationBtn = document.getElementById('location-btn');
     const locationDropdown = document.querySelector('.location-dropdown');
@@ -116,4 +110,4 @@ document.addEventListener('DOMContentLoaded', async function() {
             console.error('Error al cargar las direcciones');
         }
     }
-}); 
+});
