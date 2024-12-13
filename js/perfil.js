@@ -1,4 +1,3 @@
-const API_BASE_URL = 'https://randy939-001-site1.qtempurl.com';
 
 document.addEventListener('DOMContentLoaded', async function() {
     const usuarioStr = localStorage.getItem('usuario');
