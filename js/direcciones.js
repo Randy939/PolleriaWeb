@@ -10,6 +10,7 @@ async function cargarDirecciones() {
 
         const response = await fetch(`${API_BASE_URL}/app/Controllers/direcciones.php?usuario_id=${usuario.id}`);
         const data = await response.json();
+        console.log('Datos recibidos:', data);
 
         const direccionesLista = document.querySelector('.direcciones-lista');
         if (!direccionesLista) {
