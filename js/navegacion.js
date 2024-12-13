@@ -64,4 +64,46 @@ document.addEventListener('DOMContentLoaded', async function() {
             navbar.classList.toggle('active');
         }
     }
+
+    const locationBtn = document.getElementById('location-btn');
+    const locationDropdown = document.querySelector('.location-dropdown');
+
+    locationBtn.addEventListener('click', async function() {
+        // Alternar la visibilidad del dropdown
+        locationDropdown.style.display = locationDropdown.style.display === 'block' ? 'none' : 'block';
+
+        // Cargar direcciones si no están ya cargadas
+        if (locationDropdown.querySelector('.direcciones-lista').children.length === 0) {
+            await cargarDirecciones();
+        }
+    });
+
+    async function cargarDirecciones() {
+        const usuario = JSON.parse(localStorage.getItem('usuario'));
+        if (!usuario || !usuario.id) {
+            console.error('No se encontró información del usuario');
+            return;
+        }
+
+        const response = await fetch(`${API_BASE_URL}/app/Controllers/direcciones.php?usuario_id=${usuario.id}`);
+        const data = await response.json();
+
+        if (data.status === 'success' && Array.isArray(data.direcciones)) {
+            const direccionesLista = locationDropdown.querySelector('.direcciones-lista');
+            direccionesLista.innerHTML = ''; // Limpiar la lista
+
+            data.direcciones.forEach(direccion => {
+                const li = document.createElement('li');
+                li.textContent = direccion.direccion; // Ajusta según el campo que quieras mostrar
+                li.addEventListener('click', () => {
+                    // Aquí puedes manejar la selección de la dirección
+                    console.log(`Dirección seleccionada: ${direccion.direccion}`);
+                    locationDropdown.style.display = 'none'; // Ocultar el dropdown después de seleccionar
+                });
+                direccionesLista.appendChild(li);
+            });
+        } else {
+            console.error('Error al cargar las direcciones');
+        }
+    }
 }); 
