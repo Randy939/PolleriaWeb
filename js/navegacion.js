@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Funcionalidad del menú móvil
     if (menu && navbar) {
         menu.onclick = () => {
+            console.log('Menú hamburguesa clicado');
             menu.classList.toggle('fa-times');
             navbar.classList.toggle('active');
         };

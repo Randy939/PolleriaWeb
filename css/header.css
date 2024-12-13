@@ -173,7 +173,6 @@ header .icons .icon-circle.fa-times::before {
 
 .location-dropdown {
     position: absolute;
-    top: calc(100% + 10px); /* Ajusta para que esté justo debajo del botón */
     right: 0; /* Alinea a la derecha del botón */
     background: white;
     border: 1px solid #ddd;
@@ -201,4 +200,8 @@ header .icons .icon-circle.fa-times::before {
 
 .direcciones-pestaña li:hover {
     background: #f0f0f0;
+}
+
+header .navbar.active {
+    display: flex; /* Muestra el menú cuando está activo */
 }
