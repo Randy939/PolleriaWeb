@@ -70,11 +70,14 @@ document.addEventListener('DOMContentLoaded', async function() {
 
     locationBtn.addEventListener('click', async function() {
         // Alternar la visibilidad del dropdown
-        locationDropdown.style.display = locationDropdown.style.display === 'block' ? 'none' : 'block';
-
-        // Cargar direcciones si no están ya cargadas
-        if (locationDropdown.querySelector('.direcciones-pestaña').children.length === 0) {
-            await cargarDirecciones();
+        if (locationDropdown.style.display === 'block') {
+            locationDropdown.style.display = 'none';
+        } else {
+            locationDropdown.style.display = 'block';
+            // Cargar direcciones si no están ya cargadas
+            if (locationDropdown.querySelector('.direcciones-pestaña').children.length === 0) {
+                await cargarDirecciones();
+            }
         }
     });
 

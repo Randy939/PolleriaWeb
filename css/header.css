@@ -27,7 +27,7 @@ header .logo i {
 header .navbar {
     flex: 1; /* Asegura que el navbar ocupe el espacio disponible */
     justify-content: center; /* Centra los elementos dentro del navbar */
-    display: flex;
+    display: none; /* Oculta el menú por defecto */
     align-items: center;
     gap: 2rem;
 }
@@ -145,6 +145,8 @@ header .icons .icon-circle.fa-times::before {
 
     header .navbar.active {
         clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        display: flex;
+        flex-direction: column;
     }
 
     header .navbar a {
