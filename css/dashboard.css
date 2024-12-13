@@ -412,7 +412,7 @@ body {
     padding: 10px;
 }
 
-.reservaciones-table {
+.reservaciones-section {
   grid-column: 1 / -1;
     padding: 20px;
     display: block;
