@@ -301,7 +301,7 @@ async function cargarDirecciones() {
         
         console.log('Datos de direcciones:', data); // Verificar la respuesta de la API
 
-        const direccionesLista = document.querySelector('.direcciones-lista');
+        const direccionesLista = document.querySelector('.direccion-item');
         direccionesLista.innerHTML = '';
         
         if (data.status === 'success' && Array.isArray(data.direcciones) && data.direcciones.length > 0) {
