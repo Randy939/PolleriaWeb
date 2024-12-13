@@ -17,6 +17,8 @@ document.addEventListener('DOMContentLoaded', async function() {
             return;
         }
 
+        console.log('Usuario cargado:', usuario);
+        
         // Cargar datos del usuario primero
         await cargarDatosUsuario(usuario);
         
@@ -296,15 +298,17 @@ async function cambiarPassword() {
 async function cargarDirecciones() {
     try {
         const usuario = JSON.parse(localStorage.getItem('usuario'));
+        console.log('Cargando direcciones para el usuario ID:', usuario.id);
         const response = await fetch(`${API_BASE_URL}/app/Controllers/direcciones.php?usuario_id=${usuario.id}`);
         const data = await response.json();
         
-        console.log('Datos de direcciones:', data); // Verificar la respuesta de la API
+        console.log('Datos de direcciones:', data);
 
         const direccionesLista = document.querySelector('.direcciones-lista');
         direccionesLista.innerHTML = '';
         
         if (data.status === 'success' && Array.isArray(data.direcciones) && data.direcciones.length > 0) {
+            console.log('Direcciones a procesar:', data.direcciones);
             data.direcciones.forEach(direccion => {
                 const direccionElement = document.createElement('div');
                 direccionElement.className = 'direccion-item';
@@ -323,6 +327,7 @@ async function cargarDirecciones() {
                     </div>
                 `;
                 direccionesLista.appendChild(direccionElement);
+                console.log('Procesando dirección:', direccion);
             });
         } else {
             direccionesLista.innerHTML = '<p class="no-direcciones">No hay direcciones registradas</p>';
@@ -525,4 +530,7 @@ async function guardarDireccion(form, direccionId = null) {
         console.error('Error:', error);
         mostrarMensaje(error.message, 'error');
     }
-} 
+}
+
+console.log('Direcciones agregadas al DOM');
+  

@@ -63,6 +63,8 @@ try {
             $usuario->id = $_GET['usuario_id'];
             $direcciones = $usuario->obtenerDirecciones();
             
+            error_log("Direcciones encontradas: " . json_encode($direcciones));
+            
             http_response_code(200);
             echo json_encode(array(
                 "status" => "success",
@@ -98,6 +100,7 @@ try {
         );
         
         if ($usuario->agregarDireccion($direccion)) {
+            error_log("Dirección agregada correctamente");
             http_response_code(201);
             echo json_encode(array(
                 "status" => "success", 

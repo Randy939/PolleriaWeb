@@ -215,6 +215,8 @@ class Usuario {
                 throw new Exception("Error al ejecutar la consulta: " . $error[2]);
             }
             
+            error_log("Agregando dirección: " . json_encode($direccion));
+            
             return true;
         } catch(PDOException $e) {
             error_log("Error en agregarDireccion: " . $e->getMessage());
